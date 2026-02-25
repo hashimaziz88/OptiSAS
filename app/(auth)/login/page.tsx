@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useStyles } from '../style/style';
 import AuthLayout from '../components/AuthLayout';
 import AuthHeader from '../components/AuthHeader';
@@ -60,7 +60,7 @@ const Login: React.FC = () => {
                     name="email"
                     rules={[{ required: true, message: 'Please enter your email' }]}
                 >
-                    <Input prefix={<UserOutlined />} placeholder="Enter your email" size="large" />
+                    <Input prefix={<MailOutlined />} placeholder="Enter your email" size="large" />
                 </Form.Item>
 
                 <Form.Item<FieldType>

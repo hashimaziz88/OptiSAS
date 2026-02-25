@@ -78,14 +78,11 @@ const Register: React.FC = () => {
                 </Form.Item>
 
                 <Form.Item
-                    label="Email Address"
+                    label="Email"
                     name="email"
-                    rules={[
-                        { required: true, message: 'Please enter your email address' },
-                        { type: 'email', message: 'Please enter a valid email address' },
-                    ]}
+                    rules={[{ required: true, message: 'Please enter your email' }]}
                 >
-                    <Input prefix={<MailOutlined />} placeholder="name@company.com" size="large" />
+                    <Input prefix={<MailOutlined />} placeholder="Enter your email" size="large" />
                 </Form.Item>
 
                 <Form.Item
