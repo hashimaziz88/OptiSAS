@@ -1,11 +1,16 @@
 ﻿"use client";
-import { Button, Checkbox, Form, Input } from 'antd';
+
+import React, { useEffect } from 'react';
+import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useStyles } from '../style/style';
 import AuthLayout from '../components/AuthLayout';
 import AuthHeader from '../components/AuthHeader';
 import AuthSocialDivider from '../components/AuthSocialDivider';
 import AuthFooterLink from '../components/AuthFooterLink';
+import { useAuthState, useAuthActions } from '@/providers/authProvider';
+import { IUserLoginRequest } from '@/providers/authProvider/context';
+import Spinner from '@/components/spinner/Spinner';
 
 type FieldType = {
     email?: string;
@@ -15,7 +20,26 @@ type FieldType = {
 
 const Login: React.FC = () => {
     const { styles } = useStyles();
+    const { login } = useAuthActions();
+    const { isPending, isError } = useAuthState();
 
+    useEffect(() => {
+        if (isError) {
+            message.error('Login failed. Please check your credentials and try again.');
+        }
+    }, [isError]);
+
+    const onFinish: FormProps<IUserLoginRequest>['onFinish'] = (values) => {
+        login({ email: values.email, password: values.password });
+    };
+
+    const onFinishFailed: FormProps<IUserLoginRequest>['onFinishFailed'] = (errorInfo) => {
+        console.error('Failed:', errorInfo);
+    };
+
+    if (isPending) {
+        return <Spinner />;
+    }
     return (
         <AuthLayout>
             <AuthHeader
@@ -28,6 +52,8 @@ const Login: React.FC = () => {
                 requiredMark={false}
                 initialValues={{ remember: true }}
                 className={styles.form}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
             >
                 <Form.Item<FieldType>
                     label="Email"
