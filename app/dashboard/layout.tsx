@@ -21,7 +21,7 @@ import {
     LogoutOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu } from 'antd';
-import { useStyles } from './style/style';
+import { useStyles } from '@/app/dashboard/style/style';
 import LogoImage from '@/components/logoImage/LogoImage';
 import { useAuthActions } from '@/providers/authProvider';
 
@@ -65,7 +65,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                 collapsedWidth={80}
             >
                 <Link href="/" className={styles.logoWrapper}>
-                    <LogoImage height={80} width={70} />
+                    <LogoImage height={collapsed ? 50 : 80} width={collapsed ? 70 : 160} />
                 </Link>
                 <Menu
                     theme="dark"

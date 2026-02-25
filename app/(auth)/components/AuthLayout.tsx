@@ -1,5 +1,5 @@
 "use client";
-import { useStyles } from '../style/style';
+import { useStyles } from '@/app/(auth)/style/style';
 
 interface AuthLayoutProps {
     children: React.ReactNode;

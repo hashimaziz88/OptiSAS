@@ -8,7 +8,7 @@ import {
     logoutPending, logoutSuccess, logoutError,
     getMePending, getMeSuccess, getMeError
 } from "./actions";
-import { axiosInstance } from "../../utils/axiosInstance";
+import { axiosInstance } from "@/utils/axiosInstance";
 import { useRouter } from "next/navigation";
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
