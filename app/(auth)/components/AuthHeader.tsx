@@ -1,7 +1,7 @@
 "use client";
 import Link from 'next/link';
 import { Typography } from 'antd';
-import { useStyles } from '../style/style';
+import { useStyles } from '@/app/(auth)/style/style';
 import LogoImage from '@/components/logoImage/LogoImage';
 
 const { Text, Title } = Typography;

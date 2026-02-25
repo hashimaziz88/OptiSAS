@@ -3,11 +3,11 @@
 import React, { useEffect } from 'react';
 import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import { useStyles } from '../style/style';
-import AuthLayout from '../components/AuthLayout';
-import AuthHeader from '../components/AuthHeader';
-import AuthSocialDivider from '../components/AuthSocialDivider';
-import AuthFooterLink from '../components/AuthFooterLink';
+import { useStyles } from '@/app/(auth)/style/style';
+import AuthLayout from '@/app/(auth)/components/AuthLayout';
+import AuthHeader from '@/app/(auth)/components/AuthHeader';
+import AuthSocialDivider from '@/app/(auth)/components/AuthSocialDivider';
+import AuthFooterLink from '@/app/(auth)/components/AuthFooterLink';
 import { useAuthState, useAuthActions } from '@/providers/authProvider';
 import { IUserLoginRequest } from '@/providers/authProvider/context';
 import Spinner from '@/components/spinner/Spinner';

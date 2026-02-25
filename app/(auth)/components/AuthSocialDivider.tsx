@@ -1,7 +1,7 @@
 "use client";
 import { Button, Divider } from 'antd';
 import { GoogleOutlined } from '@ant-design/icons';
-import { useStyles } from '../style/style';
+import { useStyles } from '@/app/(auth)/style/style';
 
 interface AuthSocialDividerProps {
     label: string;
