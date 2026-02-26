@@ -34,11 +34,12 @@ interface ActivitiesTableProps {
     onView: (activity: IActivityDto) => void;
     onComplete: (activity: IActivityDto) => void;
     onCancel: (id: string) => void;
+    canDelete?: boolean;
 }
 
 const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
     data, total, page, pageSize, loading,
-    onPageChange, onEdit, onDelete, onView, onComplete, onCancel,
+    onPageChange, onEdit, onDelete, onView, onComplete, onCancel, canDelete,
 }) => {
     const { styles } = useStyles();
 
@@ -160,23 +161,25 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                             </Popconfirm>
                         </>
                     )}
-                    <Popconfirm
-                        title="Delete this activity?"
-                        description="This action cannot be undone."
-                        onConfirm={() => onDelete(record.id)}
-                        okText="Delete"
-                        cancelText="No"
-                        okButtonProps={{ danger: true }}
-                    >
-                        <Tooltip title="Delete">
-                            <Button
-                                type="text"
-                                icon={<DeleteOutlined />}
-                                size="small"
-                                className={styles.deleteAction}
-                            />
-                        </Tooltip>
-                    </Popconfirm>
+                    {canDelete && (
+                        <Popconfirm
+                            title="Delete this activity?"
+                            description="This action cannot be undone."
+                            onConfirm={() => onDelete(record.id)}
+                            okText="Delete"
+                            cancelText="No"
+                            okButtonProps={{ danger: true }}
+                        >
+                            <Tooltip title="Delete">
+                                <Button
+                                    type="text"
+                                    icon={<DeleteOutlined />}
+                                    size="small"
+                                    className={styles.deleteAction}
+                                />
+                            </Tooltip>
+                        </Popconfirm>
+                    )}
                 </Space>
             ),
         },

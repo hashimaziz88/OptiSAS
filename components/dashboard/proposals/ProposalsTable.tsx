@@ -28,6 +28,8 @@ interface ProposalsTableProps {
     onSubmit: (record: IProposalDto) => void;
     onApprove: (record: IProposalDto) => void;
     onReject: (record: IProposalDto) => void;
+    canDelete?: boolean;
+    canApproveReject?: boolean;
 }
 
 const ProposalsTable: React.FC<ProposalsTableProps> = ({
@@ -43,6 +45,8 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
     onSubmit,
     onApprove,
     onReject,
+    canDelete,
+    canApproveReject,
 }) => {
     const { styles } = useStyles();
 
@@ -142,26 +146,28 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
                                     onClick={() => onSubmit(record)}
                                 />
                             </Tooltip>
-                            <Popconfirm
-                                title="Delete this proposal?"
-                                description="This action cannot be undone."
-                                onConfirm={() => onDelete(record.id)}
-                                okText="Delete"
-                                cancelText="No"
-                                okButtonProps={{ danger: true }}
-                            >
-                                <Tooltip title="Delete">
-                                    <Button
-                                        type="text"
-                                        size="small"
-                                        icon={<DeleteOutlined />}
-                                        style={{ color: '#f87171' }}
-                                    />
-                                </Tooltip>
-                            </Popconfirm>
+                            {canDelete && (
+                                <Popconfirm
+                                    title="Delete this proposal?"
+                                    description="This action cannot be undone."
+                                    onConfirm={() => onDelete(record.id)}
+                                    okText="Delete"
+                                    cancelText="No"
+                                    okButtonProps={{ danger: true }}
+                                >
+                                    <Tooltip title="Delete">
+                                        <Button
+                                            type="text"
+                                            size="small"
+                                            icon={<DeleteOutlined />}
+                                            style={{ color: '#f87171' }}
+                                        />
+                                    </Tooltip>
+                                </Popconfirm>
+                            )}
                         </>
                     )}
-                    {record.status === 2 && (
+                    {canApproveReject && record.status === 2 && (
                         <>
                             <Tooltip title="Approve">
                                 <Button

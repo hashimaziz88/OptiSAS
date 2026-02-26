@@ -6,7 +6,7 @@ import {
 } from 'antd';
 import { PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
 import {
-    
+
     usePricingRequestActions,
     usePricingRequestState,
 } from '@/providers/pricingRequestProvider';
@@ -28,6 +28,8 @@ import PricingRequestsTable from '@/components/dashboard/pricing-requests/Pricin
 import PricingRequestFormModal from '@/components/dashboard/pricing-requests/PricingRequestFormModal';
 import AssignPricingRequestModal from '@/components/dashboard/pricing-requests/AssignPricingRequestModal';
 import { useStyles } from '@/components/dashboard/pricing-requests/style/style';
+import { useAuthState } from '@/providers/authProvider';
+import { isAdminOrManager } from '@/utils/roles';
 
 const { Title } = Typography;
 
@@ -35,6 +37,9 @@ type TabKey = 'all' | 'mine' | 'pending';
 
 const PricingRequestsContent: React.FC = () => {
     const { styles } = useStyles();
+    const { user } = useAuthState();
+    const canAssign = isAdminOrManager(user?.roles);
+    const canDelete = isAdminOrManager(user?.roles);
     const {
         getPricingRequests,
         getMyPricingRequests,
@@ -174,7 +179,7 @@ const PricingRequestsContent: React.FC = () => {
                 </span>
             ),
         },
-        {
+        ...(canAssign ? [{
             key: 'pending',
             label: (
                 <span>
@@ -182,7 +187,7 @@ const PricingRequestsContent: React.FC = () => {
                     <Badge count={pendingRequests?.totalCount ?? 0} showZero={false} color="orange" style={{ marginLeft: 8 }} />
                 </span>
             ),
-        },
+        }] : []),
     ];
 
     return (
@@ -252,6 +257,8 @@ const PricingRequestsContent: React.FC = () => {
                 onDelete={handleDelete}
                 onComplete={handleComplete}
                 onAssign={setAssigningRequest}
+                canDelete={canDelete}
+                canAssign={canAssign}
             />
 
             <PricingRequestFormModal
@@ -329,14 +336,16 @@ const PricingRequestsContent: React.FC = () => {
                                     >
                                         Edit
                                     </Button>
-                                    <Button
-                                        onClick={() => {
-                                            setViewingRequest(null);
-                                            setAssigningRequest(viewingRequest);
-                                        }}
-                                    >
-                                        Assign
-                                    </Button>
+                                    {canAssign && (
+                                        <Button
+                                            onClick={() => {
+                                                setViewingRequest(null);
+                                                setAssigningRequest(viewingRequest);
+                                            }}
+                                        >
+                                            Assign
+                                        </Button>
+                                    )}
                                     <Popconfirm
                                         title="Mark as completed?"
                                         onConfirm={async () => {

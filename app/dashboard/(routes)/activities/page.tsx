@@ -6,7 +6,7 @@ import {
     Descriptions, Tag, Space, Tabs, Badge,
 } from 'antd';
 import { PlusOutlined, SearchOutlined, ReloadOutlined } from '@ant-design/icons';
-import {  useActivityActions, useActivityState } from '@/providers/activityProvider';
+import { useActivityActions, useActivityState } from '@/providers/activityProvider';
 import {
     IActivityDto,
     ICreateActivityDto,
@@ -25,6 +25,8 @@ import ActivitiesTable from '@/components/dashboard/activities/ActivitiesTable';
 import ActivityFormModal from '@/components/dashboard/activities/ActivityFormModal';
 import CompleteActivityModal from '@/components/dashboard/activities/CompleteActivityModal';
 import { useStyles } from '@/components/dashboard/activities/style/style';
+import { useAuthState } from '@/providers/authProvider';
+import { isAdminOrManager } from '@/utils/roles';
 
 const { Title } = Typography;
 
@@ -33,6 +35,8 @@ const PRIORITY_COLORS: Record<number, string> = { 1: 'default', 2: 'blue', 3: 'o
 
 const ActivitiesContent: React.FC = () => {
     const { styles } = useStyles();
+    const { user } = useAuthState();
+    const canDelete = isAdminOrManager(user?.roles);
     const {
         getActivities,
         getMyActivities,
@@ -268,6 +272,7 @@ const ActivitiesContent: React.FC = () => {
                 onView={setViewingActivity}
                 onComplete={setCompletingActivity}
                 onCancel={handleCancel}
+                canDelete={canDelete}
             />
 
             <ActivityFormModal
@@ -381,7 +386,7 @@ const ActivitiesContent: React.FC = () => {
 };
 
 const ActivitiesPage: React.FC = () => (
-        <ActivitiesContent />
+    <ActivitiesContent />
 );
 
 export default ActivitiesPage;

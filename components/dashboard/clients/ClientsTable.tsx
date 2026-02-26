@@ -18,11 +18,12 @@ interface ClientsTableProps {
     onEdit: (client: IClientDto) => void;
     onDelete: (id: string) => void;
     onView: (client: IClientDto) => void;
+    canDelete?: boolean;
 }
 
 const ClientsTable: React.FC<ClientsTableProps> = ({
     data, total, page, pageSize, loading,
-    onPageChange, onEdit, onDelete, onView,
+    onPageChange, onEdit, onDelete, onView, canDelete,
 }) => {
     const { styles, cx } = useStyles();
 
@@ -107,18 +108,20 @@ const ClientsTable: React.FC<ClientsTableProps> = ({
                             onClick={() => onEdit(record)}
                         />
                     </Tooltip>
-                    <Tooltip title="Delete">
-                        <Popconfirm
-                            title="Delete this client?"
-                            description="This action cannot be undone."
-                            onConfirm={() => onDelete(record.id)}
-                            okText="Delete"
-                            cancelText="Cancel"
-                            okButtonProps={{ danger: true }}
-                        >
-                            <Button type="text" size="small" icon={<DeleteOutlined />} className={styles.deleteAction} />
-                        </Popconfirm>
-                    </Tooltip>
+                    {canDelete && (
+                        <Tooltip title="Delete">
+                            <Popconfirm
+                                title="Delete this client?"
+                                description="This action cannot be undone."
+                                onConfirm={() => onDelete(record.id)}
+                                okText="Delete"
+                                cancelText="Cancel"
+                                okButtonProps={{ danger: true }}
+                            >
+                                <Button type="text" size="small" icon={<DeleteOutlined />} className={styles.deleteAction} />
+                            </Popconfirm>
+                        </Tooltip>
+                    )}
                 </Space>
             ),
         },

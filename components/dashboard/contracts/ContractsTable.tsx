@@ -29,6 +29,8 @@ interface ContractsTableProps {
     onActivate: (record: IContractDto) => void;
     onCancel: (record: IContractDto) => void;
     onRenew: (record: IContractDto) => void;
+    canDelete?: boolean;
+    canActivateCancel?: boolean;
 }
 
 const ContractsTable: React.FC<ContractsTableProps> = ({
@@ -44,6 +46,8 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
     onActivate,
     onCancel,
     onRenew,
+    canDelete,
+    canActivateCancel,
 }) => {
     const { styles } = useStyles();
 
@@ -140,32 +144,36 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                     onClick={() => onEdit(record)}
                                 />
                             </Tooltip>
-                            <Tooltip title="Activate">
-                                <Popconfirm
-                                    title="Activate this contract?"
-                                    onConfirm={() => onActivate(record)}
-                                >
-                                    <Button
-                                        type="text"
-                                        size="small"
-                                        icon={<CheckCircleOutlined />}
-                                        className={styles.activateAction}
-                                    />
-                                </Popconfirm>
-                            </Tooltip>
-                            <Tooltip title="Delete">
-                                <Popconfirm
-                                    title="Delete this contract?"
-                                    onConfirm={() => onDelete(record.id)}
-                                >
-                                    <Button
-                                        type="text"
-                                        size="small"
-                                        icon={<DeleteOutlined />}
-                                        className={styles.deleteAction}
-                                    />
-                                </Popconfirm>
-                            </Tooltip>
+                            {canActivateCancel && (
+                                <Tooltip title="Activate">
+                                    <Popconfirm
+                                        title="Activate this contract?"
+                                        onConfirm={() => onActivate(record)}
+                                    >
+                                        <Button
+                                            type="text"
+                                            size="small"
+                                            icon={<CheckCircleOutlined />}
+                                            className={styles.activateAction}
+                                        />
+                                    </Popconfirm>
+                                </Tooltip>
+                            )}
+                            {canDelete && (
+                                <Tooltip title="Delete">
+                                    <Popconfirm
+                                        title="Delete this contract?"
+                                        onConfirm={() => onDelete(record.id)}
+                                    >
+                                        <Button
+                                            type="text"
+                                            size="small"
+                                            icon={<DeleteOutlined />}
+                                            className={styles.deleteAction}
+                                        />
+                                    </Popconfirm>
+                                </Tooltip>
+                            )}
                         </>
                     )}
 
@@ -190,19 +198,21 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                     onClick={() => onRenew(record)}
                                 />
                             </Tooltip>
-                            <Tooltip title="Cancel">
-                                <Popconfirm
-                                    title="Cancel this contract?"
-                                    onConfirm={() => onCancel(record)}
-                                >
-                                    <Button
-                                        type="text"
-                                        size="small"
-                                        icon={<StopOutlined />}
-                                        className={styles.cancelAction}
-                                    />
-                                </Popconfirm>
-                            </Tooltip>
+                            {canActivateCancel && (
+                                <Tooltip title="Cancel">
+                                    <Popconfirm
+                                        title="Cancel this contract?"
+                                        onConfirm={() => onCancel(record)}
+                                    >
+                                        <Button
+                                            type="text"
+                                            size="small"
+                                            icon={<StopOutlined />}
+                                            className={styles.cancelAction}
+                                        />
+                                    </Popconfirm>
+                                </Tooltip>
+                            )}
                         </>
                     )}
 

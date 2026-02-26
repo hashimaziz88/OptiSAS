@@ -19,11 +19,12 @@ interface OpportunitiesTableProps {
     onEdit: (opp: IOpportunityDto) => void;
     onDelete: (id: string) => void;
     onView: (opp: IOpportunityDto) => void;
+    canDelete?: boolean;
 }
 
 const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
     data, total, page, pageSize, loading,
-    onPageChange, onEdit, onDelete, onView,
+    onPageChange, onEdit, onDelete, onView, canDelete,
 }) => {
     const { styles } = useStyles();
 
@@ -124,23 +125,25 @@ const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                             onClick={() => onEdit(record)}
                         />
                     </Tooltip>
-                    <Popconfirm
-                        title="Delete opportunity?"
-                        description="This action cannot be undone."
-                        onConfirm={() => onDelete(record.id)}
-                        okText="Delete"
-                        okButtonProps={{ danger: true }}
-                        cancelText="Cancel"
-                    >
-                        <Tooltip title="Delete">
-                            <Button
-                                type="text"
-                                size="small"
-                                icon={<DeleteOutlined />}
-                                style={{ color: '#f87171' }}
-                            />
-                        </Tooltip>
-                    </Popconfirm>
+                    {canDelete && (
+                        <Popconfirm
+                            title="Delete opportunity?"
+                            description="This action cannot be undone."
+                            onConfirm={() => onDelete(record.id)}
+                            okText="Delete"
+                            okButtonProps={{ danger: true }}
+                            cancelText="Cancel"
+                        >
+                            <Tooltip title="Delete">
+                                <Button
+                                    type="text"
+                                    size="small"
+                                    icon={<DeleteOutlined />}
+                                    style={{ color: '#f87171' }}
+                                />
+                            </Tooltip>
+                        </Popconfirm>
+                    )}
                 </Space>
             ),
         },

@@ -18,11 +18,12 @@ interface ContactsTableProps {
     onDelete: (id: string) => void;
     onView: (contact: IContactDto) => void;
     onSetPrimary: (id: string) => void;
+    canDelete?: boolean;
 }
 
 const ContactsTable: React.FC<ContactsTableProps> = ({
     data, total, page, pageSize, loading,
-    onPageChange, onEdit, onDelete, onView, onSetPrimary,
+    onPageChange, onEdit, onDelete, onView, onSetPrimary, canDelete,
 }) => {
     const { styles, cx } = useStyles();
 
@@ -121,23 +122,25 @@ const ContactsTable: React.FC<ContactsTableProps> = ({
                             onClick={() => onEdit(record)}
                         />
                     </Tooltip>
-                    <Popconfirm
-                        title="Delete contact?"
-                        description="This action cannot be undone."
-                        onConfirm={() => onDelete(record.id)}
-                        okText="Delete"
-                        okButtonProps={{ danger: true }}
-                        cancelText="Cancel"
-                    >
-                        <Tooltip title="Delete">
-                            <Button
-                                type="text"
-                                size="small"
-                                icon={<DeleteOutlined />}
-                                className={styles.deleteAction}
-                            />
-                        </Tooltip>
-                    </Popconfirm>
+                    {canDelete && (
+                        <Popconfirm
+                            title="Delete contact?"
+                            description="This action cannot be undone."
+                            onConfirm={() => onDelete(record.id)}
+                            okText="Delete"
+                            okButtonProps={{ danger: true }}
+                            cancelText="Cancel"
+                        >
+                            <Tooltip title="Delete">
+                                <Button
+                                    type="text"
+                                    size="small"
+                                    icon={<DeleteOutlined />}
+                                    className={styles.deleteAction}
+                                />
+                            </Tooltip>
+                        </Popconfirm>
+                    )}
                 </Space>
             ),
         },

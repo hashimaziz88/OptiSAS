@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Descriptions, Drawer, Select, Space, Tag, Typography, message } from 'antd';
 import { ReloadOutlined, UploadOutlined } from '@ant-design/icons';
-import {  useDocumentActions, useDocumentState } from '@/providers/documentProvider';
+import { useDocumentActions, useDocumentState } from '@/providers/documentProvider';
 import { IDocumentDto } from '@/providers/documentProvider/context';
 import {
     DOCUMENT_CATEGORY_COLORS,
@@ -17,11 +17,15 @@ import {
 import DocumentsTable from '@/components/dashboard/documents/DocumentsTable';
 import DocumentUploadModal from '@/components/dashboard/documents/DocumentUploadModal';
 import { useStyles } from '@/components/dashboard/documents/style/style';
+import { useAuthState } from '@/providers/authProvider';
+import { isAdminOrManager } from '@/utils/roles';
 
 const { Title } = Typography;
 
 const DocumentsContent: React.FC = () => {
     const { styles } = useStyles();
+    const { user } = useAuthState();
+    const canDelete = isAdminOrManager(user?.roles);
     const { getDocuments, uploadDocument, downloadDocument, deleteDocument } = useDocumentActions();
     const { isPending, pagedResult, downloadBlob } = useDocumentState();
 
@@ -135,6 +139,7 @@ const DocumentsContent: React.FC = () => {
                 onView={setViewingDoc}
                 onDownload={handleDownload}
                 onDelete={handleDelete}
+                canDelete={canDelete}
             />
 
             <DocumentUploadModal

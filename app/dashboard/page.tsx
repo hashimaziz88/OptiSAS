@@ -6,6 +6,8 @@ import { ReloadOutlined } from '@ant-design/icons';
 import { DashboardProvider, useDashboardActions, useDashboardState } from '@/providers/dashboardProvider';
 import { IContractDto } from '@/providers/contractProvider/context';
 import { ISalesPerformanceDto } from '@/providers/dashboardProvider/context';
+import { useAuthState } from '@/providers/authProvider';
+import { isAdminOrManager } from '@/utils/roles';
 import KpiCards from '@/components/dashboard/overview/KpiCards';
 import ActivitiesSummaryCards from '@/components/dashboard/overview/ActivitiesSummaryCards';
 import PipelineBarChart from '@/components/dashboard/overview/PipelineBarChart';
@@ -24,6 +26,8 @@ const toArray = <T,>(data: T[] | { items?: T[] } | null | undefined): T[] => {
 };
 
 const DashboardContent: React.FC = () => {
+    const { user } = useAuthState();
+    const canViewTopPerformers = isAdminOrManager(user?.roles);
     const {
         getDashboardOverview,
         getSalesPerformance,
@@ -36,7 +40,7 @@ const DashboardContent: React.FC = () => {
 
     const fetchAll = () => {
         getDashboardOverview();
-        getSalesPerformance(5);
+        if (canViewTopPerformers) getSalesPerformance(5);
         getContractsExpiring(30);
         getActivitiesSummary();
         getDashboardPipelineMetrics();
@@ -44,7 +48,7 @@ const DashboardContent: React.FC = () => {
 
     useEffect(() => {
         getDashboardOverview();
-        getSalesPerformance(5);
+        if (canViewTopPerformers) getSalesPerformance(5);
         getContractsExpiring(30);
         getActivitiesSummary();
         getDashboardPipelineMetrics();
@@ -98,10 +102,12 @@ const DashboardContent: React.FC = () => {
 
             {/* Bottom Row: Top Performers + Expiring Contracts */}
             <Row gutter={[16, 16]}>
-                <Col xs={24} xl={14}>
-                    <TopPerformersTable performers={performanceList} loading={isPending} />
-                </Col>
-                <Col xs={24} xl={10}>
+                {canViewTopPerformers && (
+                    <Col xs={24} xl={14}>
+                        <TopPerformersTable performers={performanceList} loading={isPending} />
+                    </Col>
+                )}
+                <Col xs={24} xl={canViewTopPerformers ? 10 : 24}>
                     <ContractsExpiringTable contracts={expiringList} loading={isPending} />
                 </Col>
             </Row>

@@ -23,7 +23,8 @@ import {
 import { Button, Layout, Menu } from 'antd';
 import { useStyles } from '@/app/dashboard/style/style';
 import LogoImage from '@/components/logoImage/LogoImage';
-import { useAuthActions } from '@/providers/authProvider';
+import { useAuthActions, useAuthState } from '@/providers/authProvider';
+import { isAdminOrManager } from '@/utils/roles';
 
 import withAuth from "@/hoc/withAuth";
 
@@ -35,6 +36,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
     const router = useRouter();
     const pathname = usePathname();
     const { logout } = useAuthActions();
+    const { user } = useAuthState();
 
     const handleLogout = async () => {
         await logout();
@@ -52,7 +54,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
         { key: '/dashboard/pricing-requests', icon: <DollarOutlined />, label: 'Pricing Requests' },
         { key: '/dashboard/proposals', icon: <FileDoneOutlined />, label: 'Proposals' },
         { key: '/dashboard/contracts', icon: <FileProtectOutlined />, label: 'Contracts' },
-        { key: '/dashboard/reports', icon: <BarChartOutlined />, label: 'Reports' },
+        ...(isAdminOrManager(user?.roles) ? [{ key: '/dashboard/reports', icon: <BarChartOutlined />, label: 'Reports' }] : []),
         { key: '/dashboard/profile', icon: <UserOutlined />, label: 'Profile' },
     ];
 
