@@ -223,42 +223,53 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
                         <>
                             <div className={styles.sectionTitle}>Line Items</div>
 
-                            <Form form={lineForm} layout="inline" className={styles.addLineItemRow}>
-                                <Form.Item
-                                    name="productServiceName"
-                                    rules={[{ required: true, message: 'Required' }]}
-                                    style={{ flex: 2, minWidth: 120 }}
-                                >
-                                    <Input placeholder="Product / Service" size="middle" />
-                                </Form.Item>
-                                <Form.Item name="description" style={{ flex: 2, minWidth: 100 }}>
-                                    <Input placeholder="Description" size="middle" />
-                                </Form.Item>
-                                <Form.Item
-                                    name="quantity"
-                                    rules={[{ required: true, message: 'Required' }]}
-                                    style={{ width: 70 }}
-                                >
-                                    <InputNumber placeholder="Qty" min={1} size="middle" style={{ width: '100%' }} />
-                                </Form.Item>
-                                <Form.Item
-                                    name="unitPrice"
-                                    rules={[{ required: true, message: 'Required' }]}
-                                    style={{ width: 100 }}
-                                >
-                                    <InputNumber placeholder="Price" min={0} size="middle" style={{ width: '100%' }} />
-                                </Form.Item>
-                                <Form.Item name="discount" style={{ width: 80 }}>
-                                    <InputNumber placeholder="Disc%" min={0} max={100} size="middle" style={{ width: '100%' }} />
-                                </Form.Item>
-                                <Form.Item name="taxRate" style={{ width: 80 }}>
-                                    <InputNumber placeholder="Tax%" min={0} size="middle" style={{ width: '100%' }} />
-                                </Form.Item>
-                                <Form.Item>
-                                    <Button icon={<PlusOutlined />} type="dashed" onClick={addLineItem} size="middle">
-                                        Add
-                                    </Button>
-                                </Form.Item>
+                            <Form form={lineForm} layout="vertical" className={styles.addLineItemRow}>
+                                <div className={styles.lineItemTopRow}>
+                                    <Form.Item
+                                        name="productServiceName"
+                                        label="Product / Service"
+                                        rules={[{ required: true, message: 'Required' }]}
+                                        style={{ marginBottom: 0 }}
+                                    >
+                                        <Input placeholder="e.g. Software Licence" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="description"
+                                        label="Description"
+                                        style={{ marginBottom: 0 }}
+                                    >
+                                        <Input placeholder="Optional details" />
+                                    </Form.Item>
+                                </div>
+                                <div className={styles.lineItemBottomRow}>
+                                    <Form.Item
+                                        name="quantity"
+                                        label="Qty"
+                                        rules={[{ required: true, message: 'Required' }]}
+                                        style={{ marginBottom: 0 }}
+                                    >
+                                        <InputNumber placeholder="1" min={1} style={{ width: '100%' }} />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="unitPrice"
+                                        label="Unit Price"
+                                        rules={[{ required: true, message: 'Required' }]}
+                                        style={{ marginBottom: 0 }}
+                                    >
+                                        <InputNumber placeholder="0.00" min={0} style={{ width: '100%' }} />
+                                    </Form.Item>
+                                    <Form.Item name="discount" label="Disc %" style={{ marginBottom: 0 }}>
+                                        <InputNumber placeholder="0" min={0} max={100} style={{ width: '100%' }} />
+                                    </Form.Item>
+                                    <Form.Item name="taxRate" label="Tax %" style={{ marginBottom: 0 }}>
+                                        <InputNumber placeholder="0" min={0} style={{ width: '100%' }} />
+                                    </Form.Item>
+                                    <Form.Item label=" " style={{ marginBottom: 0 }}>
+                                        <Button icon={<PlusOutlined />} type="dashed" onClick={addLineItem} block>
+                                            Add
+                                        </Button>
+                                    </Form.Item>
+                                </div>
                             </Form>
 
                             {lineItems.length > 0 && (
@@ -270,6 +281,7 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
                                         dataSource={lineItems}
                                         pagination={false}
                                         size="small"
+                                        scroll={{ x: 480 }}
                                     />
                                     <div className={styles.totalRow}>
                                         <Text>Grand Total:</Text>
