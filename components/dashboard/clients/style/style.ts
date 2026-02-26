@@ -1,5 +1,27 @@
-import type { CSSProperties } from "react";
 import { createStyles, css } from "antd-style";
+import type { CSSProperties } from "react";
+
+export const modalStyles: {
+  container: CSSProperties;
+  header: CSSProperties;
+  body: CSSProperties;
+} = {
+  container: {
+    background: "#1e2128",
+    border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: 16,
+    padding: 0,
+  },
+  header: {
+    background: "transparent",
+    borderBottom: "1px solid rgba(255,255,255,0.08)",
+    padding: "20px 24px",
+    marginBottom: 0,
+  },
+  body: {
+    padding: "24px",
+  },
+};
 
 export const useStyles = createStyles(({ token }) => ({
   pageHeader: css`
@@ -134,13 +156,13 @@ export const useStyles = createStyles(({ token }) => ({
 
   modal: css`
     .ant-modal-content {
-      background: #2a2d35;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
+      background: #1e2128 !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 16px !important;
     }
 
     .ant-modal-header {
-      background: transparent;
+      background: transparent !important;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding: 20px 24px;
     }
@@ -299,26 +321,3 @@ export const useStyles = createStyles(({ token }) => ({
     gap: 8px;
   `,
 }));
-
-export const modalComponentStyles = {
-  content: { background: '#2a2d35', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px' },
-  header: { background: '#2a2d35', borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '20px 24px' },
-  body: { padding: '0 24px 24px' },
-  mask: { backdropFilter: 'blur(4px)' },
-};
-
-export const drawerComponentStyles = {
-  body: { background: "#2a2d35", padding: "24px" },
-  header: {
-    background: "#2a2d35",
-    borderBottom: "1px solid rgba(255,255,255,0.08)",
-    color: "white" as const,
-  },
-  mask: { backdropFilter: "blur(4px)" },
-};
-
-export const descriptionsLabelStyle: CSSProperties = {
-  color: "#8c8c8c",
-  width: 140,
-};
-export const descriptionsContentStyle: CSSProperties = { color: "#e2e8f0" };

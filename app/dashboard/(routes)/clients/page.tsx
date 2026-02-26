@@ -9,7 +9,7 @@ import { CLIENT_TYPE_OPTIONS, CLIENTS_PAGE_SIZE, INDUSTRY_OPTIONS } from '@/cons
 import { buildClientsParams, getClientTypeLabel } from '@/utils/dashboard/clients';
 import ClientsTable from '@/components/dashboard/clients/ClientsTable';
 import ClientFormModal from '@/components/dashboard/clients/ClientFormModal';
-import { useStyles, drawerComponentStyles, descriptionsLabelStyle, descriptionsContentStyle } from '@/components/dashboard/clients/style/style';
+import { useStyles } from '@/components/dashboard/clients/style/style';
 
 const { Title } = Typography;
 
@@ -151,7 +151,6 @@ const ClientsContent: React.FC = () => {
                 title={viewingClient?.name ?? 'Client Details'}
                 onClose={() => setViewingClient(null)}
                 size={480}
-                styles={drawerComponentStyles}
             >
                 {viewingClient && (
                     <>
@@ -165,8 +164,7 @@ const ClientsContent: React.FC = () => {
                         </Row>
                         <Descriptions
                             column={1}
-                            labelStyle={descriptionsLabelStyle}
-                            contentStyle={descriptionsContentStyle}
+
                             size="small"
                         >
                             <Descriptions.Item label="Type">{getClientTypeLabel(viewingClient.clientType)}</Descriptions.Item>
