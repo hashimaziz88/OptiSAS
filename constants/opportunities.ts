@@ -1,0 +1,44 @@
+export const OPPORTUNITY_STAGE_LABELS: Record<number, string> = {
+    1: 'Lead',
+    2: 'Qualified',
+    3: 'Proposal',
+    4: 'Negotiation',
+    5: 'Closed Won',
+    6: 'Closed Lost',
+};
+
+export const OPPORTUNITY_STAGE_COLORS: Record<number, string> = {
+    1: 'default',
+    2: 'blue',
+    3: 'purple',
+    4: 'orange',
+    5: 'green',
+    6: 'red',
+};
+
+export const OPPORTUNITY_STAGE_OPTIONS = [
+    { value: 1, label: 'Lead' },
+    { value: 2, label: 'Qualified' },
+    { value: 3, label: 'Proposal' },
+    { value: 4, label: 'Negotiation' },
+    { value: 5, label: 'Closed Won' },
+    { value: 6, label: 'Closed Lost' },
+];
+
+export const OPPORTUNITY_SOURCE_LABELS: Record<number, string> = {
+    1: 'Inbound',
+    2: 'Outbound',
+    3: 'Referral',
+    4: 'Partner',
+    5: 'RFP',
+};
+
+export const OPPORTUNITY_SOURCE_OPTIONS = [
+    { value: 1, label: 'Inbound' },
+    { value: 2, label: 'Outbound' },
+    { value: 3, label: 'Referral' },
+    { value: 4, label: 'Partner' },
+    { value: 5, label: 'RFP' },
+];
+
+export const OPPORTUNITIES_PAGE_SIZE = 10;
