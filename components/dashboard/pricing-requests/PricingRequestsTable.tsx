@@ -3,165 +3,175 @@
 import React from 'react';
 import { Table, Button, Popconfirm, Tooltip, Space, Tag } from 'antd';
 import {
-    EditOutlined,
     DeleteOutlined,
+    EditOutlined,
     EyeOutlined,
     CheckCircleOutlined,
-    StopOutlined,
+    UserAddOutlined,
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
-import { IActivityDto } from '@/providers/activityProvider/context';
+import { IPricingRequestDto } from '@/providers/pricingRequestProvider/context';
 import {
-    ACTIVITY_TYPE_LABELS,
-    ACTIVITY_TYPE_COLORS,
-    ACTIVITY_STATUS_LABELS,
-    ACTIVITY_STATUS_COLORS,
-} from '@/constants/activities';
+    PRICING_REQUEST_STATUS_COLORS,
+    PRICING_REQUEST_STATUS_LABELS,
+    PRIORITY_COLORS,
+    PRIORITY_LABELS,
+} from '@/constants/pricingRequests';
 import { useStyles } from './style/style';
 
-const PRIORITY_LABELS: Record<number, string> = { 1: 'Low', 2: 'Medium', 3: 'High', 4: 'Urgent' };
-const PRIORITY_COLORS: Record<number, string> = { 1: 'default', 2: 'blue', 3: 'orange', 4: 'red' };
-
-interface ActivitiesTableProps {
-    data: IActivityDto[];
+interface PricingRequestsTableProps {
+    data: IPricingRequestDto[];
     total: number;
     page: number;
     pageSize: number;
     loading: boolean;
     onPageChange: (page: number, pageSize: number) => void;
-    onEdit: (activity: IActivityDto) => void;
+    onView: (record: IPricingRequestDto) => void;
+    onEdit: (record: IPricingRequestDto) => void;
     onDelete: (id: string) => void;
-    onView: (activity: IActivityDto) => void;
-    onComplete: (activity: IActivityDto) => void;
-    onCancel: (id: string) => void;
+    onComplete: (record: IPricingRequestDto) => void;
+    onAssign: (record: IPricingRequestDto) => void;
 }
 
-const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
-    data, total, page, pageSize, loading,
-    onPageChange, onEdit, onDelete, onView, onComplete, onCancel,
+const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
+    data,
+    total,
+    page,
+    pageSize,
+    loading,
+    onPageChange,
+    onView,
+    onEdit,
+    onDelete,
+    onComplete,
+    onAssign,
 }) => {
     const { styles } = useStyles();
 
-    const columns: ColumnsType<IActivityDto> = [
+    const isOverdue = (record: IPricingRequestDto) =>
+        record.status !== 3 && record.requiredByDate &&
+        new Date(record.requiredByDate) < new Date();
+
+    const columns: ColumnsType<IPricingRequestDto> = [
         {
-            title: 'Subject',
-            dataIndex: 'subject',
-            key: 'subject',
-            ellipsis: true,
-            render: (subject: string, record) => (
-                <Button
-                    type="link"
-                    style={{ padding: 0, color: '#60a5fa', fontWeight: 600 }}
-                    onClick={() => onView(record)}
-                >
-                    {record.isOverdue && <span className={styles.overdueBadge} />}
-                    {subject}
+            title: 'Request #',
+            dataIndex: 'requestNumber',
+            key: 'requestNumber',
+            width: 140,
+            render: (v: string, record) => (
+                <Button type="link" style={{ padding: 0 }} onClick={() => onView(record)}>
+                    {v || '—'}
                 </Button>
             ),
         },
         {
-            title: 'Type',
-            dataIndex: 'type',
-            key: 'type',
-            width: 130,
-            render: (type: number) => (
-                <Tag color={ACTIVITY_TYPE_COLORS[type]}>{ACTIVITY_TYPE_LABELS[type] ?? type}</Tag>
+            title: 'Title',
+            dataIndex: 'title',
+            key: 'title',
+            ellipsis: true,
+            render: (title: string, record) => (
+                <>
+                    <div>{title}</div>
+                    {isOverdue(record) && (
+                        <div className={styles.overdueText}>Overdue</div>
+                    )}
+                </>
             ),
         },
         {
             title: 'Status',
             dataIndex: 'status',
             key: 'status',
-            width: 110,
+            width: 130,
             render: (status: number) => (
-                <Tag color={ACTIVITY_STATUS_COLORS[status]}>{ACTIVITY_STATUS_LABELS[status] ?? status}</Tag>
+                <Tag color={PRICING_REQUEST_STATUS_COLORS[status] ?? 'default'}>
+                    {PRICING_REQUEST_STATUS_LABELS[status] ?? '—'}
+                </Tag>
             ),
         },
         {
             title: 'Priority',
             dataIndex: 'priority',
             key: 'priority',
-            width: 100,
+            width: 110,
             render: (priority: number) => (
-                <Tag color={PRIORITY_COLORS[priority]}>{PRIORITY_LABELS[priority] ?? '—'}</Tag>
+                <Tag color={PRIORITY_COLORS[priority] ?? 'default'}>
+                    {PRIORITY_LABELS[priority] ?? '—'}
+                </Tag>
             ),
+        },
+        {
+            title: 'Requested By',
+            dataIndex: 'requestedByName',
+            key: 'requestedByName',
+            width: 160,
+            ellipsis: true,
+            render: (v: string) => v || '—',
         },
         {
             title: 'Assigned To',
             dataIndex: 'assignedToName',
             key: 'assignedToName',
+            width: 160,
             ellipsis: true,
-            render: (v: string) => v || '—',
+            render: (v: string) => v || <span style={{ color: '#94a3b8' }}>Unassigned</span>,
         },
         {
-            title: 'Due Date',
-            dataIndex: 'dueDate',
-            key: 'dueDate',
+            title: 'Required By',
+            dataIndex: 'requiredByDate',
+            key: 'requiredByDate',
             width: 120,
             render: (v: string) => v ? new Date(v).toLocaleDateString() : '—',
-        },
-        {
-            title: 'Related To',
-            dataIndex: 'relatedToTitle',
-            key: 'relatedToTitle',
-            ellipsis: true,
-            render: (v: string) => v || '—',
         },
         {
             title: 'Actions',
             key: 'actions',
             width: 160,
             align: 'center',
-            render: (_: unknown, record: IActivityDto) => (
+            render: (_: unknown, record: IPricingRequestDto) => (
                 <Space size={4}>
                     <Tooltip title="View">
                         <Button
                             type="text"
-                            icon={<EyeOutlined />}
                             size="small"
+                            icon={<EyeOutlined />}
                             style={{ color: '#60a5fa' }}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
-                    {record.status === 1 && (
+                    {record.status !== 3 && (
                         <>
                             <Tooltip title="Edit">
                                 <Button
                                     type="text"
-                                    icon={<EditOutlined />}
                                     size="small"
+                                    icon={<EditOutlined />}
                                     style={{ color: '#facc15' }}
                                     onClick={() => onEdit(record)}
+                                />
+                            </Tooltip>
+                            <Tooltip title="Assign">
+                                <Button
+                                    type="text"
+                                    size="small"
+                                    icon={<UserAddOutlined />}
+                                    style={{ color: '#a78bfa' }}
+                                    onClick={() => onAssign(record)}
                                 />
                             </Tooltip>
                             <Tooltip title="Complete">
                                 <Button
                                     type="text"
-                                    icon={<CheckCircleOutlined />}
                                     size="small"
+                                    icon={<CheckCircleOutlined />}
                                     style={{ color: '#22c55e' }}
                                     onClick={() => onComplete(record)}
                                 />
                             </Tooltip>
-                            <Popconfirm
-                                title="Cancel this activity?"
-                                onConfirm={() => onCancel(record.id)}
-                                okText="Yes"
-                                cancelText="No"
-                            >
-                                <Tooltip title="Cancel">
-                                    <Button
-                                        type="text"
-                                        icon={<StopOutlined />}
-                                        size="small"
-                                        style={{ color: '#f59e0b' }}
-                                    />
-                                </Tooltip>
-                            </Popconfirm>
                         </>
                     )}
                     <Popconfirm
-                        title="Delete this activity?"
+                        title="Delete this pricing request?"
                         description="This action cannot be undone."
                         onConfirm={() => onDelete(record.id)}
                         okText="Delete"
@@ -171,8 +181,8 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                         <Tooltip title="Delete">
                             <Button
                                 type="text"
-                                icon={<DeleteOutlined />}
                                 size="small"
+                                icon={<DeleteOutlined />}
                                 style={{ color: '#f87171' }}
                             />
                         </Tooltip>
@@ -183,11 +193,11 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
     ];
 
     return (
-        <Table<IActivityDto>
+        <Table<IPricingRequestDto>
             className={styles.table}
+            rowKey="id"
             columns={columns}
             dataSource={data}
-            rowKey="id"
             loading={loading}
             scroll={{ x: 1000 }}
             pagination={{
@@ -195,11 +205,11 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                 pageSize,
                 total,
                 showSizeChanger: true,
-                showTotal: (t, range) => `${range[0]}-${range[1]} of ${t} activities`,
                 onChange: onPageChange,
+                showTotal: (value, range) => `${range[0]}-${range[1]} of ${value} requests`,
             }}
         />
     );
 };
 
-export default ActivitiesTable;
+export default PricingRequestsTable;

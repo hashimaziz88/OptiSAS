@@ -43,13 +43,6 @@ export const OPPORTUNITY_SOURCE_OPTIONS = [
 
 export const OPPORTUNITIES_PAGE_SIZE = 10;
 
-export const CURRENCY_OPTIONS = [
-  { value: "ZAR", label: "ZAR" },
-  { value: "USD", label: "USD" },
-  { value: "EUR", label: "EUR" },
-  { value: "GBP", label: "GBP" },
-];
-
 export const STAGE_ORDER = [1, 2, 3, 4, 5, 6];
 
 // Keys match the API's PipelineMetricsDto.stageMetrics property names

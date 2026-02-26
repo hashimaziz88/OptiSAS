@@ -1,10 +1,369 @@
-const PricingRequestsPage = () => {
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import {
+    Badge, Button, Descriptions, Drawer, Input, Popconfirm, Select, Space, Tag, Tabs, Typography, message,
+} from 'antd';
+import { PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import {
+    PricingRequestProvider,
+    usePricingRequestActions,
+    usePricingRequestState,
+} from '@/providers/pricingRequestProvider';
+import {
+    ICreatePricingRequestDto,
+    IPricingRequestDto,
+    IUpdatePricingRequestDto,
+} from '@/providers/pricingRequestProvider/context';
+import {
+    PRICING_REQUEST_STATUS_COLORS,
+    PRICING_REQUEST_STATUS_LABELS,
+    PRICING_REQUEST_STATUS_OPTIONS,
+    PRICING_REQUESTS_PAGE_SIZE,
+    PRIORITY_COLORS,
+    PRIORITY_LABELS,
+    PRIORITY_OPTIONS,
+} from '@/constants/pricingRequests';
+import PricingRequestsTable from '@/components/dashboard/pricing-requests/PricingRequestsTable';
+import PricingRequestFormModal from '@/components/dashboard/pricing-requests/PricingRequestFormModal';
+import AssignPricingRequestModal from '@/components/dashboard/pricing-requests/AssignPricingRequestModal';
+import { useStyles } from '@/components/dashboard/pricing-requests/style/style';
+
+const { Title } = Typography;
+
+type TabKey = 'all' | 'mine' | 'pending';
+
+const PricingRequestsContent: React.FC = () => {
+    const { styles } = useStyles();
+    const {
+        getPricingRequests,
+        getMyPricingRequests,
+        getPendingPricingRequests,
+        createPricingRequest,
+        updatePricingRequest,
+        deletePricingRequest,
+        assignPricingRequest,
+        completePricingRequest,
+    } = usePricingRequestActions();
+    const { isPending, pagedResult, myRequests, pendingRequests } = usePricingRequestState();
+
+    const [activeTab, setActiveTab] = useState<TabKey>('all');
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(PRICING_REQUESTS_PAGE_SIZE);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [statusFilter, setStatusFilter] = useState<number | undefined>(undefined);
+    const [priorityFilter, setPriorityFilter] = useState<number | undefined>(undefined);
+
+    const [modalOpen, setModalOpen] = useState(false);
+    const [editingRequest, setEditingRequest] = useState<IPricingRequestDto | null>(null);
+    const [viewingRequest, setViewingRequest] = useState<IPricingRequestDto | null>(null);
+    const [assigningRequest, setAssigningRequest] = useState<IPricingRequestDto | null>(null);
+
+    const fetchData = (newPage = page, newPageSize = pageSize) => {
+        if (activeTab === 'all') {
+            getPricingRequests({
+                pageNumber: newPage,
+                pageSize: newPageSize,
+                status: statusFilter,
+                priority: priorityFilter,
+            });
+        } else if (activeTab === 'mine') {
+            getMyPricingRequests();
+        } else {
+            getPendingPricingRequests();
+        }
+    };
+
+    useEffect(() => {
+        setPage(1);
+        fetchData(1, pageSize);
+    }, [activeTab, statusFilter, priorityFilter]);
+
+    useEffect(() => {
+        fetchData(page, pageSize);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page, pageSize]);
+
+    const getTableData = (): IPricingRequestDto[] => {
+        let items: IPricingRequestDto[] = [];
+        if (activeTab === 'mine') items = myRequests?.items ?? [];
+        else if (activeTab === 'pending') items = pendingRequests?.items ?? [];
+        else items = pagedResult?.items ?? [];
+
+        if (searchTerm) {
+            const lower = searchTerm.toLowerCase();
+            return items.filter(
+                (r) =>
+                    r.title?.toLowerCase().includes(lower) ||
+                    r.requestNumber?.toLowerCase().includes(lower) ||
+                    r.requestedByName?.toLowerCase().includes(lower)
+            );
+        }
+        return items;
+    };
+
+    const getTotal = () => {
+        if (activeTab === 'mine') return myRequests?.totalCount ?? 0;
+        if (activeTab === 'pending') return pendingRequests?.totalCount ?? 0;
+        return pagedResult?.totalCount ?? 0;
+    };
+
+    const handlePageChange = (newPage: number, newPageSize: number) => {
+        setPage(newPage);
+        setPageSize(newPageSize);
+    };
+
+    const handleCreate = () => {
+        setEditingRequest(null);
+        setModalOpen(true);
+    };
+
+    const handleEdit = (record: IPricingRequestDto) => {
+        setEditingRequest(record);
+        setModalOpen(true);
+    };
+
+    const handleDelete = async (id: string) => {
+        await deletePricingRequest(id);
+        message.success('Pricing request deleted');
+        fetchData();
+    };
+
+    const handleComplete = async (record: IPricingRequestDto) => {
+        await completePricingRequest(record.id);
+        message.success('Pricing request marked as completed');
+        fetchData();
+    };
+
+    const handleAssign = async (id: string, userId: string) => {
+        await assignPricingRequest(id, userId);
+        message.success('Pricing request assigned');
+        setAssigningRequest(null);
+        fetchData();
+    };
+
+    const handleSubmit = async (values: ICreatePricingRequestDto | IUpdatePricingRequestDto) => {
+        if (editingRequest) {
+            await updatePricingRequest(editingRequest.id, values as IUpdatePricingRequestDto);
+            message.success('Pricing request updated');
+        } else {
+            await createPricingRequest(values as ICreatePricingRequestDto);
+            message.success('Pricing request created');
+        }
+        setModalOpen(false);
+        setEditingRequest(null);
+        fetchData();
+    };
+
+    const tabItems = [
+        {
+            key: 'all',
+            label: (
+                <span>
+                    All Requests
+                    <Badge count={pagedResult?.totalCount ?? 0} showZero={false} style={{ marginLeft: 8 }} />
+                </span>
+            ),
+        },
+        {
+            key: 'mine',
+            label: (
+                <span>
+                    My Requests
+                    <Badge count={myRequests?.totalCount ?? 0} showZero={false} style={{ marginLeft: 8 }} />
+                </span>
+            ),
+        },
+        {
+            key: 'pending',
+            label: (
+                <span>
+                    Unassigned
+                    <Badge count={pendingRequests?.totalCount ?? 0} showZero={false} color="orange" style={{ marginLeft: 8 }} />
+                </span>
+            ),
+        },
+    ];
+
     return (
-        <div>
-            <h1>Pricing Requests</h1>
-            <p>Welcome to the pricing requests page!</p>
-        </div>
+        <>
+            <div className={styles.pageHeader}>
+                <Title level={2} className={styles.pageTitle}>Pricing Requests</Title>
+                <Button type="primary" icon={<PlusOutlined />} size="large" onClick={handleCreate}>
+                    New Request
+                </Button>
+            </div>
+
+            <Tabs
+                className={styles.tabs}
+                activeKey={activeTab}
+                onChange={(key) => setActiveTab(key as TabKey)}
+                items={tabItems}
+            />
+
+            <div className={styles.filterBar}>
+                <Input
+                    prefix={<SearchOutlined />}
+                    placeholder="Search requests..."
+                    className={styles.searchInput}
+                    value={searchTerm}
+                    onChange={(e) => { setSearchTerm(e.target.value); }}
+                    allowClear
+                    size="large"
+                />
+
+                {activeTab === 'all' && (
+                    <>
+                        <Select
+                            className={styles.filterSelect}
+                            placeholder="All Statuses"
+                            allowClear
+                            options={PRICING_REQUEST_STATUS_OPTIONS}
+                            value={statusFilter}
+                            onChange={(value) => { setStatusFilter(value); setPage(1); }}
+                            size="large"
+                        />
+                        <Select
+                            className={styles.filterSelect}
+                            placeholder="All Priorities"
+                            allowClear
+                            options={PRIORITY_OPTIONS}
+                            value={priorityFilter}
+                            onChange={(value) => { setPriorityFilter(value); setPage(1); }}
+                            size="large"
+                        />
+                    </>
+                )}
+
+                <Button icon={<ReloadOutlined />} size="large" className={styles.refreshButton} onClick={() => fetchData()}>
+                    Refresh
+                </Button>
+            </div>
+
+            <PricingRequestsTable
+                data={getTableData()}
+                total={getTotal()}
+                page={page}
+                pageSize={pageSize}
+                loading={isPending}
+                onPageChange={handlePageChange}
+                onView={setViewingRequest}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onComplete={handleComplete}
+                onAssign={setAssigningRequest}
+            />
+
+            <PricingRequestFormModal
+                open={modalOpen}
+                editing={editingRequest}
+                loading={isPending}
+                onSubmit={handleSubmit}
+                onClose={() => {
+                    setModalOpen(false);
+                    setEditingRequest(null);
+                }}
+            />
+
+            <AssignPricingRequestModal
+                open={!!assigningRequest}
+                request={assigningRequest}
+                loading={isPending}
+                onAssign={handleAssign}
+                onClose={() => setAssigningRequest(null)}
+            />
+
+            <Drawer
+                open={!!viewingRequest}
+                title="Pricing Request Details"
+                onClose={() => setViewingRequest(null)}
+                size="large"
+                styles={{
+                    wrapper: { background: '#1e2128' },
+                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
+                    body: { background: '#1e2128', padding: '24px' },
+                }}
+                classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
+            >
+                {viewingRequest && (
+                    <>
+                        <Space style={{ marginBottom: 16 }}>
+                            <Tag color={PRICING_REQUEST_STATUS_COLORS[viewingRequest.status] ?? 'default'}>
+                                {PRICING_REQUEST_STATUS_LABELS[viewingRequest.status] ?? '—'}
+                            </Tag>
+                            <Tag color={PRIORITY_COLORS[viewingRequest.priority] ?? 'default'}>
+                                {PRIORITY_LABELS[viewingRequest.priority] ?? '—'}
+                            </Tag>
+                        </Space>
+
+                        <Descriptions column={1} size="small" layout="vertical">
+                            <Descriptions.Item label="Request #">{viewingRequest.requestNumber || '—'}</Descriptions.Item>
+                            <Descriptions.Item label="Title">{viewingRequest.title}</Descriptions.Item>
+                            <Descriptions.Item label="Description">{viewingRequest.description || '—'}</Descriptions.Item>
+                            <Descriptions.Item label="Opportunity">{viewingRequest.opportunityTitle || '—'}</Descriptions.Item>
+                            <Descriptions.Item label="Requested By">{viewingRequest.requestedByName || '—'}</Descriptions.Item>
+                            <Descriptions.Item label="Assigned To">{viewingRequest.assignedToName || 'Unassigned'}</Descriptions.Item>
+                            <Descriptions.Item label="Required By">
+                                {viewingRequest.requiredByDate ? new Date(viewingRequest.requiredByDate).toLocaleDateString() : '—'}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Completed At">
+                                {viewingRequest.completedDate ? new Date(viewingRequest.completedDate).toLocaleString() : '—'}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Created At">
+                                {new Date(viewingRequest.createdAt).toLocaleString()}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Updated At">
+                                {new Date(viewingRequest.updatedAt).toLocaleString()}
+                            </Descriptions.Item>
+                        </Descriptions>
+
+                        <div className={styles.drawerActions}>
+                            {viewingRequest.status !== 3 && (
+                                <>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => {
+                                            setViewingRequest(null);
+                                            handleEdit(viewingRequest);
+                                        }}
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button
+                                        onClick={() => {
+                                            setViewingRequest(null);
+                                            setAssigningRequest(viewingRequest);
+                                        }}
+                                    >
+                                        Assign
+                                    </Button>
+                                    <Popconfirm
+                                        title="Mark as completed?"
+                                        onConfirm={async () => {
+                                            await handleComplete(viewingRequest);
+                                            setViewingRequest(null);
+                                        }}
+                                        okText="Complete"
+                                        cancelText="No"
+                                    >
+                                        <Button style={{ borderColor: '#22c55e', color: '#22c55e' }}>
+                                            Complete
+                                        </Button>
+                                    </Popconfirm>
+                                </>
+                            )}
+                        </div>
+                    </>
+                )}
+            </Drawer>
+        </>
     );
 };
+
+const PricingRequestsPage: React.FC = () => (
+    <PricingRequestProvider>
+        <PricingRequestsContent />
+    </PricingRequestProvider>
+);
 
 export default PricingRequestsPage;
