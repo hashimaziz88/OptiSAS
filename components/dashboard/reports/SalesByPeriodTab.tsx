@@ -133,6 +133,7 @@ const SalesByPeriodTab: React.FC = () => {
                             title="Total Revenue"
                             value={totalValue}
                             formatter={(v) => formatCurrency(v as number)}
+                            classNames={{ content: styles.statAccentValue }}
                         />
                     </div>
                 </Col>
@@ -152,10 +153,10 @@ const SalesByPeriodTab: React.FC = () => {
                     <div className={styles.chartTitle}>
                         Revenue by {groupBy === 'month' ? 'Month' : 'Week'}
                     </div>
-                    {rows.map((r) => {
+                    {rows.map((r, i) => {
                         const pct = maxValue > 0 ? ((r.totalValue ?? 0) / maxValue) * 100 : 0;
                         return (
-                            <div key={r.period} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
+                            <div key={r.period ?? i} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
                                 <span style={{ width: 90, color: 'rgba(255,255,255,0.6)', fontSize: 12, flexShrink: 0 }}>
                                     {r.period}
                                 </span>

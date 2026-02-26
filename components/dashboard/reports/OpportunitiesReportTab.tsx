@@ -160,6 +160,7 @@ const OpportunitiesReportTab: React.FC = () => {
                             title="Total Est. Value"
                             value={totalValue}
                             formatter={(v) => formatCurrency(v as number)}
+                            classNames={{ content: styles.statAccentValue }}
                         />
                     </div>
                 </Col>
