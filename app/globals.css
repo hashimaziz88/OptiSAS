@@ -211,3 +211,92 @@ a {
     color-scheme: dark;
   }
 }
+
+/* ── Ant Design DatePicker / RangePicker popup: dark glass ── */
+.ant-picker-dropdown .ant-picker-panel-container {
+  background: #1e2128 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.ant-picker-dropdown .ant-picker-header {
+  color: rgba(255, 255, 255, 0.85) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.ant-picker-dropdown .ant-picker-header button {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.ant-picker-dropdown .ant-picker-header button:hover {
+  color: white !important;
+}
+
+.ant-picker-dropdown .ant-picker-content th {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell .ant-picker-cell-inner {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell:hover .ant-picker-cell-inner {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell-disabled .ant-picker-cell-inner {
+  color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell-in-view .ant-picker-cell-inner {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell-selected .ant-picker-cell-inner,
+.ant-picker-dropdown .ant-picker-cell-range-start .ant-picker-cell-inner,
+.ant-picker-dropdown .ant-picker-cell-range-end .ant-picker-cell-inner {
+  background: #60a5fa !important;
+  color: #0f172a !important;
+}
+
+.ant-picker-dropdown .ant-picker-cell-in-range::before {
+  background: rgba(96, 165, 250, 0.15) !important;
+}
+
+.ant-picker-dropdown .ant-picker-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: transparent !important;
+}
+
+.ant-picker-dropdown .ant-picker-today-btn {
+  color: #60a5fa !important;
+}
+.ant-statistic,
+.ant-statistic-title {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* ── Ant Design Select dropdown: dark glass ── */
+.ant-select-dropdown {
+  background: #1e2128 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+}
+
+.ant-select-item {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.ant-select-item-option-active,
+.ant-select-item-option:hover {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.ant-select-item-option-selected {
+  background: rgba(96, 165, 250, 0.15) !important;
+  color: white !important;
+}
+
+.ant-select-item-option-disabled {
+  color: rgba(255, 255, 255, 0.25) !important;
+}

@@ -47,12 +47,62 @@ export const useStyles = createStyles(({ token }) => ({
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: stretch;
+
+      .ant-picker,
+      .ant-select {
+        width: 100% !important;
+      }
+    }
+
+    .ant-picker {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      color: white !important;
+
+      .ant-picker-input > input {
+        color: white !important;
+        &::placeholder {
+          color: rgba(255, 255, 255, 0.3) !important;
+        }
+      }
+
+      .ant-picker-separator,
+      .ant-picker-suffix,
+      .ant-picker-clear {
+        color: rgba(255, 255, 255, 0.4) !important;
+      }
+
+      &:hover,
+      &.ant-picker-focused {
+        border-color: rgba(255, 255, 255, 0.3) !important;
+      }
+    }
+
+    .ant-btn:not(.ant-btn-primary) {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.75);
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        color: white;
+      }
+    }
   `,
 
   filterLabel: css`
     color: rgba(255, 255, 255, 0.5);
     font-size: 13px;
     white-space: nowrap;
+
+    @media (max-width: 768px) {
+      margin-top: 4px;
+    }
   `,
 
   filterSelect: css`
@@ -72,10 +122,18 @@ export const useStyles = createStyles(({ token }) => ({
       background: transparent;
       color: rgba(255, 255, 255, 0.4);
     }
+
+    .ant-select-selection-placeholder {
+      color: rgba(255, 255, 255, 0.3) !important;
+    }
   `,
 
   statsRow: css`
     margin-bottom: 24px;
+
+    .ant-col {
+      margin-bottom: 12px;
+    }
   `,
 
   statCard: css`
