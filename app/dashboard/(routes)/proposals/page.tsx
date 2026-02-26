@@ -10,7 +10,7 @@ import {
     ReloadOutlined, SendOutlined,
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
-import { ProposalProvider, useProposalState, useProposalActions } from '@/providers/proposalProvider';
+import {  useProposalState, useProposalActions } from '@/providers/proposalProvider';
 import { ICreateProposalDto, IProposalDto, IProposalLineItemDto, IUpdateProposalDto } from '@/providers/proposalProvider/context';
 import { PROPOSAL_STATUS_COLORS, PROPOSAL_STATUS_LABELS, PROPOSAL_STATUS_OPTIONS, PROPOSALS_PAGE_SIZE } from '@/constants/proposals';
 import ProposalFormModal from '@/components/dashboard/proposals/ProposalFormModal';

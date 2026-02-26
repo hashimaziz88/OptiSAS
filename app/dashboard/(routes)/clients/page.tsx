@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag, Statistic, Row, Col } from 'antd';
 import { PlusOutlined, SearchOutlined, ReloadOutlined } from '@ant-design/icons';
-import { ClientProvider, useClientActions, useClientState } from '@/providers/clientProvider';
+import {  useClientActions, useClientState } from '@/providers/clientProvider';
 import { IClientDto, ICreateClientDto, IUpdateClientDto } from '@/providers/clientProvider/context';
 import { CLIENT_TYPE_OPTIONS, CLIENTS_PAGE_SIZE, INDUSTRY_OPTIONS } from '@/constants/clients';
 import { buildClientsParams, getClientTypeLabel } from '@/utils/dashboard/clients';

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Descriptions, Drawer, Input, Select, Space, Tag, Typography, message } from 'antd';
 import { PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import { NoteProvider, useNoteActions, useNoteState } from '@/providers/noteProvider';
+import {  useNoteActions, useNoteState } from '@/providers/noteProvider';
 import { ICreateNoteDto, INoteDto, IUpdateNoteDto } from '@/providers/noteProvider/context';
 import { NOTES_PAGE_SIZE, RELATED_TO_TYPE_LABELS, RELATED_TO_TYPE_OPTIONS } from '@/constants/notes';
 import { axiosInstance } from '@/utils/axiosInstance';

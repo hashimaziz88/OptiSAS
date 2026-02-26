@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Descriptions, Drawer, Select, Space, Tag, Typography, message } from 'antd';
 import { ReloadOutlined, UploadOutlined } from '@ant-design/icons';
-import { DocumentProvider, useDocumentActions, useDocumentState } from '@/providers/documentProvider';
+import {  useDocumentActions, useDocumentState } from '@/providers/documentProvider';
 import { IDocumentDto } from '@/providers/documentProvider/context';
 import {
     DOCUMENT_CATEGORY_COLORS,

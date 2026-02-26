@@ -9,7 +9,7 @@ import {
     CheckCircleOutlined, EditOutlined, PlusOutlined,
     RedoOutlined, ReloadOutlined, StopOutlined, WarningOutlined,
 } from '@ant-design/icons';
-import { ContractProvider, useContractState, useContractActions } from '@/providers/contractProvider';
+import { useContractState, useContractActions } from '@/providers/contractProvider';
 import { IContractDto, ICreateContractDto, ICreateContractRenewalDto, IUpdateContractDto } from '@/providers/contractProvider/context';
 import { CONTRACT_STATUS_COLORS, CONTRACT_STATUS_LABELS, CONTRACT_STATUS_OPTIONS, CONTRACTS_PAGE_SIZE } from '@/constants/contracts';
 import ContractsTable from '@/components/dashboard/contracts/ContractsTable';

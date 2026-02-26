@@ -6,7 +6,7 @@ import {
     Descriptions, Tag, Space, Tabs, Badge,
 } from 'antd';
 import { PlusOutlined, SearchOutlined, ReloadOutlined } from '@ant-design/icons';
-import { ActivityProvider, useActivityActions, useActivityState } from '@/providers/activityProvider';
+import {  useActivityActions, useActivityState } from '@/providers/activityProvider';
 import {
     IActivityDto,
     ICreateActivityDto,
