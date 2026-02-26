@@ -1,0 +1,112 @@
+'use client';
+
+import React from 'react';
+import { Button, DatePicker, Form, Input, InputNumber, Modal } from 'antd';
+import { IContractDto, ICreateContractRenewalDto } from '@/providers/contractProvider/context';
+import { modalStyles, useStyles } from './style/style';
+
+interface RenewalModalProps {
+    open: boolean;
+    contract: IContractDto | null;
+    loading: boolean;
+    onSubmit: (contractId: string, payload: ICreateContractRenewalDto) => Promise<void>;
+    onClose: () => void;
+}
+
+const RenewalModal: React.FC<RenewalModalProps> = ({
+    open,
+    contract,
+    loading,
+    onSubmit,
+    onClose,
+}) => {
+    const { styles } = useStyles();
+    const [form] = Form.useForm();
+
+    const handleSubmit = async () => {
+        try {
+            const values = await form.validateFields();
+            if (!contract) return;
+            const payload: ICreateContractRenewalDto = {
+                proposedStartDate: values.proposedStartDate.toISOString(),
+                proposedEndDate: values.proposedEndDate.toISOString(),
+                proposedValue: values.proposedValue,
+                notes: values.notes,
+            };
+            await onSubmit(contract.id, payload);
+            form.resetFields();
+        } catch {
+            // validation failed
+        }
+    };
+
+    const handleCancel = () => {
+        form.resetFields();
+        onClose();
+    };
+
+    return (
+        <Modal
+            open={open}
+            title={`Create Renewal — ${contract?.contractNumber ?? ''}`}
+            onCancel={handleCancel}
+            className={styles.modal}
+            styles={modalStyles}
+            destroyOnHidden
+            footer={[
+                <Button key="cancel" onClick={handleCancel}>
+                    Cancel
+                </Button>,
+                <Button key="submit" type="primary" loading={loading} onClick={handleSubmit}>
+                    Create Renewal
+                </Button>,
+            ]}
+        >
+            <div className={styles.formBody}>
+                <Form form={form} layout="vertical" requiredMark={false}>
+                    <div className={styles.formRow}>
+                        <Form.Item
+                            name="proposedStartDate"
+                            label="Proposed Start Date"
+                            rules={[{ required: true, message: 'Required' }]}
+                        >
+                            <DatePicker style={{ width: '100%' }} size="large" />
+                        </Form.Item>
+                        <Form.Item
+                            name="proposedEndDate"
+                            label="Proposed End Date"
+                            rules={[{ required: true, message: 'Required' }]}
+                        >
+                            <DatePicker style={{ width: '100%' }} size="large" />
+                        </Form.Item>
+                    </div>
+
+                    <Form.Item
+                        name="proposedValue"
+                        label="Proposed Value (ZAR)"
+                        rules={[{ required: true, message: 'Required' }]}
+                    >
+                        <InputNumber<number>
+                            placeholder="0"
+                            min={0}
+                            size="large"
+                            style={{ width: '100%' }}
+                            formatter={(v) => `${v}`.replaceAll(/(?<=\d)(?=(\d{3})+$)/g, ',')}
+                            parser={(v): number => Number(v?.replaceAll(',', '') ?? '0')}
+                        />
+                    </Form.Item>
+
+                    <Form.Item name="notes" label="Notes">
+                        <Input.TextArea
+                            placeholder="Optional renewal notes..."
+                            rows={3}
+                            size="large"
+                        />
+                    </Form.Item>
+                </Form>
+            </div>
+        </Modal>
+    );
+};
+
+export default RenewalModal;
