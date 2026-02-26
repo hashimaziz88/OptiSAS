@@ -191,6 +191,12 @@ const ContractsContent: React.FC = () => {
                 title={viewingContract ? `${viewingContract.contractNumber} – ${viewingContract.title}` : 'Contract Details'}
                 onClose={() => { setDrawerOpen(false); setViewingContract(null); }}
                 size="large"
+                styles={{
+                    wrapper: { background: '#1e2128' },
+                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
+                    body: { background: '#1e2128', padding: '24px' },
+                }}
+                classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
                     viewingContract && (
                         <Space>

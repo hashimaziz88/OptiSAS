@@ -2,11 +2,11 @@ import { createStyles, css } from "antd-style";
 import type { CSSProperties } from "react";
 
 export const modalStyles: {
-  container: CSSProperties;
+  content: CSSProperties;
   header: CSSProperties;
   body: CSSProperties;
 } = {
-  container: {
+  content: {
     background: "#1e2128",
     border: "1px solid rgba(255,255,255,0.1)",
     borderRadius: 16,
@@ -181,14 +181,14 @@ export const useStyles = createStyles(({ token }) => ({
 
   modal: css`
     .ant-modal-content {
-      background: #1e2128;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
+      background: #1e2128 !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      border-radius: 16px !important;
       padding: 0;
     }
 
     .ant-modal-header {
-      background: transparent;
+      background: transparent !important;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding: 20px 24px;
       margin-bottom: 0;
@@ -276,12 +276,27 @@ export const useStyles = createStyles(({ token }) => ({
 
   drawerBody: css`
     .ant-descriptions-item-label {
-      color: #94a3b8;
+      color: #94a3b8 !important;
       font-size: 13px;
+      background: rgba(255, 255, 255, 0.04) !important;
     }
 
     .ant-descriptions-item-content {
-      color: #e2e8f0;
+      color: #e2e8f0 !important;
+      background: transparent !important;
+    }
+
+    .ant-descriptions-view {
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .ant-descriptions-row > th,
+    .ant-descriptions-row > td {
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .ant-tag {
+      border-color: rgba(255, 255, 255, 0.15);
     }
   `,
 

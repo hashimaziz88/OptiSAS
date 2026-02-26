@@ -216,6 +216,12 @@ const ProposalsContent: React.FC = () => {
                 title={viewingProposal ? `${viewingProposal.proposalNumber} – ${viewingProposal.title}` : 'Proposal Details'}
                 onClose={() => { setDrawerOpen(false); setViewingProposal(null); }}
                 size="large"
+                styles={{
+                    wrapper: { background: '#1e2128' },
+                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
+                    body: { background: '#1e2128', padding: '24px' },
+                }}
+                classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
                     viewingProposal && (
                         <Space>
