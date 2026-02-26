@@ -197,9 +197,7 @@ const ClientsContent: React.FC = () => {
 };
 
 const ClientsPage: React.FC = () => (
-    <ClientProvider>
         <ClientsContent />
-    </ClientProvider>
 );
 
 export default ClientsPage;

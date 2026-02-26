@@ -7,7 +7,7 @@ import { ICreatePricingRequestDto, IPricingRequestDto, IUpdatePricingRequestDto 
 import { PRIORITY_OPTIONS } from '@/constants/pricingRequests';
 import { useAuthState } from '@/providers/authProvider';
 import { axiosInstance } from '@/utils/axiosInstance';
-import { modalStyles, useStyles } from './style/style';
+import { useStyles } from './style/style';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -101,8 +101,7 @@ const PricingRequestFormModal: React.FC<PricingRequestFormModalProps> = ({
             title={editing ? 'Edit Pricing Request' : 'Create Pricing Request'}
             onCancel={onClose}
             footer={null}
-            className={styles.modal}
-            styles={modalStyles}
+            classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
             destroyOnHidden
             width={540}
         >

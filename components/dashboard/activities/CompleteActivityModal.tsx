@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Form, Input, Modal, Button } from 'antd';
-import { useStyles, modalStyles } from './style/style';
+import { useStyles } from './style/style';
 
 interface CompleteActivityModalProps {
     open: boolean;
@@ -28,8 +28,7 @@ const CompleteActivityModal: React.FC<CompleteActivityModalProps> = ({ open, loa
             footer={null}
             width={480}
             destroyOnHidden
-            className={styles.modal}
-            styles={modalStyles}
+            classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
         >
             <div className={styles.formBody}>
                 <Form form={form} layout="vertical" requiredMark={false} onFinish={handleFinish}>

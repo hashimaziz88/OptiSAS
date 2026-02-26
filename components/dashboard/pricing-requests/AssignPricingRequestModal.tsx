@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal, Select, message } from 'antd';
 import { axiosInstance } from '@/utils/axiosInstance';
 import { IPricingRequestDto } from '@/providers/pricingRequestProvider/context';
-import { modalStyles, useStyles } from './style/style';
+import { useStyles } from './style/style';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -80,8 +80,7 @@ const AssignPricingRequestModal: React.FC<AssignPricingRequestModalProps> = ({
             title={request ? `Assign Request — ${request.requestNumber || request.title}` : 'Assign Request'}
             onCancel={onClose}
             footer={null}
-            className={styles.modal}
-            styles={modalStyles}
+            classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
             destroyOnHidden
             width={440}
         >

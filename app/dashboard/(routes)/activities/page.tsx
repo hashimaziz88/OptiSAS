@@ -73,12 +73,16 @@ const ActivitiesContent: React.FC = () => {
     };
 
     useEffect(() => {
-        if (activeTab === 'all') fetchAll();
-        else if (activeTab === 'mine') fetchMine();
-        else if (activeTab === 'upcoming') getUpcomingActivities(14);
-        else if (activeTab === 'overdue') getOverdueActivities();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeTab, page, pageSize, typeFilter, statusFilter]);
+        if (activeTab === 'all') {
+            getActivities({ pageNumber: page, pageSize, type: typeFilter, status: statusFilter });
+        } else if (activeTab === 'mine') {
+            getMyActivities({ pageNumber: page, pageSize, status: statusFilter });
+        } else if (activeTab === 'upcoming') {
+            getUpcomingActivities(14);
+        } else if (activeTab === 'overdue') {
+            getOverdueActivities();
+        }
+    }, [activeTab, page, pageSize, typeFilter, statusFilter, getActivities, getMyActivities, getUpcomingActivities, getOverdueActivities]);
 
     const handleTabChange = (key: string) => {
         setActiveTab(key as typeof activeTab);
@@ -377,9 +381,7 @@ const ActivitiesContent: React.FC = () => {
 };
 
 const ActivitiesPage: React.FC = () => (
-    <ActivityProvider>
         <ActivitiesContent />
-    </ActivityProvider>
 );
 
 export default ActivitiesPage;

@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 import { IContractDto, ICreateContractDto, IUpdateContractDto } from '@/providers/contractProvider/context';
 import { useAuthState } from '@/providers/authProvider';
 import { axiosInstance } from '@/utils/axiosInstance';
-import { modalStyles, useStyles } from './style/style';
+import { useStyles } from './style/style';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -131,8 +131,7 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
             title={editing ? 'Edit Contract' : 'Create Contract'}
             onCancel={onClose}
             footer={null}
-            className={styles.modal}
-            styles={modalStyles}
+            classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
             destroyOnHidden
             width={680}
         >
