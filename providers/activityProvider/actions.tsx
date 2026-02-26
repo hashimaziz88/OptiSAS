@@ -1,5 +1,5 @@
 import { createAction } from "redux-actions";
-import { IActivityStateContext, IActivityDto, IActivityParticipantDto } from "./context";
+import { IActivityStateContext, IActivityDto } from "./context";
 import { IPagedResult } from "@/types/api";
 
 export enum ActivityActionEnums {
@@ -42,10 +42,6 @@ export enum ActivityActionEnums {
     cancelActivityPending = "CANCEL_ACTIVITY_PENDING",
     cancelActivitySuccess = "CANCEL_ACTIVITY_SUCCESS",
     cancelActivityError = "CANCEL_ACTIVITY_ERROR",
-
-    getParticipantsPending = "GET_PARTICIPANTS_PENDING",
-    getParticipantsSuccess = "GET_PARTICIPANTS_SUCCESS",
-    getParticipantsError = "GET_PARTICIPANTS_ERROR",
 }
 
 export const getActivitiesPending = createAction<IActivityStateContext>(ActivityActionEnums.getActivitiesPending, () => ({ isPending: true, isError: false, isSuccess: false }));
@@ -87,7 +83,3 @@ export const completeActivityError = createAction<IActivityStateContext>(Activit
 export const cancelActivityPending = createAction<IActivityStateContext>(ActivityActionEnums.cancelActivityPending, () => ({ isPending: true, isError: false, isSuccess: false }));
 export const cancelActivitySuccess = createAction<IActivityStateContext, IActivityDto>(ActivityActionEnums.cancelActivitySuccess, (currentActivity) => ({ isPending: false, isError: false, isSuccess: true, currentActivity }));
 export const cancelActivityError = createAction<IActivityStateContext>(ActivityActionEnums.cancelActivityError, () => ({ isPending: false, isError: true, isSuccess: false }));
-
-export const getParticipantsPending = createAction<IActivityStateContext>(ActivityActionEnums.getParticipantsPending, () => ({ isPending: true, isError: false, isSuccess: false }));
-export const getParticipantsSuccess = createAction<IActivityStateContext, IActivityParticipantDto[]>(ActivityActionEnums.getParticipantsSuccess, (participants) => ({ isPending: false, isError: false, isSuccess: true, participants }));
-export const getParticipantsError = createAction<IActivityStateContext>(ActivityActionEnums.getParticipantsError, () => ({ isPending: false, isError: true, isSuccess: false }));

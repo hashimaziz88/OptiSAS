@@ -54,6 +54,7 @@ export interface IGetClientsParams {
     pageSize?: number;
     searchTerm?: string;
     industry?: string;
+    clientType?: number;
     isActive?: boolean;
 }
 

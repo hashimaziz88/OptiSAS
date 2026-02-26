@@ -119,6 +119,32 @@ export const useStyles = createStyles(({ token }) => ({
       }
     }
 
+    /* Select Input Styles */
+    .ant-select .ant-select-selector {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid #4e545f;
+      border-radius: 8px;
+      height: 48px;
+      align-items: center;
+      color: white;
+    }
+
+    .ant-select .ant-select-selection-item,
+    .ant-select .ant-select-selection-placeholder {
+      line-height: 46px;
+      color: #cbd5e0;
+    }
+
+    .ant-select:hover .ant-select-selector,
+    .ant-select-focused .ant-select-selector {
+      border-color: ${token.colorPrimary};
+      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+    }
+
+    .ant-select .ant-select-arrow {
+      color: #666;
+    }
+
     /* Primary Submit Button Styles */
     .ant-btn-primary {
       height: 48px;
@@ -128,41 +154,6 @@ export const useStyles = createStyles(({ token }) => ({
       box-shadow: 0 4px 12px rgba(24, 144, 255, 0.25);
       border: none;
       width: 100%;
-    }
-  `,
-
-  divider: css`
-    &.ant-divider {
-      margin: 24px 0;
-      border-top-color: rgba(255, 255, 255, 0.1);
-
-      .ant-divider-inner-text {
-        color: #666;
-        font-size: 12px;
-        background: transparent;
-      }
-    }
-  `,
-
-  socialButton: css`
-    &.ant-btn {
-      width: 100%;
-      height: 48px;
-      background: transparent;
-      color: white;
-      border: 1px solid #4e545f;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-
-      &:hover,
-      &:focus {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: white;
-        color: white;
-      }
     }
   `,
 
@@ -221,5 +212,46 @@ export const useStyles = createStyles(({ token }) => ({
     &.ant-typography {
       color: #8c8c8c;
     }
+  `,
+
+  segmentedWrapper: css`
+    margin-bottom: 20px;
+
+    .ant-segmented {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 3px;
+      width: 100%;
+
+      .ant-segmented-item {
+        color: #8c8c8c;
+        border-radius: 6px;
+        transition: color 0.2s;
+
+        &:hover {
+          color: white;
+        }
+      }
+
+      .ant-segmented-item-selected {
+        color: white;
+        background: ${token.colorPrimary};
+        border-radius: 6px;
+      }
+
+      .ant-segmented-thumb {
+        background: ${token.colorPrimary};
+        border-radius: 6px;
+      }
+    }
+  `,
+
+  scenarioHint: css`
+    color: #8c8c8c;
+    font-size: 12px;
+    margin: 8px 0 0;
+    text-align: center;
+    line-height: 1.5;
   `,
 }));

@@ -64,6 +64,7 @@ export interface ICreateOpportunityDto {
     contactId?: string;
     estimatedValue: number;
     currency?: string;
+    stage?: number;
     probability?: number;
     source?: number;
     expectedCloseDate: string;
@@ -82,15 +83,21 @@ export interface IUpdateOpportunityDto {
 }
 
 export interface IUpdateStageDto {
-    newStage: number;
-    notes?: string;
-    lossReason?: string;
+    stage: number;
+    reason?: string;
 }
 
 export interface IGetOpportunitiesParams {
     clientId?: string;
     stage?: number;
+    ownerId?: string;
     searchTerm?: string;
+    pageNumber?: number;
+    pageSize?: number;
+}
+
+export interface IGetMyOpportunitiesParams {
+    stage?: number;
     pageNumber?: number;
     pageSize?: number;
 }
@@ -107,7 +114,7 @@ export interface IOpportunityStateContext {
 
 export interface IOpportunityActionContext {
     getOpportunities: (params?: IGetOpportunitiesParams) => Promise<void>;
-    getMyOpportunities: (params?: IGetOpportunitiesParams) => Promise<void>;
+    getMyOpportunities: (params?: IGetMyOpportunitiesParams) => Promise<void>;
     getOpportunity: (id: string) => Promise<void>;
     createOpportunity: (payload: ICreateOpportunityDto) => Promise<void>;
     updateOpportunity: (id: string, payload: IUpdateOpportunityDto) => Promise<void>;

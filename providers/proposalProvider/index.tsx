@@ -110,10 +110,10 @@ export const ProposalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             .catch(() => { dispatch(approveProposalError()); });
     };
 
-    const rejectProposal = async (id: string) => {
+    const rejectProposal = async (id: string, reason: string) => {
         const instance = axiosInstance();
         dispatch(rejectProposalPending());
-        await instance.put(`${BASE_URL}/api/Proposals/${id}/reject`)
+        await instance.put(`${BASE_URL}/api/Proposals/${id}/reject`, { reason })
             .then((response) => { dispatch(rejectProposalSuccess(response.data)); })
             .catch(() => { dispatch(rejectProposalError()); });
     };
