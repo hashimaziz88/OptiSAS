@@ -151,6 +151,12 @@ const ClientsContent: React.FC = () => {
                 title={viewingClient?.name ?? 'Client Details'}
                 onClose={() => setViewingClient(null)}
                 size={480}
+                styles={{
+                    wrapper: { background: '#1e2128' },
+                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
+                    body: { background: '#1e2128', padding: '24px' },
+                }}
+                classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
             >
                 {viewingClient && (
                     <>
@@ -185,7 +191,7 @@ const ClientsContent: React.FC = () => {
                         </div>
                     </>
                 )}
-            </Drawer>
+            </Drawer >
         </>
     );
 };

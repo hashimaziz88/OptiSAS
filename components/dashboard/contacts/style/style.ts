@@ -327,4 +327,24 @@ export const useStyles = createStyles(({ token }) => ({
       color: #60a5fa;
     }
   `,
+
+  drawerHeader: css`
+    .ant-drawer-title {
+      color: white !important;
+    }
+    .ant-drawer-close {
+      color: #8c8c8c;
+      &:hover {
+        color: white;
+      }
+    }
+  `,
+
+  drawerBody: css`
+    .ant-descriptions-item-label,
+    .ant-descriptions-item-content {
+      color: #cbd5e0 !important;
+      background: transparent !important;
+    }
+  `,
 }));

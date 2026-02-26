@@ -156,7 +156,12 @@ const ContactsContent: React.FC = () => {
                 open={!!viewingContact}
                 title={viewingContact?.fullName ?? 'Contact Details'}
                 onClose={() => setViewingContact(null)}
-                styles={{ body: { padding: '24px' } }}
+                styles={{
+                    wrapper: { background: '#1e2128', color: 'white' },
+                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white !important' },
+                    body: { background: '#1e2128', padding: '24px', color: 'white' },
+                }}
+                classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
             >
                 {viewingContact && (
                     <>
@@ -200,7 +205,7 @@ const ContactsContent: React.FC = () => {
                         </div>
                     </>
                 )}
-            </Drawer>
+            </Drawer >
         </>
     );
 };

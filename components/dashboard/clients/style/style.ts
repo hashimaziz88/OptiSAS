@@ -320,4 +320,36 @@ export const useStyles = createStyles(({ token }) => ({
     display: flex;
     gap: 8px;
   `,
+
+  drawerBody: css`
+    .ant-descriptions-item-label,
+    .ant-descriptions-item-content {
+      color: #cbd5e0 !important;
+      background: transparent !important;
+    }
+
+    .ant-statistic-title {
+      color: #8c8c8c;
+    }
+
+    .ant-statistic-content {
+      color: #e2e8f0;
+    }
+
+    .ant-drawer-title {
+      color: white;
+    }
+  `,
+
+  drawerHeader: css`
+    .ant-drawer-title {
+      color: white !important;
+    }
+    .ant-drawer-close {
+      color: #8c8c8c;
+      &:hover {
+        color: white;
+      }
+    }
+  `,
 }));
