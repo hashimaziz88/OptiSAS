@@ -20,6 +20,8 @@ import {
     ACTIVITY_STATUS_COLORS,
     ACTIVITY_STATUS_OPTIONS,
     ACTIVITIES_PAGE_SIZE,
+    PRIORITY_LABELS,
+    PRIORITY_COLORS,
 } from '@/constants/activities';
 import ActivitiesTable from '@/components/dashboard/activities/ActivitiesTable';
 import ActivityFormModal from '@/components/dashboard/activities/ActivityFormModal';
@@ -29,9 +31,6 @@ import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
 const { Title } = Typography;
-
-const PRIORITY_LABELS: Record<number, string> = { 1: 'Low', 2: 'Medium', 3: 'High', 4: 'Urgent' };
-const PRIORITY_COLORS: Record<number, string> = { 1: 'default', 2: 'blue', 3: 'orange', 4: 'red' };
 
 const ActivitiesContent: React.FC = () => {
     const { styles } = useStyles();

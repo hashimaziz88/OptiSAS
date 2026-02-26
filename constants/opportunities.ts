@@ -53,3 +53,12 @@ export const STAGE_API_KEYS: Record<number, string> = {
   5: "ClosedWon",
   6: "ClosedLost",
 };
+
+export const PIPELINE_STAGE_COLORS = [
+  "rgba(96,165,250,0.85)",
+  "rgba(52,211,153,0.85)",
+  "rgba(167,139,250,0.85)",
+  "rgba(251,191,36,0.85)",
+  "rgba(56,189,248,0.85)",
+  "rgba(248,113,113,0.85)",
+];

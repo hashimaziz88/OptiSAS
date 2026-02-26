@@ -16,11 +16,10 @@ import {
     ACTIVITY_TYPE_COLORS,
     ACTIVITY_STATUS_LABELS,
     ACTIVITY_STATUS_COLORS,
+    PRIORITY_LABELS,
+    PRIORITY_COLORS,
 } from '@/constants/activities';
 import { useStyles } from './style/style';
-
-const PRIORITY_LABELS: Record<number, string> = { 1: 'Low', 2: 'Medium', 3: 'High', 4: 'Urgent' };
-const PRIORITY_COLORS: Record<number, string> = { 1: 'default', 2: 'blue', 3: 'orange', 4: 'red' };
 
 interface ActivitiesTableProps {
     data: IActivityDto[];

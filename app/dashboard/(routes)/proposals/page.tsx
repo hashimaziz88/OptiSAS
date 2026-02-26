@@ -19,12 +19,9 @@ import RejectProposalModal from '@/components/dashboard/proposals/RejectProposal
 import { useStyles } from '@/components/dashboard/proposals/style/style';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
+import { formatCurrency } from '@/utils/dashboard/proposals';
 
 const { Title, Text } = Typography;
-
-const formatCurrency = (amount: number) =>
-    `ZAR ${(amount ?? 0).toLocaleString('en-ZA', { minimumFractionDigits: 2 })}`;
-
 const ProposalsContent: React.FC = () => {
     const { styles } = useStyles();
     const { user } = useAuthState();

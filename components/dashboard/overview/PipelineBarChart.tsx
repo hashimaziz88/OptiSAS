@@ -14,6 +14,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import { IPipelineStageSummaryDto } from '@/providers/dashboardProvider/context';
 import { formatCurrency } from '@/utils/dashboard/opportunities';
+import { PIPELINE_STAGE_COLORS } from '@/constants/opportunities';
 import { useStyles } from './style/style';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -22,15 +23,6 @@ interface Props {
     stages: IPipelineStageSummaryDto[];
     loading: boolean;
 }
-
-const STAGE_COLORS = [
-    'rgba(96,165,250,0.85)',
-    'rgba(52,211,153,0.85)',
-    'rgba(167,139,250,0.85)',
-    'rgba(251,191,36,0.85)',
-    'rgba(56,189,248,0.85)',
-    'rgba(248,113,113,0.85)',
-];
 
 const PipelineBarChart: React.FC<Props> = ({ stages, loading }) => {
     const { styles } = useStyles();
@@ -41,8 +33,8 @@ const PipelineBarChart: React.FC<Props> = ({ stages, loading }) => {
             {
                 label: 'Pipeline Value',
                 data: stages.map((s) => s.value),
-                backgroundColor: stages.map((_, i) => STAGE_COLORS[i % STAGE_COLORS.length]),
-                borderColor: stages.map((_, i) => STAGE_COLORS[i % STAGE_COLORS.length].replace('0.85', '1')),
+                backgroundColor: stages.map((_, i) => PIPELINE_STAGE_COLORS[i % PIPELINE_STAGE_COLORS.length]),
+                borderColor: stages.map((_, i) => PIPELINE_STAGE_COLORS[i % PIPELINE_STAGE_COLORS.length].replace('0.85', '1')),
                 borderWidth: 1,
                 borderRadius: 6,
             },
@@ -122,7 +114,7 @@ const PipelineBarChart: React.FC<Props> = ({ stages, loading }) => {
                                     width: 8,
                                     height: 8,
                                     borderRadius: 2,
-                                    background: STAGE_COLORS[i % STAGE_COLORS.length],
+                                    background: PIPELINE_STAGE_COLORS[i % PIPELINE_STAGE_COLORS.length],
                                 }}
                             />
                             {s.stageName}

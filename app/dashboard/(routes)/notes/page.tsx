@@ -3,35 +3,15 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Descriptions, Drawer, Input, Select, Space, Tag, Typography, message } from 'antd';
 import { PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
-import {  useNoteActions, useNoteState } from '@/providers/noteProvider';
+import { useNoteActions, useNoteState } from '@/providers/noteProvider';
 import { ICreateNoteDto, INoteDto, IUpdateNoteDto } from '@/providers/noteProvider/context';
 import { NOTES_PAGE_SIZE, RELATED_TO_TYPE_LABELS, RELATED_TO_TYPE_OPTIONS } from '@/constants/notes';
-import { axiosInstance } from '@/utils/axiosInstance';
+import { resolveRecordName } from '@/utils/dashboard/notes';
 import NoteFormModal from '@/components/dashboard/notes/NoteFormModal';
 import NotesTable from '@/components/dashboard/notes/NotesTable';
 import { useStyles } from '@/components/dashboard/notes/style/style';
 
 const { Title } = Typography;
-
-const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
-
-const RELATED_ENDPOINTS: Record<number, string> = {
-    1: '/api/Clients',
-    2: '/api/Opportunities',
-    3: '/api/Proposals',
-    4: '/api/Contracts',
-    5: '/api/Activities',
-};
-
-const resolveRecordName = async (type: number, id: string): Promise<string> => {
-    try {
-        const res = await axiosInstance().get(`${BASE_URL}${RELATED_ENDPOINTS[type]}/${id}`);
-        const record = res.data;
-        return record?.name ?? record?.title ?? record?.subject ?? record?.proposalNumber ?? record?.contractNumber ?? id;
-    } catch {
-        return id;
-    }
-};
 
 const NotesContent: React.FC = () => {
     const { styles } = useStyles();
@@ -223,7 +203,7 @@ const NotesContent: React.FC = () => {
 };
 
 const NotesPage: React.FC = () => (
-        <NotesContent />
+    <NotesContent />
 );
 
 export default NotesPage;

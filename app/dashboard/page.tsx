@@ -8,6 +8,7 @@ import { IContractDto } from '@/providers/contractProvider/context';
 import { ISalesPerformanceDto } from '@/providers/dashboardProvider/context';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
+import { toArray } from '@/utils/helpers';
 import KpiCards from '@/components/dashboard/overview/KpiCards';
 import ActivitiesSummaryCards from '@/components/dashboard/overview/ActivitiesSummaryCards';
 import PipelineBarChart from '@/components/dashboard/overview/PipelineBarChart';
@@ -17,13 +18,6 @@ import TopPerformersTable from '@/components/dashboard/overview/TopPerformersTab
 import { useStyles } from '@/components/dashboard/overview/style/style';
 
 const { Title } = Typography;
-
-const toArray = <T,>(data: T[] | { items?: T[] } | null | undefined): T[] => {
-    if (!data) return [];
-    if (Array.isArray(data)) return data;
-    if (Array.isArray((data as { items?: T[] }).items)) return (data as { items: T[] }).items;
-    return [];
-};
 
 const DashboardContent: React.FC = () => {
     const { user } = useAuthState();

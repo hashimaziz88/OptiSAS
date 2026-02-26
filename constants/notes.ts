@@ -15,3 +15,11 @@ export const RELATED_TO_TYPE_LABELS: Record<number, string> = {
 };
 
 export const NOTES_PAGE_SIZE = 10;
+
+export const RELATED_ENDPOINTS: Record<number, string> = {
+  1: "/api/Clients",
+  2: "/api/Opportunities",
+  3: "/api/Proposals",
+  4: "/api/Contracts",
+  5: "/api/Activities",
+};
