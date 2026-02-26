@@ -35,7 +35,7 @@ const RevenueTrendChart: React.FC<Props> = ({ revenue, loading }) => {
         datasets: [
             {
                 label: 'Revenue',
-                data: trend.map((m) => m.value),
+                data: trend.map((m) => m.totalRevenue ?? m.revenue ?? m.amount ?? m.value ?? 0),
                 fill: true,
                 borderColor: '#34d399',
                 backgroundColor: 'rgba(52,211,153,0.12)',
