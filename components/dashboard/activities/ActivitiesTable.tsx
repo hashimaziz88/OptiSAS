@@ -119,7 +119,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                             type="text"
                             icon={<EyeOutlined />}
                             size="small"
-                            style={{ color: '#94a3b8' }}
+                            style={{ color: '#60a5fa' }}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
@@ -130,7 +130,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                                     type="text"
                                     icon={<EditOutlined />}
                                     size="small"
-                                    style={{ color: '#94a3b8' }}
+                                    style={{ color: '#facc15' }}
                                     onClick={() => onEdit(record)}
                                 />
                             </Tooltip>

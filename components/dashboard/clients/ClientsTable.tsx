@@ -92,6 +92,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({
                     <Tooltip title="View">
                         <Button
                             type="text"
+                            size="small"
                             icon={<EyeOutlined />}
                             style={{ color: '#60a5fa' }}
                             onClick={() => onView(record)}
@@ -100,6 +101,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({
                     <Tooltip title="Edit">
                         <Button
                             type="text"
+                            size="small"
                             icon={<EditOutlined />}
                             style={{ color: '#facc15' }}
                             onClick={() => onEdit(record)}
@@ -114,7 +116,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({
                             cancelText="Cancel"
                             okButtonProps={{ danger: true }}
                         >
-                            <Button type="text" icon={<DeleteOutlined />} style={{ color: '#f87171' }} />
+                            <Button type="text" size="small" icon={<DeleteOutlined />} style={{ color: '#f87171' }} />
                         </Popconfirm>
                     </Tooltip>
                 </Space>
