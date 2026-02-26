@@ -45,10 +45,15 @@ export const useStyles = createStyles(({ token }) => ({
     border-radius: 12px;
     padding: 16px;
     text-align: center;
+    overflow: hidden;
     transition: border-color 0.2s;
 
     &:hover {
       border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    @media (max-width: 576px) {
+      padding: 10px 8px;
     }
   `,
 
@@ -58,6 +63,23 @@ export const useStyles = createStyles(({ token }) => ({
     margin-bottom: 4px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    .ant-tag {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+
+      @media (max-width: 576px) {
+        font-size: 10px;
+        padding: 0 4px;
+      }
+    }
   `,
 
   pipelineCardCount: css`
@@ -65,6 +87,10 @@ export const useStyles = createStyles(({ token }) => ({
     font-weight: 700;
     color: white;
     line-height: 1.2;
+
+    @media (max-width: 576px) {
+      font-size: 20px;
+    }
   `,
 
   pipelineCardValue: css`

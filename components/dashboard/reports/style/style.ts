@@ -142,16 +142,34 @@ export const useStyles = createStyles(({ token }) => ({
     border-radius: 12px;
     padding: 20px 24px;
     text-align: center;
+    overflow: hidden;
 
     .ant-statistic-title {
       color: rgba(255, 255, 255, 0.5);
       font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .ant-statistic-content {
       color: white;
       font-size: 28px;
       font-weight: 700;
+      word-break: break-word;
+    }
+
+    @media (max-width: 768px) {
+      padding: 14px 12px;
+
+      .ant-statistic-content {
+        font-size: 18px;
+      }
+
+      .ant-statistic-content-value-int,
+      .ant-statistic-content-value-decimal {
+        font-size: 18px;
+      }
     }
   `,
 
@@ -161,16 +179,29 @@ export const useStyles = createStyles(({ token }) => ({
     border-radius: 12px;
     padding: 20px 24px;
     text-align: center;
+    overflow: hidden;
 
     .ant-statistic-title {
       color: rgba(255, 255, 255, 0.5);
       font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .ant-statistic-content {
-      color: ${token.colorPrimary};
-      font-size: 28px;
-      font-weight: 700;
+    @media (max-width: 768px) {
+      padding: 14px 12px;
+    }
+  `,
+
+  statAccentValue: css`
+    color: #6366f1 !important;
+    font-size: 28px;
+    font-weight: 700;
+    word-break: break-word;
+
+    @media (max-width: 768px) {
+      font-size: 18px;
     }
   `,
 

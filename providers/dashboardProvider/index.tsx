@@ -40,7 +40,11 @@ export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         const instance = axiosInstance();
         dispatch(getSalesPerformancePending());
         await instance.get(`${BASE_URL}/api/Dashboard/sales-performance`, { params: { topCount } })
-            .then((response) => { dispatch(getSalesPerformanceSuccess(response.data)); })
+            .then((response) => {
+                const data = response.data;
+                const performers = Array.isArray(data) ? data : (data?.topPerformers ?? []);
+                dispatch(getSalesPerformanceSuccess(performers));
+            })
             .catch(() => { dispatch(getSalesPerformanceError()); });
     };
 

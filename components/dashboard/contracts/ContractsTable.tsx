@@ -118,7 +118,6 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
         {
             title: 'Actions',
             key: 'actions',
-            fixed: 'right',
             width: 180,
             render: (_: unknown, record) => (
                 <Space size={4}>

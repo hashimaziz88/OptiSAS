@@ -32,7 +32,7 @@ const PipelineBarChart: React.FC<Props> = ({ stages, loading }) => {
         datasets: [
             {
                 label: 'Pipeline Value',
-                data: stages.map((s) => s.value),
+                data: stages.map((s) => s.totalValue ?? s.value ?? 0),
                 backgroundColor: stages.map((_, i) => PIPELINE_STAGE_COLORS[i % PIPELINE_STAGE_COLORS.length]),
                 borderColor: stages.map((_, i) => PIPELINE_STAGE_COLORS[i % PIPELINE_STAGE_COLORS.length].replace('0.85', '1')),
                 borderWidth: 1,

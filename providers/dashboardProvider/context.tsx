@@ -12,7 +12,8 @@ export interface IOpportunitiesSummaryDto {
 export interface IPipelineStageSummaryDto {
     stageName: string;
     count: number;
-    value: number;
+    totalValue: number;
+    value?: number; // fallback alias
 }
 
 export interface IPipelineSummaryDto {
@@ -34,7 +35,10 @@ export interface IContractsDashboardSummaryDto {
 
 export interface IRevenueMonthDto {
     month: string;
-    value: number;
+    value?: number;
+    totalRevenue?: number;
+    revenue?: number;
+    amount?: number;
 }
 
 export interface IRevenueSummaryDto {
