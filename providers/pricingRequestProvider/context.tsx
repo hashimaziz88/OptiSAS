@@ -24,10 +24,11 @@ export interface IPricingRequestDto {
 }
 
 export interface ICreatePricingRequestDto {
-    opportunityId: string;
     title: string;
     description?: string;
-    assignedToId?: string;
+    clientId?: string;
+    opportunityId?: string;
+    requestedById?: string;
     priority?: number;
     requiredByDate?: string;
 }
@@ -42,6 +43,7 @@ export interface IUpdatePricingRequestDto {
 export interface IGetPricingRequestsParams {
     status?: number;
     priority?: number;
+    assignedToId?: string;
     pageNumber?: number;
     pageSize?: number;
 }

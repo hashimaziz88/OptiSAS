@@ -43,10 +43,6 @@ export const ActivityReducer = handleActions<IActivityStateContext, Partial<IAct
         [ActivityActionEnums.cancelActivityPending]: (state, action) => ({ ...state, ...action.payload }),
         [ActivityActionEnums.cancelActivitySuccess]: (state, action) => ({ ...state, ...action.payload }),
         [ActivityActionEnums.cancelActivityError]: (state, action) => ({ ...state, ...action.payload }),
-
-        [ActivityActionEnums.getParticipantsPending]: (state, action) => ({ ...state, ...action.payload }),
-        [ActivityActionEnums.getParticipantsSuccess]: (state, action) => ({ ...state, ...action.payload }),
-        [ActivityActionEnums.getParticipantsError]: (state, action) => ({ ...state, ...action.payload }),
     },
     INITIAL_STATE,
 );

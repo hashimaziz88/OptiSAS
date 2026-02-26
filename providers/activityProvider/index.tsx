@@ -7,6 +7,7 @@ import {
     ICreateActivityDto,
     IUpdateActivityDto,
     IGetActivitiesParams,
+    IGetMyActivitiesParams,
     ICompleteActivityDto,
 } from "./context";
 import { ActivityReducer } from "./reducer";
@@ -21,7 +22,6 @@ import {
     getMyActivitiesPending, getMyActivitiesSuccess, getMyActivitiesError,
     completeActivityPending, completeActivitySuccess, completeActivityError,
     cancelActivityPending, cancelActivitySuccess, cancelActivityError,
-    getParticipantsPending, getParticipantsSuccess, getParticipantsError,
 } from "./actions";
 import { axiosInstance } from "@/utils/axiosInstance";
 
@@ -94,10 +94,10 @@ export const ActivityProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             .catch(() => { dispatch(getOverdueActivitiesError()); });
     };
 
-    const getMyActivities = async () => {
+    const getMyActivities = async (params?: IGetMyActivitiesParams) => {
         const instance = axiosInstance();
         dispatch(getMyActivitiesPending());
-        await instance.get(`${BASE_URL}/api/Activities/my-activities`)
+        await instance.get(`${BASE_URL}/api/Activities/my-activities`, { params })
             .then((response) => { dispatch(getMyActivitiesSuccess(response.data)); })
             .catch(() => { dispatch(getMyActivitiesError()); });
     };
@@ -118,17 +118,9 @@ export const ActivityProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             .catch(() => { dispatch(cancelActivityError()); });
     };
 
-    const getParticipants = async (activityId: string) => {
-        const instance = axiosInstance();
-        dispatch(getParticipantsPending());
-        await instance.get(`${BASE_URL}/api/Activities/${activityId}/participants`)
-            .then((response) => { dispatch(getParticipantsSuccess(response.data)); })
-            .catch(() => { dispatch(getParticipantsError()); });
-    };
-
     return (
         <ActivityStateContext.Provider value={state}>
-            <ActivityActionContext.Provider value={{ getActivities, getActivity, createActivity, updateActivity, deleteActivity, getUpcomingActivities, getOverdueActivities, getMyActivities, completeActivity, cancelActivity, getParticipants }}>
+            <ActivityActionContext.Provider value={{ getActivities, getActivity, createActivity, updateActivity, deleteActivity, getUpcomingActivities, getOverdueActivities, getMyActivities, completeActivity, cancelActivity }}>
                 {children}
             </ActivityActionContext.Provider>
         </ActivityStateContext.Provider>

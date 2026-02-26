@@ -52,6 +52,7 @@ export interface ICreateProposalLineItemDto {
 
 export interface ICreateProposalDto {
     opportunityId: string;
+    clientId: string;
     title: string;
     description?: string;
     currency?: string;
@@ -68,6 +69,7 @@ export interface IUpdateProposalDto {
 
 export interface IGetProposalsParams {
     clientId?: string;
+    opportunityId?: string;
     status?: number;
     pageNumber?: number;
     pageSize?: number;
@@ -92,7 +94,7 @@ export interface IProposalActionContext {
     deleteLineItem: (proposalId: string, lineItemId: string) => Promise<void>;
     submitProposal: (id: string) => Promise<void>;
     approveProposal: (id: string) => Promise<void>;
-    rejectProposal: (id: string) => Promise<void>;
+    rejectProposal: (id: string, reason: string) => Promise<void>;
 }
 
 export const INITIAL_STATE: IProposalStateContext = {

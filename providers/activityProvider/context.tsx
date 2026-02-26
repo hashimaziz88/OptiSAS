@@ -27,25 +27,6 @@ export interface IActivityDto {
     createdAt: string;
     updatedAt: string;
     isOverdue: boolean;
-    participantsCount: number;
-}
-
-export interface IActivityParticipantDto {
-    id: string;
-    activityId: string;
-    userId: string;
-    userName: string;
-    contactId: string;
-    contactName: string;
-    isRequired: boolean;
-    responseStatus: number;
-    responseStatusName: string;
-}
-
-export interface ICreateActivityParticipantDto {
-    userId?: string;
-    contactId?: string;
-    isRequired?: boolean;
 }
 
 export interface ICreateActivityDto {
@@ -59,7 +40,6 @@ export interface ICreateActivityDto {
     dueDate: string;
     duration?: number;
     location?: string;
-    participants?: ICreateActivityParticipantDto[];
 }
 
 export interface IUpdateActivityDto {
@@ -81,6 +61,14 @@ export interface IGetActivitiesParams {
     assignedToId?: string;
     type?: number;
     status?: number;
+    relatedToType?: number;
+    relatedToId?: string;
+    pageNumber?: number;
+    pageSize?: number;
+}
+
+export interface IGetMyActivitiesParams {
+    status?: number;
     pageNumber?: number;
     pageSize?: number;
 }
@@ -93,7 +81,6 @@ export interface IActivityStateContext {
     currentActivity?: IActivityDto | null;
     upcomingActivities?: IActivityDto[] | null;
     overdueActivities?: IActivityDto[] | null;
-    participants?: IActivityParticipantDto[] | null;
 }
 
 export interface IActivityActionContext {
@@ -104,10 +91,9 @@ export interface IActivityActionContext {
     deleteActivity: (id: string) => Promise<void>;
     getUpcomingActivities: (daysAhead?: number) => Promise<void>;
     getOverdueActivities: () => Promise<void>;
-    getMyActivities: () => Promise<void>;
+    getMyActivities: (params?: IGetMyActivitiesParams) => Promise<void>;
     completeActivity: (id: string, payload: ICompleteActivityDto) => Promise<void>;
     cancelActivity: (id: string) => Promise<void>;
-    getParticipants: (activityId: string) => Promise<void>;
 }
 
 export const INITIAL_STATE: IActivityStateContext = {
@@ -118,7 +104,6 @@ export const INITIAL_STATE: IActivityStateContext = {
     currentActivity: null,
     upcomingActivities: null,
     overdueActivities: null,
-    participants: null,
 };
 
 export const ActivityStateContext = createContext<IActivityStateContext>(INITIAL_STATE);

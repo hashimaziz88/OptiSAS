@@ -7,6 +7,7 @@ import {
     ICreateOpportunityDto,
     IUpdateOpportunityDto,
     IGetOpportunitiesParams,
+    IGetMyOpportunitiesParams,
     IUpdateStageDto,
 } from "./context";
 import { OpportunityReducer } from "./reducer";
@@ -37,7 +38,7 @@ export const OpportunityProvider: React.FC<{ children: React.ReactNode }> = ({ c
             .catch(() => { dispatch(getOpportunitiesError()); });
     };
 
-    const getMyOpportunities = async (params?: IGetOpportunitiesParams) => {
+    const getMyOpportunities = async (params?: IGetMyOpportunitiesParams) => {
         const instance = axiosInstance();
         dispatch(getMyOpportunitiesPending());
         await instance.get(`${BASE_URL}/api/Opportunities/my-opportunities`, { params })
