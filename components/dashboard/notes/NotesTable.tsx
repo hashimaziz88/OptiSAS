@@ -113,6 +113,7 @@ const NotesTable: React.FC<NotesTableProps> = ({
             columns={columns}
             dataSource={data}
             loading={loading}
+            scroll={{ x: 1000 }}
             pagination={{
                 current: page,
                 pageSize,

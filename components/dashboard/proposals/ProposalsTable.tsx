@@ -195,6 +195,7 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
             columns={columns}
             dataSource={data}
             loading={loading}
+            scroll={{ x: 1000 }}
             pagination={{
                 current: page,
                 pageSize,

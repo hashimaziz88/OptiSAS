@@ -189,6 +189,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
             dataSource={data}
             rowKey="id"
             loading={loading}
+            scroll={{ x: 1000 }}
             pagination={{
                 current: page,
                 pageSize,
