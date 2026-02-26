@@ -107,9 +107,7 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
             setLineItems((prev) => [...prev, { ...values, _key: nextKey }]);
             setNextKey((k) => k + 1);
             lineForm.resetFields();
-        } catch {
-            // validation failed
-        }
+        } catch { }
     };
 
     const removeLineItem = (key: number) => {
@@ -160,9 +158,7 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
                 }),
             };
             await onSubmit(payload);
-        } catch {
-            // validation failed
-        }
+        } catch { }
     };
 
     return (

@@ -52,7 +52,6 @@ const DocumentsContent: React.FC = () => {
         });
     }, [page, pageSize, categoryFilter, relatedTypeFilter, getDocuments]);
 
-    // Trigger browser download when blob arrives
     useEffect(() => {
         if (downloadBlob && downloadingId) {
             const url = URL.createObjectURL(downloadBlob);
@@ -200,7 +199,7 @@ const DocumentsContent: React.FC = () => {
 };
 
 const DocumentsPage: React.FC = () => (
-        <DocumentsContent />
+    <DocumentsContent />
 );
 
 export default DocumentsPage;

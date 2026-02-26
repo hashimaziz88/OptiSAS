@@ -30,9 +30,7 @@ const RejectProposalModal: React.FC<RejectProposalModalProps> = ({
                 await onReject(proposal.id, reason);
                 form.resetFields();
             }
-        } catch {
-            // validation failed
-        }
+        } catch { }
     };
 
     const handleCancel = () => {

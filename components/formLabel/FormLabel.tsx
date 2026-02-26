@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-// import { useStyles } from "@/app/dashboard/(routes)/_styles/style";
 
 interface FormLabelProps {
     text: string;
@@ -11,8 +10,6 @@ interface FormLabelProps {
  * Usage: <FormLabel text="Field Name" />
  */
 const FormLabel: React.FC<FormLabelProps> = ({ text }) => {
-    // const { styles } = useStyles();
-    // return <span className={styles.formLabel}>{text}</span>;
     return <span>{text}</span>;
 };
 

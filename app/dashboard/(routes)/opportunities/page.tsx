@@ -109,7 +109,6 @@ const OpportunitiesContent: React.FC = () => {
         setStageModalOpen(false);
         fetchOpportunities();
         getPipelineMetrics();
-        // refresh viewing opp
         const updated = pagedResult?.items?.find((o) => o.id === viewingOpp.id);
         if (updated) setViewingOpp({ ...viewingOpp, stage: values.stage, stageName: OPPORTUNITY_STAGE_LABELS[values.stage] });
         await getStageHistory(viewingOpp.id);
@@ -250,7 +249,7 @@ const OpportunitiesContent: React.FC = () => {
                                 <Timeline
                                     items={stageHistory.map((h) => ({
                                         color: 'blue',
-                                        children: (
+                                        content: (
                                             <div className={styles.stageHistoryItem}>
                                                 <div>
                                                     <Tag color={OPPORTUNITY_STAGE_COLORS[h.fromStage] ?? 'default'} style={{ fontSize: 11 }}>

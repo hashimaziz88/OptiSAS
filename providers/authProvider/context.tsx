@@ -1,6 +1,5 @@
 import { createContext } from "react";
 
-// From Swagger
 export interface IUserLoginRequest {
     email?: string | null;
     password?: string | null;
@@ -12,12 +11,8 @@ export interface IUserRegisterRequest {
     firstName?: string | null;
     lastName?: string | null;
     phoneNumber?: string | null;
-    // Scenario A: provide tenantName to create a new org (caller becomes Admin)
     tenantName?: string | null;
-    // Scenario B: provide tenantId to join an existing org
     tenantId?: string | null;
-    // Role for scenario B/C. Options: SalesRep | SalesManager | BusinessDevelopmentManager
-    // Ignored when tenantName is provided. Defaults to SalesRep.
     role?: string | null;
 }
 

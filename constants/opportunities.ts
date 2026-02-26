@@ -45,7 +45,6 @@ export const OPPORTUNITIES_PAGE_SIZE = 10;
 
 export const STAGE_ORDER = [1, 2, 3, 4, 5, 6];
 
-// Keys match the API's PipelineMetricsDto.stageMetrics property names
 export const STAGE_API_KEYS: Record<number, string> = {
   1: "Lead",
   2: "Qualified",

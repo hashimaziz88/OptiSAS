@@ -38,7 +38,6 @@ const AssignPricingRequestModal: React.FC<AssignPricingRequestModalProps> = ({
             form.resetFields();
             return;
         }
-        // Fetch team members via opportunities owner data or contacts
         const fetchUsers = async () => {
             setUsersLoading(true);
             try {
@@ -69,9 +68,7 @@ const AssignPricingRequestModal: React.FC<AssignPricingRequestModalProps> = ({
             const values = await form.validateFields();
             if (!request) return;
             await onAssign(request.id, values.userId);
-        } catch {
-            // validation failed
-        }
+        } catch { }
     };
 
     return (

@@ -108,9 +108,7 @@ const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
                 formData.append('description', values.description);
             }
             await onUpload(formData);
-        } catch {
-            // validation failed
-        }
+        } catch { }
     };
 
     return (

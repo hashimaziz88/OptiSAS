@@ -16,7 +16,6 @@ import { useStyles } from '@/components/dashboard/overview/style/style';
 
 const { Title } = Typography;
 
-// Safely coerce API responses that may be arrays OR paged result objects
 const toArray = <T,>(data: T[] | { items?: T[] } | null | undefined): T[] => {
     if (!data) return [];
     if (Array.isArray(data)) return data;
