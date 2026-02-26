@@ -78,7 +78,10 @@ a {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5) !important;
   backdrop-filter: blur(12px) !important;
 }
-
+.ant-modal,
+.ant-modal-container {
+  background-color: #1e2128 !important;
+}
 .ant-modal-header {
   background: transparent !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;

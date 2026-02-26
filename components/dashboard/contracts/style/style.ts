@@ -19,6 +19,7 @@ export const modalStyles: {
     marginBottom: 0,
   },
   body: {
+    background: "#1e2128",
     padding: "24px",
   },
 };

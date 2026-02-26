@@ -119,9 +119,11 @@ const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
                     </div>
 
                     <div className={styles.formRow}>
-                        <Form.Item label="Stage" name="stage">
-                            <Select size="large" options={OPPORTUNITY_STAGE_OPTIONS} />
-                        </Form.Item>
+                        {!editing && (
+                            <Form.Item label="Stage" name="stage">
+                                <Select size="large" options={OPPORTUNITY_STAGE_OPTIONS} />
+                            </Form.Item>
+                        )}
 
                         <Form.Item label="Probability (%)" name="probability">
                             <InputNumber<number>
