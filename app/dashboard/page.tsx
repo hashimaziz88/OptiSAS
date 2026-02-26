@@ -43,7 +43,7 @@ const DashboardContent: React.FC = () => {
         getDashboardOverview();
         getSalesPerformance(5);
         getContractsExpiring(30);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const performanceList = toArray<ISalesPerformanceDto>(salesPerformance as ISalesPerformanceDto[] | null);
@@ -60,7 +60,7 @@ const DashboardContent: React.FC = () => {
         },
         {
             title: 'Win Rate',
-            value: overview ? Math.round(overview.opportunities.winRate * 100) : 0,
+            value: overview ? Math.round(overview.opportunities.winRate) : 0,
             prefix: <TrophyOutlined />,
             formatter: (v: number | string) => `${v}%`,
             color: '#34d399',
