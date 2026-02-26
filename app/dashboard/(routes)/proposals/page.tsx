@@ -154,7 +154,7 @@ const ProposalsContent: React.FC = () => {
     return (
         <div>
             <div className={styles.pageHeader}>
-                <Title level={3} style={{ margin: 0 }}>Proposals</Title>
+                <Title level={2} className={styles.pageTitle}>Proposals</Title>
                 <Button type="primary" icon={<PlusOutlined />} onClick={handleCreate}>
                     New Proposal
                 </Button>

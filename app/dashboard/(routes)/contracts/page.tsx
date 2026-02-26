@@ -129,7 +129,7 @@ const ContractsContent: React.FC = () => {
     return (
         <div>
             <div className={styles.pageHeader}>
-                <Title level={3} style={{ margin: 0 }}>Contracts</Title>
+                <Title level={2} className={styles.pageTitle}>Contracts</Title>
                 <Button type="primary" icon={<PlusOutlined />} onClick={handleCreate}>
                     New Contract
                 </Button>

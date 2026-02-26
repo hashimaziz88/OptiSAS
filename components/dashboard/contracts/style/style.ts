@@ -24,6 +24,13 @@ export const modalStyles: {
 };
 
 export const useStyles = createStyles(({ token }) => ({
+  pageTitle: css`
+    color: white;
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 !important;
+  `,
+
   pageHeader: css`
     display: flex;
     justify-content: space-between;
