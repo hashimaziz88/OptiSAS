@@ -5,7 +5,7 @@ import { Form, Input, InputNumber, Select, Modal, Button, DatePicker } from 'ant
 import dayjs from 'dayjs';
 import { IOpportunityDto, ICreateOpportunityDto, IUpdateOpportunityDto } from '@/providers/opportunityProvider/context';
 import { IClientDto } from '@/providers/clientProvider/context';
-import { OPPORTUNITY_STAGE_OPTIONS, OPPORTUNITY_SOURCE_OPTIONS, CURRENCY_OPTIONS } from '@/constants/opportunities';
+import { OPPORTUNITY_STAGE_OPTIONS, OPPORTUNITY_SOURCE_OPTIONS } from '@/constants/opportunities';
 import { useStyles, modalStyles } from './style/style';
 
 interface OpportunityFormModalProps {
@@ -30,7 +30,7 @@ const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
                     title: editing.title,
                     clientId: editing.clientId,
                     estimatedValue: editing.estimatedValue,
-                    currency: editing.currency || 'ZAR',
+                    currency: 'ZAR',
                     stage: editing.stage,
                     probability: editing.probability,
                     source: editing.source,
@@ -113,8 +113,8 @@ const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
                             />
                         </Form.Item>
 
-                        <Form.Item label="Currency" name="currency">
-                            <Select size="large" options={CURRENCY_OPTIONS} />
+                        <Form.Item label="Currency" name="currency" hidden initialValue="ZAR">
+                            <Input />
                         </Form.Item>
                     </div>
 
