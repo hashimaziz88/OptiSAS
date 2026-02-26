@@ -39,6 +39,7 @@ const ContractsContent: React.FC = () => {
 
     const [page, setPage] = useState(1);
     const [statusFilter, setStatusFilter] = useState<number | undefined>(undefined);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingContract, setEditingContract] = useState<IContractDto | null>(null);
@@ -128,6 +129,17 @@ const ContractsContent: React.FC = () => {
         load();
     };
 
+    const filteredContracts = (pagedResult?.items ?? []).filter((c) => {
+        if (!searchTerm) return true;
+        const q = searchTerm.toLowerCase();
+        return (
+            c.contractNumber?.toLowerCase().includes(q) ||
+            c.title?.toLowerCase().includes(q) ||
+            c.clientName?.toLowerCase().includes(q) ||
+            c.opportunityTitle?.toLowerCase().includes(q)
+        );
+    });
+
     const drawerStatus = viewingContract?.status;
 
     return (
@@ -143,7 +155,9 @@ const ContractsContent: React.FC = () => {
                 <Input.Search
                     className={styles.searchInput}
                     placeholder="Search contracts..."
-                    onSearch={() => load()}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onSearch={(value) => setSearchTerm(value)}
                     allowClear
                 />
                 <Select
@@ -160,9 +174,9 @@ const ContractsContent: React.FC = () => {
             </div>
 
             <ContractsTable
-                data={pagedResult?.items ?? []}
+                data={filteredContracts}
                 loading={isPending}
-                total={pagedResult?.totalCount ?? 0}
+                total={searchTerm ? filteredContracts.length : (pagedResult?.totalCount ?? 0)}
                 page={page}
                 pageSize={CONTRACTS_PAGE_SIZE}
                 onPageChange={handlePageChange}

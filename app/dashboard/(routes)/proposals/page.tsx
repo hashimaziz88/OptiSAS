@@ -41,6 +41,7 @@ const ProposalsContent: React.FC = () => {
 
     const [page, setPage] = useState(1);
     const [statusFilter, setStatusFilter] = useState<number | undefined>(undefined);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingProposal, setEditingProposal] = useState<IProposalDto | null>(null);
@@ -137,6 +138,17 @@ const ProposalsContent: React.FC = () => {
         load();
     };
 
+    const filteredProposals = (pagedResult?.items ?? []).filter((p) => {
+        if (!searchTerm) return true;
+        const q = searchTerm.toLowerCase();
+        return (
+            p.proposalNumber?.toLowerCase().includes(q) ||
+            p.title?.toLowerCase().includes(q) ||
+            p.clientName?.toLowerCase().includes(q) ||
+            p.opportunityTitle?.toLowerCase().includes(q)
+        );
+    });
+
     const drawerProposal = currentProposal?.id === viewingProposal?.id ? currentProposal : null;
     const lineItems: IProposalLineItemDto[] = drawerProposal?.lineItems ?? [];
 
@@ -164,7 +176,9 @@ const ProposalsContent: React.FC = () => {
                 <Input.Search
                     className={styles.searchInput}
                     placeholder="Search proposals..."
-                    onSearch={() => load()}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onSearch={(value) => setSearchTerm(value)}
                     allowClear
                 />
                 <Select
@@ -181,9 +195,9 @@ const ProposalsContent: React.FC = () => {
             </div>
 
             <ProposalsTable
-                data={pagedResult?.items ?? []}
+                data={filteredProposals}
                 loading={isPending}
-                total={pagedResult?.totalCount ?? 0}
+                total={searchTerm ? filteredProposals.length : (pagedResult?.totalCount ?? 0)}
                 page={page}
                 pageSize={PROPOSALS_PAGE_SIZE}
                 onPageChange={handlePageChange}
