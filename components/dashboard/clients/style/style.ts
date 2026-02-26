@@ -1,191 +1,324 @@
-import { createStyles, css } from 'antd-style';
+import type { CSSProperties } from "react";
+import { createStyles, css } from "antd-style";
 
 export const useStyles = createStyles(({ token }) => ({
-    pageHeader: css`
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 24px;
-    `,
+  pageHeader: css`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  `,
 
-    pageTitle: css`
-        &.ant-typography {
-            color: white;
-            margin: 0;
-            font-size: 24px;
-            font-weight: 700;
+  pageTitle: css`
+    &.ant-typography {
+      color: white;
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
+  `,
+
+  filterBar: css`
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    align-items: center;
+  `,
+
+  searchInput: css`
+    max-width: 260px;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.12);
+    color: white;
+
+    .ant-input {
+      background: transparent;
+      color: white;
+      &::placeholder {
+        color: #666;
+      }
+    }
+
+    .anticon {
+      color: #666;
+    }
+
+    &:hover,
+    &:focus-within {
+      border-color: ${token.colorPrimary};
+    }
+  `,
+
+  filterSelect: css`
+    min-width: 160px;
+
+    .ant-select-selector {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      color: white !important;
+    }
+
+    .ant-select-selection-placeholder,
+    .ant-select-selection-item {
+      color: #cbd5e0 !important;
+    }
+
+    .ant-select-arrow {
+      color: #666;
+    }
+
+    &:hover .ant-select-selector,
+    &.ant-select-focused .ant-select-selector {
+      border-color: ${token.colorPrimary} !important;
+    }
+  `,
+
+  table: css`
+    .ant-table {
+      background: transparent;
+    }
+
+    .ant-table-thead > tr > th {
+      background: rgba(255, 255, 255, 0.05);
+      color: #cbd5e0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-weight: 600;
+    }
+
+    .ant-table-tbody > tr > td {
+      background: transparent;
+      color: #e2e8f0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .ant-table-tbody > tr:hover > td {
+      background: rgba(255, 255, 255, 0.04) !important;
+    }
+
+    .ant-pagination {
+      .ant-pagination-item a,
+      .ant-pagination-prev button,
+      .ant-pagination-next button {
+        color: #cbd5e0;
+      }
+      .ant-pagination-item-active {
+        background: ${token.colorPrimary};
+        border-color: ${token.colorPrimary};
+        a {
+          color: white;
         }
-    `,
+      }
+    }
+  `,
 
-    filterBar: css`
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-        margin-bottom: 20px;
-        align-items: center;
-    `,
+  statusBadge: css`
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  `,
 
-    searchInput: css`
-        max-width: 260px;
-        background: rgba(255, 255, 255, 0.05);
-        border-color: rgba(255, 255, 255, 0.12);
+  activeBadge: css`
+    background: rgba(82, 196, 26, 0.15);
+    color: #52c41a;
+    border: 1px solid rgba(82, 196, 26, 0.3);
+  `,
+
+  inactiveBadge: css`
+    background: rgba(255, 77, 79, 0.15);
+    color: #ff4d4f;
+    border: 1px solid rgba(255, 77, 79, 0.3);
+  `,
+
+  modal: css`
+    .ant-modal-content {
+      background: #2a2d35;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+    }
+
+    .ant-modal-header {
+      background: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 20px 24px;
+    }
+
+    .ant-modal-title {
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .ant-modal-close {
+      color: #8c8c8c;
+      &:hover {
         color: white;
+      }
+    }
 
-        .ant-input {
-            background: transparent;
-            color: white;
-            &::placeholder { color: #666; }
+    .ant-modal-body {
+      padding: 24px;
+    }
+
+    .ant-form-item-label > label {
+      color: #cbd5e0;
+      font-weight: 500;
+    }
+
+    .ant-input,
+    .ant-input-affix-wrapper {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: white;
+      border-radius: 8px;
+
+      input {
+        background: transparent;
+        color: white;
+        &::placeholder {
+          color: #666;
         }
+      }
 
-        .anticon { color: #666; }
+      &:hover,
+      &:focus,
+      &-focused {
+        border-color: ${token.colorPrimary};
+        box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+      }
+    }
 
-        &:hover, &:focus-within {
-            border-color: ${token.colorPrimary};
-        }
-    `,
+    .ant-select .ant-select-selector {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      color: white !important;
+      border-radius: 8px;
+    }
 
-    filterSelect: css`
-        min-width: 160px;
+    .ant-select-selection-placeholder,
+    .ant-select-selection-item {
+      color: #cbd5e0 !important;
+    }
 
-        .ant-select-selector {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border-color: rgba(255, 255, 255, 0.12) !important;
-            color: white !important;
-        }
+    .ant-switch-checked {
+      background: ${token.colorPrimary};
+    }
+  `,
 
-        .ant-select-selection-placeholder,
-        .ant-select-selection-item {
-            color: #cbd5e0 !important;
-        }
+  formBody: css`
+    padding-top: 8px;
 
-        .ant-select-arrow { color: #666; }
+    .ant-form-item-label > label {
+      color: #cbd5e0;
+      font-weight: 500;
+    }
 
-        &:hover .ant-select-selector,
-        &.ant-select-focused .ant-select-selector {
-            border-color: ${token.colorPrimary} !important;
-        }
-    `,
+    .ant-input,
+    .ant-input-affix-wrapper,
+    textarea.ant-input {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: white;
+      border-radius: 8px;
 
-    table: css`
-        .ant-table {
-            background: transparent;
-        }
+      &::placeholder {
+        color: #666;
+      }
 
-        .ant-table-thead > tr > th {
-            background: rgba(255, 255, 255, 0.05);
-            color: #cbd5e0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            font-weight: 600;
-        }
+      &:hover,
+      &:focus,
+      &-focused {
+        border-color: ${token.colorPrimary};
+        box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+      }
+    }
 
-        .ant-table-tbody > tr > td {
-            background: transparent;
-            color: #e2e8f0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
+    .ant-select .ant-select-selector {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      color: white !important;
+      border-radius: 8px;
+    }
 
-        .ant-table-tbody > tr:hover > td {
-            background: rgba(255, 255, 255, 0.04) !important;
-        }
+    .ant-select-selection-placeholder,
+    .ant-select-selection-item {
+      color: #cbd5e0 !important;
+    }
 
-        .ant-pagination {
-            .ant-pagination-item a,
-            .ant-pagination-prev button,
-            .ant-pagination-next button {
-                color: #cbd5e0;
-            }
-            .ant-pagination-item-active {
-                background: ${token.colorPrimary};
-                border-color: ${token.colorPrimary};
-                a { color: white; }
-            }
-        }
-    `,
+    .ant-select-arrow {
+      color: #666;
+    }
 
-    statusBadge: css`
-        display: inline-block;
-        padding: 2px 10px;
-        border-radius: 12px;
-        font-size: 12px;
-        font-weight: 500;
-    `,
+    .ant-switch {
+      background: rgba(255, 255, 255, 0.15);
 
-    activeBadge: css`
-        background: rgba(82, 196, 26, 0.15);
-        color: #52c41a;
-        border: 1px solid rgba(82, 196, 26, 0.3);
-    `,
+      &.ant-switch-checked {
+        background: ${token.colorPrimary};
+      }
+    }
+  `,
 
-    inactiveBadge: css`
-        background: rgba(255, 77, 79, 0.15);
-        color: #ff4d4f;
-        border: 1px solid rgba(255, 77, 79, 0.3);
-    `,
+  formFooter: css`
+    margin-bottom: 0;
+    margin-top: 8px;
+  `,
 
-    modal: css`
-        .ant-modal-content {
-            background: #2a2d35;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-        }
+  formFooterActions: css`
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+  `,
 
-        .ant-modal-header {
-            background: transparent;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 20px 24px;
-        }
+  refreshButton: css`
+    color: #8c8c8c;
+    border-color: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+  `,
 
-        .ant-modal-title {
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-        }
+  statsRow: css`
+    margin-bottom: 24px;
+  `,
 
-        .ant-modal-close {
-            color: #8c8c8c;
-            &:hover { color: white; }
-        }
+  statLabel: css`
+    color: #8c8c8c;
+  `,
 
-        .ant-modal-body { padding: 24px; }
+  statContacts: css`
+    color: #60a5fa;
+  `,
 
-        .ant-form-item-label > label {
-            color: #cbd5e0;
-            font-weight: 500;
-        }
+  statOpportunities: css`
+    color: #34d399;
+  `,
 
-        .ant-input,
-        .ant-input-affix-wrapper {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.12);
-            color: white;
-            border-radius: 8px;
-
-            input {
-                background: transparent;
-                color: white;
-                &::placeholder { color: #666; }
-            }
-
-            &:hover, &:focus, &-focused {
-                border-color: ${token.colorPrimary};
-                box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
-            }
-        }
-
-        .ant-select .ant-select-selector {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border-color: rgba(255, 255, 255, 0.12) !important;
-            color: white !important;
-            border-radius: 8px;
-        }
-
-        .ant-select-selection-placeholder,
-        .ant-select-selection-item {
-            color: #cbd5e0 !important;
-        }
-
-        .ant-switch-checked {
-            background: ${token.colorPrimary};
-        }
-    `,
+  drawerActions: css`
+    margin-top: 24px;
+    display: flex;
+    gap: 8px;
+  `,
 }));
+
+export const modalComponentStyles = {
+  content: { background: '#2a2d35', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px' },
+  header: { background: '#2a2d35', borderBottom: '1px solid rgba(255,255,255,0.08)', padding: '20px 24px' },
+  body: { padding: '0 24px 24px' },
+  mask: { backdropFilter: 'blur(4px)' },
+};
+
+export const drawerComponentStyles = {
+  body: { background: "#2a2d35", padding: "24px" },
+  header: {
+    background: "#2a2d35",
+    borderBottom: "1px solid rgba(255,255,255,0.08)",
+    color: "white" as const,
+  },
+  mask: { backdropFilter: "blur(4px)" },
+};
+
+export const descriptionsLabelStyle: CSSProperties = {
+  color: "#8c8c8c",
+  width: 140,
+};
+export const descriptionsContentStyle: CSSProperties = { color: "#e2e8f0" };
