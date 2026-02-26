@@ -3,7 +3,7 @@
 import React from 'react';
 import { Button, DatePicker, Form, Input, InputNumber, Modal } from 'antd';
 import { IContractDto, ICreateContractRenewalDto } from '@/providers/contractProvider/context';
-import { modalStyles, useStyles } from './style/style';
+import { useStyles } from './style/style';
 
 interface RenewalModalProps {
     open: boolean;
@@ -50,8 +50,7 @@ const RenewalModal: React.FC<RenewalModalProps> = ({
             open={open}
             title={`Create Renewal — ${contract?.contractNumber ?? ''}`}
             onCancel={handleCancel}
-            className={styles.modal}
-            styles={modalStyles}
+            classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
             destroyOnHidden
             footer={[
                 <Button key="cancel" onClick={handleCancel}>

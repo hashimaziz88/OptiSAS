@@ -10,7 +10,7 @@ import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { ICreateProposalDto, ICreateProposalLineItemDto, IProposalDto, IUpdateProposalDto } from '@/providers/proposalProvider/context';
 import { axiosInstance } from '@/utils/axiosInstance';
-import { modalStyles, useStyles } from './style/style';
+import { useStyles } from './style/style';
 
 const { Text } = Typography;
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
@@ -171,8 +171,7 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
             title={editing ? 'Edit Proposal' : 'Create Proposal'}
             onCancel={onClose}
             footer={null}
-            className={styles.modal}
-            styles={modalStyles}
+            classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
             destroyOnHidden
             width={760}
         >

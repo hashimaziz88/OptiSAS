@@ -5,7 +5,7 @@ import { Button, Form, Input, Modal, Select, Switch } from 'antd';
 import { ICreateNoteDto, INoteDto, IUpdateNoteDto } from '@/providers/noteProvider/context';
 import { RELATED_TO_TYPE_OPTIONS } from '@/constants/notes';
 import { axiosInstance } from '@/utils/axiosInstance';
-import { useStyles, modalStyles } from './style/style';
+import { useStyles } from './style/style';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -88,8 +88,7 @@ const NoteFormModal: React.FC<NoteFormModalProps> = ({ open, editing, loading, o
             footer={null}
             width={580}
             destroyOnHidden
-            className={styles.modal}
-            styles={modalStyles}
+            classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
         >
             <div className={styles.formBody}>
                 <Form form={form} layout="vertical" requiredMark={false} onFinish={onSubmit}>

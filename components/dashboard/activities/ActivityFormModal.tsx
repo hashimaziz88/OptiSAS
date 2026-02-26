@@ -7,7 +7,7 @@ import { IActivityDto, ICreateActivityDto, IUpdateActivityDto } from '@/provider
 import { ACTIVITY_TYPE_OPTIONS } from '@/constants/activities';
 import { axiosInstance } from '@/utils/axiosInstance';
 import { useAuthState } from '@/providers/authProvider';
-import { useStyles, modalStyles } from './style/style';
+import { useStyles } from './style/style';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
 
@@ -120,8 +120,7 @@ const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, lo
             footer={null}
             width={600}
             destroyOnHidden
-            className={styles.modal}
-            styles={modalStyles}
+            classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
         >
             <div className={styles.formBody}>
                 <Form

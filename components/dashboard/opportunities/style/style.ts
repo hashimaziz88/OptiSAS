@@ -1,29 +1,24 @@
 import { createStyles, css } from "antd-style";
-import type { CSSProperties } from "react";
-
-export const modalStyles: {
-  container: CSSProperties;
-  header: CSSProperties;
-  body: CSSProperties;
-} = {
-  container: {
-    background: "#1e2128",
-    border: "1px solid rgba(255,255,255,0.1)",
-    borderRadius: 16,
-    padding: 0,
-  },
-  header: {
-    background: "transparent",
-    borderBottom: "1px solid rgba(255,255,255,0.08)",
-    padding: "20px 24px",
-    marginBottom: 0,
-  },
-  body: {
-    padding: "24px",
-  },
-};
 
 export const useStyles = createStyles(({ token }) => ({
+  modalContainer: css`
+    background: #1e2128;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 0;
+  `,
+
+  modalHeader: css`
+    background: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 20px 24px;
+    margin-bottom: 0;
+  `,
+
+  modalBody: css`
+    padding: 24px;
+  `,
+
   pageHeader: css`
     display: flex;
     justify-content: space-between;

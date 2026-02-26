@@ -3,7 +3,7 @@
 import React from 'react';
 import { Button, Form, Input, Modal } from 'antd';
 import { IProposalDto } from '@/providers/proposalProvider/context';
-import { modalStyles, useStyles } from './style/style';
+import { useStyles } from './style/style';
 
 interface RejectProposalModalProps {
     open: boolean;
@@ -45,8 +45,7 @@ const RejectProposalModal: React.FC<RejectProposalModalProps> = ({
             open={open}
             title="Reject Proposal"
             onCancel={handleCancel}
-            className={styles.modal}
-            styles={modalStyles}
+            classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
             destroyOnHidden
             footer={[
                 <Button key="cancel" onClick={handleCancel}>

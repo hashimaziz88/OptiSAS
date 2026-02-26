@@ -66,9 +66,8 @@ const NotesContent: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchNotes(page, pageSize);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page, pageSize, relatedToType]);
+        getNotes({ pageNumber: page, pageSize: pageSize, relatedToType });
+    }, [page, pageSize, relatedToType, getNotes]);
 
     const notes = pagedResult?.items ?? [];
     const filteredItems = searchTerm
@@ -224,9 +223,7 @@ const NotesContent: React.FC = () => {
 };
 
 const NotesPage: React.FC = () => (
-    <NoteProvider>
         <NotesContent />
-    </NoteProvider>
 );
 
 export default NotesPage;

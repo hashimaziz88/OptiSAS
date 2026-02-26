@@ -20,7 +20,7 @@ import {
 import { buildOpportunitiesParams, getSourceLabel, formatCurrency } from '@/utils/dashboard/opportunities';
 import OpportunitiesTable from '@/components/dashboard/opportunities/OpportunitiesTable';
 import OpportunityFormModal from '@/components/dashboard/opportunities/OpportunityFormModal';
-import { useStyles, modalStyles } from '@/components/dashboard/opportunities/style/style';
+import { useStyles } from '@/components/dashboard/opportunities/style/style';
 
 const { Title, Text } = Typography;
 
@@ -291,8 +291,7 @@ const OpportunitiesContent: React.FC = () => {
                 onCancel={() => setStageModalOpen(false)}
                 footer={null}
                 destroyOnHidden
-                className={styles.modal}
-                styles={modalStyles}
+                classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
             >
                 <div className={styles.formBody}>
                     <Form form={stageForm} layout="vertical" requiredMark={false} onFinish={handleStageSubmit}>

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { Form, Input, Select, Switch, Modal, Button } from 'antd';
 import { IContactDto, ICreateContactDto, IUpdateContactDto } from '@/providers/contactProvider/context';
 import { IClientDto } from '@/providers/clientProvider/context';
-import { useStyles, modalStyles } from './style/style';
+import { useStyles } from './style/style';
 
 interface ContactFormModalProps {
     open: boolean;
@@ -59,8 +59,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
             footer={null}
             width={580}
             destroyOnHidden
-            className={styles.modal}
-            styles={modalStyles}
+            classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
         >
             <div className={styles.formBody}>
                 <Form

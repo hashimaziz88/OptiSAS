@@ -28,9 +28,7 @@ const ReportsContent: React.FC = () => {
 };
 
 const ReportsPage: React.FC = () => (
-    <ReportProvider>
         <ReportsContent />
-    </ReportProvider>
 );
 
 export default ReportsPage;

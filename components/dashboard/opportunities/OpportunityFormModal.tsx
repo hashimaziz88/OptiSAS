@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { IOpportunityDto, ICreateOpportunityDto, IUpdateOpportunityDto } from '@/providers/opportunityProvider/context';
 import { IClientDto } from '@/providers/clientProvider/context';
 import { OPPORTUNITY_STAGE_OPTIONS, OPPORTUNITY_SOURCE_OPTIONS } from '@/constants/opportunities';
-import { useStyles, modalStyles } from './style/style';
+import { useStyles } from './style/style';
 
 interface OpportunityFormModalProps {
     open: boolean;
@@ -64,8 +64,7 @@ const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
             footer={null}
             width={620}
             destroyOnHidden
-            className={styles.modal}
-            styles={modalStyles}
+            classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
         >
             <div className={styles.formBody}>
                 <Form

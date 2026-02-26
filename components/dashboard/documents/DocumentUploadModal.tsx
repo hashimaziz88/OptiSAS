@@ -9,7 +9,7 @@ import {
     RELATED_TO_TYPE_OPTIONS,
 } from '@/constants/documents';
 import { axiosInstance } from '@/utils/axiosInstance';
-import { modalStyles, useStyles } from './style/style';
+import { useStyles } from './style/style';
 
 const { Dragger } = Upload;
 
@@ -119,8 +119,7 @@ const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
             title="Upload Document"
             onCancel={onClose}
             footer={null}
-            className={styles.modal}
-            styles={modalStyles}
+            classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
             destroyOnHidden
             width={520}
         >

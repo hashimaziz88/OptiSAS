@@ -75,14 +75,14 @@ const PricingRequestsContent: React.FC = () => {
     };
 
     useEffect(() => {
-        setPage(1);
-        fetchData(1, pageSize);
-    }, [activeTab, statusFilter, priorityFilter]);
-
-    useEffect(() => {
-        fetchData(page, pageSize);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page, pageSize]);
+        if (activeTab === 'all') {
+            getPricingRequests({ pageNumber: page, pageSize, status: statusFilter, priority: priorityFilter });
+        } else if (activeTab === 'mine') {
+            getMyPricingRequests();
+        } else {
+            getPendingPricingRequests();
+        }
+    }, [page, pageSize, activeTab, statusFilter, priorityFilter, getPricingRequests, getMyPricingRequests, getPendingPricingRequests]);
 
     const getTableData = (): IPricingRequestDto[] => {
         let items: IPricingRequestDto[] = [];
@@ -197,7 +197,7 @@ const PricingRequestsContent: React.FC = () => {
             <Tabs
                 className={styles.tabs}
                 activeKey={activeTab}
-                onChange={(key) => setActiveTab(key as TabKey)}
+                onChange={(key) => { setActiveTab(key as TabKey); setPage(1); }}
                 items={tabItems}
             />
 
@@ -361,9 +361,7 @@ const PricingRequestsContent: React.FC = () => {
 };
 
 const PricingRequestsPage: React.FC = () => (
-    <PricingRequestProvider>
-        <PricingRequestsContent />
-    </PricingRequestProvider>
+    <PricingRequestsContent />
 );
 
 export default PricingRequestsPage;
