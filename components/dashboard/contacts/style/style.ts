@@ -73,7 +73,7 @@ export const useStyles = createStyles(({ token }) => ({
   `,
 
   filterSelect: css`
-    min-width: 160px;
+    min-width: 200px;
 
     .ant-select-selector {
       background: rgba(255, 255, 255, 0.05) !important;
@@ -154,6 +154,12 @@ export const useStyles = createStyles(({ token }) => ({
     border: 1px solid rgba(255, 77, 79, 0.3);
   `,
 
+  primaryBadge: css`
+    background: rgba(250, 173, 20, 0.15);
+    color: #faad14;
+    border: 1px solid rgba(250, 173, 20, 0.3);
+  `,
+
   modal: css`
     .ant-modal-content {
       background: #1e2128 !important;
@@ -178,10 +184,6 @@ export const useStyles = createStyles(({ token }) => ({
       &:hover {
         color: white;
       }
-    }
-
-    .ant-modal-body {
-      padding: 24px;
     }
 
     .ant-form-item-label > label {
@@ -282,6 +284,12 @@ export const useStyles = createStyles(({ token }) => ({
     }
   `,
 
+  formRow: css`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+  `,
+
   formFooter: css`
     margin-bottom: 0;
     margin-top: 8px;
@@ -299,45 +307,24 @@ export const useStyles = createStyles(({ token }) => ({
     background: rgba(255, 255, 255, 0.05);
   `,
 
-  statsRow: css`
-    margin-bottom: 24px;
-  `,
-
-  statLabel: css`
-    color: #8c8c8c;
-  `,
-
-  statContacts: css`
-    color: #60a5fa;
-  `,
-
-  statOpportunities: css`
-    color: #34d399;
-  `,
-
   drawerActions: css`
     margin-top: 24px;
     display: flex;
     gap: 8px;
   `,
 
-  drawerBody: css`
-    .ant-descriptions-item-label,
-    .ant-descriptions-item-content {
-      color: #cbd5e0 !important;
-      background: transparent !important;
-    }
+  avatarCell: css`
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  `,
 
-    .ant-statistic-title {
-      color: #8c8c8c;
-    }
-
-    .ant-statistic-content {
-      color: #e2e8f0;
-    }
-
-    .ant-drawer-title {
-      color: white;
+  avatarLabel: css`
+    font-weight: 600;
+    color: #e2e8f0;
+    cursor: pointer;
+    &:hover {
+      color: #60a5fa;
     }
   `,
 
@@ -350,6 +337,14 @@ export const useStyles = createStyles(({ token }) => ({
       &:hover {
         color: white;
       }
+    }
+  `,
+
+  drawerBody: css`
+    .ant-descriptions-item-label,
+    .ant-descriptions-item-content {
+      color: #cbd5e0 !important;
+      background: transparent !important;
     }
   `,
 }));

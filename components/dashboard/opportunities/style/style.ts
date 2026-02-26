@@ -40,6 +40,44 @@ export const useStyles = createStyles(({ token }) => ({
     }
   `,
 
+  pipelineRow: css`
+    margin-bottom: 24px;
+  `,
+
+  pipelineCard: css`
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    transition: border-color 0.2s;
+
+    &:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+  `,
+
+  pipelineCardLabel: css`
+    font-size: 12px;
+    color: #8c8c8c;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  `,
+
+  pipelineCardCount: css`
+    font-size: 28px;
+    font-weight: 700;
+    color: white;
+    line-height: 1.2;
+  `,
+
+  pipelineCardValue: css`
+    font-size: 12px;
+    color: #a0aec0;
+    margin-top: 2px;
+  `,
+
   filterBar: css`
     display: flex;
     gap: 12px;
@@ -73,7 +111,7 @@ export const useStyles = createStyles(({ token }) => ({
   `,
 
   filterSelect: css`
-    min-width: 160px;
+    min-width: 170px;
 
     .ant-select-selector {
       background: rgba(255, 255, 255, 0.05) !important;
@@ -134,24 +172,12 @@ export const useStyles = createStyles(({ token }) => ({
     }
   `,
 
-  statusBadge: css`
+  stageBadge: css`
     display: inline-block;
     padding: 2px 10px;
     border-radius: 12px;
     font-size: 12px;
     font-weight: 500;
-  `,
-
-  activeBadge: css`
-    background: rgba(82, 196, 26, 0.15);
-    color: #52c41a;
-    border: 1px solid rgba(82, 196, 26, 0.3);
-  `,
-
-  inactiveBadge: css`
-    background: rgba(255, 77, 79, 0.15);
-    color: #ff4d4f;
-    border: 1px solid rgba(255, 77, 79, 0.3);
   `,
 
   modal: css`
@@ -164,7 +190,6 @@ export const useStyles = createStyles(({ token }) => ({
     .ant-modal-header {
       background: transparent !important;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 20px 24px;
     }
 
     .ant-modal-title {
@@ -180,21 +205,20 @@ export const useStyles = createStyles(({ token }) => ({
       }
     }
 
-    .ant-modal-body {
-      padding: 24px;
-    }
-
     .ant-form-item-label > label {
       color: #cbd5e0;
       font-weight: 500;
     }
 
     .ant-input,
-    .ant-input-affix-wrapper {
+    .ant-input-affix-wrapper,
+    .ant-input-number,
+    .ant-picker {
       background: rgba(255, 255, 255, 0.05);
       border-color: rgba(255, 255, 255, 0.12);
       color: white;
       border-radius: 8px;
+      width: 100%;
 
       input {
         background: transparent;
@@ -212,6 +236,18 @@ export const useStyles = createStyles(({ token }) => ({
       }
     }
 
+    .ant-input-number-input {
+      color: white;
+    }
+
+    .ant-picker-input > input {
+      color: white !important;
+    }
+
+    .ant-picker-suffix {
+      color: #666;
+    }
+
     .ant-select .ant-select-selector {
       background: rgba(255, 255, 255, 0.05) !important;
       border-color: rgba(255, 255, 255, 0.12) !important;
@@ -222,10 +258,6 @@ export const useStyles = createStyles(({ token }) => ({
     .ant-select-selection-placeholder,
     .ant-select-selection-item {
       color: #cbd5e0 !important;
-    }
-
-    .ant-switch-checked {
-      background: ${token.colorPrimary};
     }
   `,
 
@@ -239,11 +271,13 @@ export const useStyles = createStyles(({ token }) => ({
 
     .ant-input,
     .ant-input-affix-wrapper,
-    textarea.ant-input {
+    .ant-input-number,
+    .ant-picker {
       background: rgba(255, 255, 255, 0.05);
       border-color: rgba(255, 255, 255, 0.12);
       color: white;
       border-radius: 8px;
+      width: 100%;
 
       &::placeholder {
         color: #666;
@@ -255,6 +289,18 @@ export const useStyles = createStyles(({ token }) => ({
         border-color: ${token.colorPrimary};
         box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
       }
+    }
+
+    .ant-input-number-input {
+      color: white;
+    }
+
+    .ant-picker-input > input {
+      color: white !important;
+    }
+
+    .ant-picker-suffix {
+      color: #666;
     }
 
     .ant-select .ant-select-selector {
@@ -273,13 +319,17 @@ export const useStyles = createStyles(({ token }) => ({
       color: #666;
     }
 
-    .ant-switch {
-      background: rgba(255, 255, 255, 0.15);
-
-      &.ant-switch-checked {
-        background: ${token.colorPrimary};
-      }
+    textarea.ant-input {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: white;
     }
+  `,
+
+  formRow: css`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
   `,
 
   formFooter: css`
@@ -299,48 +349,6 @@ export const useStyles = createStyles(({ token }) => ({
     background: rgba(255, 255, 255, 0.05);
   `,
 
-  statsRow: css`
-    margin-bottom: 24px;
-  `,
-
-  statLabel: css`
-    color: #8c8c8c;
-  `,
-
-  statContacts: css`
-    color: #60a5fa;
-  `,
-
-  statOpportunities: css`
-    color: #34d399;
-  `,
-
-  drawerActions: css`
-    margin-top: 24px;
-    display: flex;
-    gap: 8px;
-  `,
-
-  drawerBody: css`
-    .ant-descriptions-item-label,
-    .ant-descriptions-item-content {
-      color: #cbd5e0 !important;
-      background: transparent !important;
-    }
-
-    .ant-statistic-title {
-      color: #8c8c8c;
-    }
-
-    .ant-statistic-content {
-      color: #e2e8f0;
-    }
-
-    .ant-drawer-title {
-      color: white;
-    }
-  `,
-
   drawerHeader: css`
     .ant-drawer-title {
       color: white !important;
@@ -351,5 +359,57 @@ export const useStyles = createStyles(({ token }) => ({
         color: white;
       }
     }
+  `,
+
+  drawerBody: css`
+    .ant-descriptions-item-label,
+    .ant-descriptions-item-content {
+      color: #cbd5e0 !important;
+      background: transparent !important;
+    }
+
+    .ant-timeline-item-content {
+      color: #e2e8f0;
+    }
+
+    .ant-timeline-item-tail {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+  `,
+
+  drawerActions: css`
+    margin-top: 24px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  `,
+
+  sectionTitle: css`
+    color: #8c8c8c;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 20px 0 10px;
+  `,
+
+  stageHistoryItem: css`
+    font-size: 13px;
+  `,
+
+  stageHistoryTime: css`
+    font-size: 11px;
+    color: #8c8c8c;
+    margin-top: 2px;
+  `,
+
+  probabilityText: css`
+    color: #a0aec0;
+    font-size: 13px;
+  `,
+
+  valueText: css`
+    font-weight: 600;
+    color: #e2e8f0;
   `,
 }));
