@@ -45,16 +45,25 @@ export const useStyles = createStyles(({ token }) => ({
 
   searchInput: css`
     max-width: 280px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.05) !important;
     border-color: rgba(255, 255, 255, 0.12);
     color: white;
 
     .ant-input {
-      background: transparent;
-      color: white;
+      background: transparent !important;
+      color: white !important;
       &::placeholder {
         color: #666;
       }
+      &:focus,
+      &:active {
+        background: transparent !important;
+        color: white !important;
+      }
+    }
+
+    .ant-input-affix-wrapper {
+      background: transparent !important;
     }
 
     .anticon {
@@ -64,6 +73,7 @@ export const useStyles = createStyles(({ token }) => ({
     &:hover,
     &:focus-within {
       border-color: ${token.colorPrimary};
+      background: rgba(255, 255, 255, 0.05) !important;
     }
   `,
 
