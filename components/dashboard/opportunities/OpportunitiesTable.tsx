@@ -109,6 +109,7 @@ const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                     <Tooltip title="View">
                         <Button
                             type="text"
+                            size="small"
                             icon={<EyeOutlined />}
                             style={{ color: '#60a5fa' }}
                             onClick={() => onView(record)}
@@ -117,8 +118,9 @@ const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                     <Tooltip title="Edit">
                         <Button
                             type="text"
+                            size="small"
                             icon={<EditOutlined />}
-                            style={{ color: '#a0aec0' }}
+                            style={{ color: '#facc15' }}
                             onClick={() => onEdit(record)}
                         />
                     </Tooltip>
@@ -133,8 +135,9 @@ const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                         <Tooltip title="Delete">
                             <Button
                                 type="text"
+                                size="small"
                                 icon={<DeleteOutlined />}
-                                style={{ color: '#fc8181' }}
+                                style={{ color: '#f87171' }}
                             />
                         </Tooltip>
                     </Popconfirm>

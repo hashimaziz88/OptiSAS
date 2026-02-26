@@ -25,6 +25,8 @@ import { useStyles } from '@/app/dashboard/style/style';
 import LogoImage from '@/components/logoImage/LogoImage';
 import { useAuthActions } from '@/providers/authProvider';
 
+import withAuth from "@/hoc/withAuth";
+
 const { Header, Sider, Content } = Layout;
 
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -100,4 +102,4 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
     );
 };
 
-export default DashboardLayout;
+export default withAuth(DashboardLayout);

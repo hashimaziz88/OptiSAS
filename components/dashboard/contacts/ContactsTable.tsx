@@ -106,6 +106,7 @@ const ContactsTable: React.FC<ContactsTableProps> = ({
                     <Tooltip title="View">
                         <Button
                             type="text"
+                            size="small"
                             icon={<EyeOutlined />}
                             style={{ color: '#60a5fa' }}
                             onClick={() => onView(record)}
@@ -114,8 +115,9 @@ const ContactsTable: React.FC<ContactsTableProps> = ({
                     <Tooltip title="Edit">
                         <Button
                             type="text"
+                            size="small"
                             icon={<EditOutlined />}
-                            style={{ color: '#a0aec0' }}
+                            style={{ color: '#facc15' }}
                             onClick={() => onEdit(record)}
                         />
                     </Tooltip>
@@ -130,8 +132,9 @@ const ContactsTable: React.FC<ContactsTableProps> = ({
                         <Tooltip title="Delete">
                             <Button
                                 type="text"
+                                size="small"
                                 icon={<DeleteOutlined />}
-                                style={{ color: '#fc8181' }}
+                                style={{ color: '#f87171' }}
                             />
                         </Tooltip>
                     </Popconfirm>
