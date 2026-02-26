@@ -166,7 +166,7 @@ const ContactsContent: React.FC = () => {
                 {viewingContact && (
                     <>
                         {viewingContact.isPrimaryContact && (
-                            <Tag icon={<StarFilled />} color="gold" style={{ marginBottom: 16 }}>
+                            <Tag icon={<StarFilled />} color="gold" className={styles.tagSpacing}>
                                 Primary Contact
                             </Tag>
                         )}

@@ -35,16 +35,16 @@ const CompleteActivityModal: React.FC<CompleteActivityModalProps> = ({ open, loa
                     <Form.Item
                         label="Outcome"
                         name="outcome"
-                        extra={<span style={{ color: '#64748b', fontSize: 12 }}>Briefly describe what was achieved or discussed.</span>}
+                        extra={<span className={styles.helperText}>Briefly describe what was achieved or discussed.</span>}
                     >
                         <Input.TextArea
                             rows={4}
                             placeholder="e.g. Demo completed, client requested a formal proposal..."
-                            style={{ resize: 'none' }}
+                            className={styles.noResize}
                         />
                     </Form.Item>
 
-                    <Form.Item style={{ marginBottom: 0 }}>
+                    <Form.Item className={styles.formItemNm}>
                         <Button
                             type="primary"
                             htmlType="submit"

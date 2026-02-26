@@ -159,7 +159,7 @@ const DocumentsContent: React.FC = () => {
             >
                 {viewingDoc && (
                     <>
-                        <Space style={{ marginBottom: 16 }}>
+                        <Space className={styles.spaceBlock}>
                             <Tag color={DOCUMENT_CATEGORY_COLORS[viewingDoc.category] ?? 'default'}>
                                 {DOCUMENT_CATEGORY_LABELS[viewingDoc.category] ?? '—'}
                             </Tag>

@@ -151,7 +151,7 @@ const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, lo
                         <Input.TextArea
                             placeholder="Add notes or context..."
                             rows={3}
-                            style={{ resize: 'none' }}
+                            className={styles.noResize}
                         />
                     </Form.Item>
 
@@ -164,7 +164,7 @@ const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, lo
                             >
                                 <DatePicker
                                     size="large"
-                                    style={{ width: '100%' }}
+                                    className={styles.fullWidth}
                                     showTime
                                     format="YYYY-MM-DD HH:mm"
                                 />
@@ -184,7 +184,7 @@ const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, lo
                                     size="large"
                                     min={1}
                                     placeholder="e.g. 60"
-                                    style={{ width: '100%' }}
+                                    className={styles.fullWidth}
                                 />
                             </Form.Item>
                         </Col>
@@ -233,12 +233,12 @@ const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, lo
                             size="large"
                             value={currentUserName}
                             disabled
-                            style={{ color: '#e2e8f0', cursor: 'default' }}
-                            suffix={<span style={{ color: '#64748b', fontSize: 12 }}>you</span>}
+                            className={styles.disabledInput}
+                            suffix={<span className={styles.inputSuffix}>you</span>}
                         />
                     </Form.Item>
 
-                    <Form.Item style={{ marginBottom: 0 }}>
+                    <Form.Item className={styles.formItemNm}>
                         <Button
                             type="primary"
                             htmlType="submit"

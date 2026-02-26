@@ -51,7 +51,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
             render: (subject: string, record) => (
                 <Button
                     type="link"
-                    style={{ padding: 0, color: '#60a5fa', fontWeight: 600 }}
+                    className={styles.subjectLink}
                     onClick={() => onView(record)}
                 >
                     {record.isOverdue && <span className={styles.overdueBadge} />}
@@ -119,7 +119,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                             type="text"
                             icon={<EyeOutlined />}
                             size="small"
-                            style={{ color: '#60a5fa' }}
+                            className={styles.viewAction}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
@@ -130,7 +130,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                                     type="text"
                                     icon={<EditOutlined />}
                                     size="small"
-                                    style={{ color: '#facc15' }}
+                                    className={styles.editAction}
                                     onClick={() => onEdit(record)}
                                 />
                             </Tooltip>
@@ -139,7 +139,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                                     type="text"
                                     icon={<CheckCircleOutlined />}
                                     size="small"
-                                    style={{ color: '#22c55e' }}
+                                    className={styles.completeAction}
                                     onClick={() => onComplete(record)}
                                 />
                             </Tooltip>
@@ -154,7 +154,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                                         type="text"
                                         icon={<StopOutlined />}
                                         size="small"
-                                        style={{ color: '#f59e0b' }}
+                                        className={styles.cancelAction}
                                     />
                                 </Tooltip>
                             </Popconfirm>
@@ -173,7 +173,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                                 type="text"
                                 icon={<DeleteOutlined />}
                                 size="small"
-                                style={{ color: '#f87171' }}
+                                className={styles.deleteAction}
                             />
                         </Tooltip>
                     </Popconfirm>

@@ -232,4 +232,28 @@ export const useStyles = createStyles(({ token }) => ({
       font-size: 18px;
     }
   `,
+
+  viewAction: css`
+    color: #60a5fa;
+  `,
+
+  downloadAction: css`
+    color: #34d399;
+  `,
+
+  deleteAction: css`
+    color: #f87171;
+  `,
+
+  btnNoPadding: css`
+    padding: 0;
+  `,
+
+  spaceBlock: css`
+    margin-bottom: 16px;
+  `,
+
+  fullWidth: css`
+    width: 100%;
+  `,
 }));

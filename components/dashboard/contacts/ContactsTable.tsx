@@ -32,10 +32,10 @@ const ContactsTable: React.FC<ContactsTableProps> = ({
             key: 'name',
             render: (_, record) => (
                 <div className={styles.avatarCell}>
-                    <Avatar style={{ background: '#3b82f6', flexShrink: 0 }}>
+                    <Avatar className={styles.contactAvatar}>
                         {record.firstName[0]}{record.lastName[0]}
                     </Avatar>
-                    <Button type="link" style={{ padding: 0, color: '#e2e8f0', fontWeight: 600 }} onClick={() => onView(record)}>
+                    <Button type="link" className={styles.contactNameLink} onClick={() => onView(record)}>
                         {record.fullName}
                     </Button>
                 </div>
@@ -58,7 +58,7 @@ const ContactsTable: React.FC<ContactsTableProps> = ({
             dataIndex: 'email',
             key: 'email',
             render: (v: string) => v
-                ? <a href={`mailto:${v}`} style={{ color: '#60a5fa' }}>{v}</a>
+                ? <a href={`mailto:${v}`} className={styles.emailLink}>{v}</a>
                 : '—',
         },
         {
@@ -78,9 +78,9 @@ const ContactsTable: React.FC<ContactsTableProps> = ({
                 <Tooltip title={isPrimary ? 'Primary contact' : 'Set as primary'}>
                     <Button
                         type="text"
-                        icon={isPrimary ? <StarFilled style={{ color: '#faad14' }} /> : <StarOutlined style={{ color: '#666' }} />}
+                        icon={isPrimary ? <StarFilled className={styles.starActive} /> : <StarOutlined className={styles.starInactive} />}
                         onClick={() => !isPrimary && onSetPrimary(record.id)}
-                        style={{ padding: 0 }}
+                        className={styles.btnNoPadding}
                     />
                 </Tooltip>
             ),
@@ -108,7 +108,7 @@ const ContactsTable: React.FC<ContactsTableProps> = ({
                             type="text"
                             size="small"
                             icon={<EyeOutlined />}
-                            style={{ color: '#60a5fa' }}
+                            className={styles.viewAction}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
@@ -117,7 +117,7 @@ const ContactsTable: React.FC<ContactsTableProps> = ({
                             type="text"
                             size="small"
                             icon={<EditOutlined />}
-                            style={{ color: '#facc15' }}
+                            className={styles.editAction}
                             onClick={() => onEdit(record)}
                         />
                     </Tooltip>
@@ -134,7 +134,7 @@ const ContactsTable: React.FC<ContactsTableProps> = ({
                                 type="text"
                                 size="small"
                                 icon={<DeleteOutlined />}
-                                style={{ color: '#f87171' }}
+                                className={styles.deleteAction}
                             />
                         </Tooltip>
                     </Popconfirm>

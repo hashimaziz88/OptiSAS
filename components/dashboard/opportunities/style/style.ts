@@ -407,4 +407,54 @@ export const useStyles = createStyles(({ token }) => ({
     font-weight: 600;
     color: #e2e8f0;
   `,
+
+  viewAction: css`
+    color: #60a5fa;
+  `,
+
+  editAction: css`
+    color: #facc15;
+  `,
+
+  deleteAction: css`
+    color: #f87171;
+  `,
+
+  opportunityNameLink: css`
+    padding: 0;
+    color: #60a5fa;
+    font-weight: 600;
+    text-align: left;
+    height: auto;
+    white-space: normal;
+  `,
+
+  fullWidth: css`
+    width: 100%;
+  `,
+
+  stageTagSmall: css`
+    margin: 0;
+    font-size: 11px;
+  `,
+
+  stageTagKanban: css`
+    margin-bottom: 16px;
+    font-size: 13px;
+    padding: 2px 12px;
+  `,
+
+  kanbanCardText: css`
+    color: #e2e8f0;
+  `,
+
+  kanbanTagSmall: css`
+    font-size: 11px;
+  `,
+
+  historyNoteText: css`
+    color: #a0aec0;
+    font-size: 12px;
+    margin-top: 2px;
+  `,
 }));

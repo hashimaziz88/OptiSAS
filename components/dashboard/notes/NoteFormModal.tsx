@@ -97,7 +97,7 @@ const NoteFormModal: React.FC<NoteFormModalProps> = ({ open, editing, loading, o
                         name="content"
                         rules={[{ required: true, message: 'Please enter note content' }]}
                     >
-                        <Input.TextArea rows={5} placeholder="Write your note..." style={{ resize: 'none' }} />
+                        <Input.TextArea rows={5} placeholder="Write your note..." className={styles.noResize} />
                     </Form.Item>
 
                     <Form.Item
@@ -133,7 +133,7 @@ const NoteFormModal: React.FC<NoteFormModalProps> = ({ open, editing, loading, o
                         <Switch />
                     </Form.Item>
 
-                    <Form.Item style={{ marginBottom: 0 }}>
+                    <Form.Item className={styles.formItemNm}>
                         <Button
                             type="primary"
                             htmlType="submit"

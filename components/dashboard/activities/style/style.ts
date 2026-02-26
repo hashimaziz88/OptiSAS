@@ -273,4 +273,71 @@ export const useStyles = createStyles(({ token }) => ({
       background: ${token.colorPrimary};
     }
   `,
+
+  viewAction: css`
+    color: #60a5fa;
+  `,
+
+  editAction: css`
+    color: #facc15;
+  `,
+
+  deleteAction: css`
+    color: #f87171;
+  `,
+
+  completeAction: css`
+    color: #22c55e;
+  `,
+
+  cancelAction: css`
+    color: #f59e0b;
+  `,
+
+  subjectLink: css`
+    padding: 0;
+    color: #60a5fa;
+    font-weight: 600;
+  `,
+
+  helperText: css`
+    color: #64748b;
+    font-size: 12px;
+  `,
+
+  noResize: css`
+    resize: none;
+  `,
+
+  formItemNm: css`
+    margin-bottom: 0;
+  `,
+
+  fullWidth: css`
+    width: 100%;
+  `,
+
+  disabledInput: css`
+    color: #e2e8f0;
+    cursor: default;
+  `,
+
+  inputSuffix: css`
+    color: #64748b;
+    font-size: 12px;
+  `,
+
+  badgeMargin: css`
+    margin-left: 6px;
+  `,
+
+  completeBtnGreen: css`
+    background: #22c55e;
+    border-color: #22c55e;
+    color: white;
+  `,
+
+  spaceBlock: css`
+    margin-bottom: 16px;
+  `,
 }));

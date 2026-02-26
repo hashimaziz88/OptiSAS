@@ -47,7 +47,7 @@ const DocumentsTable: React.FC<DocumentsTableProps> = ({
             render: (fileName: string, record) => (
                 <div className={styles.fileNameCell}>
                     <FileOutlined className="file-icon" />
-                    <Button type="link" style={{ padding: 0 }} onClick={() => onView(record)}>
+                    <Button type="link" className={styles.btnNoPadding} onClick={() => onView(record)}>
                         {fileName}
                     </Button>
                 </div>
@@ -105,7 +105,7 @@ const DocumentsTable: React.FC<DocumentsTableProps> = ({
                             type="text"
                             size="small"
                             icon={<EyeOutlined />}
-                            style={{ color: '#60a5fa' }}
+                            className={styles.viewAction}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
@@ -114,7 +114,7 @@ const DocumentsTable: React.FC<DocumentsTableProps> = ({
                             type="text"
                             size="small"
                             icon={<DownloadOutlined />}
-                            style={{ color: '#34d399' }}
+                            className={styles.downloadAction}
                             onClick={() => onDownload(record)}
                         />
                     </Tooltip>
@@ -131,7 +131,7 @@ const DocumentsTable: React.FC<DocumentsTableProps> = ({
                                 type="text"
                                 size="small"
                                 icon={<DeleteOutlined />}
-                                style={{ color: '#f87171' }}
+                                className={styles.deleteAction}
                             />
                         </Tooltip>
                     </Popconfirm>

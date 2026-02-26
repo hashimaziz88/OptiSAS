@@ -235,4 +235,67 @@ export const useStyles = createStyles(({ token }) => ({
       border-color: rgba(255, 255, 255, 0.15);
     }
   `,
+
+  viewAction: css`
+    color: #60a5fa;
+  `,
+
+  editAction: css`
+    color: #facc15;
+  `,
+
+  deleteAction: css`
+    color: #f87171;
+  `,
+
+  activateAction: css`
+    color: #22c55e;
+  `,
+
+  cancelAction: css`
+    color: #f87171;
+  `,
+
+  renewAction: css`
+    color: #a78bfa;
+  `,
+
+  warningIcon: css`
+    color: #facc15;
+  `,
+
+  btnNoPadding: css`
+    padding: 0;
+  `,
+
+  fullWidth: css`
+    width: 100%;
+  `,
+
+  spaceBlock: css`
+    margin-bottom: 20px;
+  `,
+
+  descriptionsBlock: css`
+    margin-bottom: 24px;
+  `,
+
+  renewBtnYellow: css`
+    color: #facc15;
+    border-color: #facc15;
+  `,
+
+  renewBtnGreen: css`
+    color: #22c55e;
+    border-color: #22c55e;
+  `,
+
+  renewBtnPurple: css`
+    color: #a78bfa;
+    border-color: #a78bfa;
+  `,
+
+  gridSpanFull: css`
+    grid-column: 1 / -1;
+  `,
 }));

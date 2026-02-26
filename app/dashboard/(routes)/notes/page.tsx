@@ -181,7 +181,7 @@ const NotesContent: React.FC = () => {
             >
                 {viewingNote && (
                     <>
-                        <Space style={{ marginBottom: 16 }}>
+                        <Space className={styles.spaceBlock}>
                             <Tag color={viewingNote.isPrivate ? 'purple' : 'blue'}>
                                 {viewingNote.isPrivate ? 'Private' : 'Shared'}
                             </Tag>

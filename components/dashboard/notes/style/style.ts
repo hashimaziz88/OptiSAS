@@ -199,4 +199,32 @@ export const useStyles = createStyles(({ token }) => ({
     gap: 8px;
     margin-top: 20px;
   `,
+
+  viewAction: css`
+    color: #60a5fa;
+  `,
+
+  editAction: css`
+    color: #facc15;
+  `,
+
+  deleteAction: css`
+    color: #f87171;
+  `,
+
+  btnNoPadding: css`
+    padding: 0;
+  `,
+
+  noResize: css`
+    resize: none;
+  `,
+
+  formItemNm: css`
+    margin-bottom: 0;
+  `,
+
+  spaceBlock: css`
+    margin-bottom: 16px;
+  `,
 }));

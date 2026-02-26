@@ -54,7 +54,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
             key: 'contractNumber',
             width: 150,
             render: (v: string, record) => (
-                <Button type="link" style={{ padding: 0 }} onClick={() => onView(record)}>
+                <Button type="link" className={styles.btnNoPadding} onClick={() => onView(record)}>
                     {v}
                 </Button>
             ),
@@ -91,7 +91,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                     </Tag>
                     {record.isExpiringSoon && (
                         <Tooltip title={`Expires in ${record.daysUntilExpiry} day(s)`}>
-                            <WarningOutlined style={{ color: '#facc15' }} />
+                            <WarningOutlined className={styles.warningIcon} />
                         </Tooltip>
                     )}
                 </Space>
@@ -123,7 +123,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                             type="text"
                             size="small"
                             icon={<EyeOutlined />}
-                            style={{ color: '#60a5fa' }}
+                            className={styles.viewAction}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
@@ -136,7 +136,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<EditOutlined />}
-                                    style={{ color: '#facc15' }}
+                                    className={styles.editAction}
                                     onClick={() => onEdit(record)}
                                 />
                             </Tooltip>
@@ -149,7 +149,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                         type="text"
                                         size="small"
                                         icon={<CheckCircleOutlined />}
-                                        style={{ color: '#22c55e' }}
+                                        className={styles.activateAction}
                                     />
                                 </Popconfirm>
                             </Tooltip>
@@ -162,7 +162,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                         type="text"
                                         size="small"
                                         icon={<DeleteOutlined />}
-                                        style={{ color: '#f87171' }}
+                                        className={styles.deleteAction}
                                     />
                                 </Popconfirm>
                             </Tooltip>
@@ -177,7 +177,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<EditOutlined />}
-                                    style={{ color: '#facc15' }}
+                                    className={styles.editAction}
                                     onClick={() => onEdit(record)}
                                 />
                             </Tooltip>
@@ -186,7 +186,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<RedoOutlined />}
-                                    style={{ color: '#a78bfa' }}
+                                    className={styles.renewAction}
                                     onClick={() => onRenew(record)}
                                 />
                             </Tooltip>
@@ -199,7 +199,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                         type="text"
                                         size="small"
                                         icon={<StopOutlined />}
-                                        style={{ color: '#f87171' }}
+                                        className={styles.cancelAction}
                                     />
                                 </Popconfirm>
                             </Tooltip>
@@ -213,7 +213,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                 type="text"
                                 size="small"
                                 icon={<RedoOutlined />}
-                                style={{ color: '#a78bfa' }}
+                                className={styles.renewAction}
                                 onClick={() => onRenew(record)}
                             />
                         </Tooltip>

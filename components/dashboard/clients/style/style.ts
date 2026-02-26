@@ -347,4 +347,26 @@ export const useStyles = createStyles(({ token }) => ({
       }
     }
   `,
+
+  viewAction: css`
+    color: #60a5fa;
+  `,
+
+  editAction: css`
+    color: #facc15;
+  `,
+
+  deleteAction: css`
+    color: #f87171;
+  `,
+
+  clientNameLink: css`
+    padding: 0;
+    color: #60a5fa;
+    font-weight: 600;
+  `,
+
+  fullWidth: css`
+    width: 100%;
+  `,
 }));

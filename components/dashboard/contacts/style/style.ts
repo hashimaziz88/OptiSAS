@@ -343,4 +343,47 @@ export const useStyles = createStyles(({ token }) => ({
       background: transparent !important;
     }
   `,
+
+  viewAction: css`
+    color: #60a5fa;
+  `,
+
+  editAction: css`
+    color: #facc15;
+  `,
+
+  deleteAction: css`
+    color: #f87171;
+  `,
+
+  contactAvatar: css`
+    background: #3b82f6;
+    flex-shrink: 0;
+  `,
+
+  contactNameLink: css`
+    padding: 0;
+    color: #e2e8f0;
+    font-weight: 600;
+  `,
+
+  emailLink: css`
+    color: #60a5fa;
+  `,
+
+  starActive: css`
+    color: #faad14;
+  `,
+
+  starInactive: css`
+    color: #666;
+  `,
+
+  btnNoPadding: css`
+    padding: 0;
+  `,
+
+  tagSpacing: css`
+    margin-bottom: 16px;
+  `,
 }));
