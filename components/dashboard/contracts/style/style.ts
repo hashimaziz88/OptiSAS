@@ -25,10 +25,12 @@ export const modalStyles: {
 
 export const useStyles = createStyles(({ token }) => ({
   pageTitle: css`
-    color: white;
-    font-size: 24px;
-    font-weight: 700;
-    margin: 0 !important;
+    &.ant-typography {
+      color: white;
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
   `,
 
   pageHeader: css`
