@@ -18,24 +18,24 @@ const columns: ColumnsType<ISalesPerformanceDto> = [
         dataIndex: 'userName',
         key: 'userName',
         render: (v: string) => (
-            <span style={{ color: '#e2e8f0', fontWeight: 500 }}>{v}</span>
+            <span style={{ color: '#e2e8f0', fontWeight: 500 }}>{v?.trim() || '—'}</span>
         ),
     },
     {
         title: 'Won',
-        dataIndex: 'dealsWon',
-        key: 'dealsWon',
+        dataIndex: 'wonCount',
+        key: 'wonCount',
         align: 'center',
-        sorter: (a, b) => a.dealsWon - b.dealsWon,
+        sorter: (a, b) => a.wonCount - b.wonCount,
         render: (v: number) => (
             <span style={{ color: '#34d399', fontWeight: 700, fontSize: 15 }}>{v}</span>
         ),
     },
     {
-        title: 'Total Value',
-        dataIndex: 'totalValue',
-        key: 'totalValue',
-        sorter: (a, b) => a.totalValue - b.totalValue,
+        title: 'Total Revenue',
+        dataIndex: 'totalRevenue',
+        key: 'totalRevenue',
+        sorter: (a, b) => a.totalRevenue - b.totalRevenue,
         render: (v: number) => <span style={{ color: '#60a5fa' }}>{formatCurrency(v)}</span>,
     },
     {
@@ -46,21 +46,19 @@ const columns: ColumnsType<ISalesPerformanceDto> = [
         sorter: (a, b) => a.winRate - b.winRate,
         render: (v: number) => (
             <Progress
-                percent={Math.round(v * 100)}
+                percent={Math.round(v)}
                 size="small"
                 strokeColor="#34d399"
-                railColor="rgba(255,255,255,0.1)"
                 format={(p) => <span style={{ color: '#cbd5e0', fontSize: 11 }}>{p}%</span>}
             />
         ),
     },
     {
-        title: 'Activities',
-        dataIndex: 'activitiesCompleted',
-        key: 'activitiesCompleted',
-        align: 'center',
-        sorter: (a, b) => a.activitiesCompleted - b.activitiesCompleted,
-        render: (v: number) => <span style={{ color: '#94a3b8' }}>{v}</span>,
+        title: 'Avg. Deal',
+        dataIndex: 'averageDealSize',
+        key: 'averageDealSize',
+        sorter: (a, b) => a.averageDealSize - b.averageDealSize,
+        render: (v: number) => <span style={{ color: '#94a3b8' }}>{formatCurrency(v)}</span>,
     },
 ];
 
@@ -78,7 +76,7 @@ const TopPerformersTable: React.FC<Props> = ({ performers, loading }) => {
                     borderBottom: '1px solid rgba(255,255,255,0.08)',
                 },
             }}
-            loading={loading}
+            loading={loading && performers.length === 0}
         >
             <Table
                 columns={columns}

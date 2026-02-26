@@ -46,9 +46,9 @@ const DashboardContent: React.FC = () => {
         getContractsExpiring(30);
         getActivitiesSummary();
         getDashboardPipelineMetrics();
-    }, [getDashboardOverview, getSalesPerformance, getContractsExpiring, getActivitiesSummary, getDashboardPipelineMetrics]);
+    }, [getDashboardOverview, getSalesPerformance, getContractsExpiring, getActivitiesSummary, getDashboardPipelineMetrics, canViewTopPerformers]);
 
-    const performanceList = toArray<ISalesPerformanceDto>(salesPerformance as ISalesPerformanceDto[] | null);
+    const performanceList: ISalesPerformanceDto[] = Array.isArray(salesPerformance) ? salesPerformance : [];
     const expiringList = toArray<IContractDto>(contractsExpiring as IContractDto[] | null);
     const pipelineStages = overview?.pipeline.stages ?? [];
 

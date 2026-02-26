@@ -25,7 +25,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             })
             .catch((error) => {
                 dispatch(loginError());
-                console.log(error.message);
+                console.error(error.message);
             });
     };
 

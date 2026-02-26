@@ -55,10 +55,12 @@ export interface IDashboardOverviewDto {
 export interface ISalesPerformanceDto {
     userId: string;
     userName: string;
-    dealsWon: number;
-    totalValue: number;
+    opportunitiesCount: number;
+    wonCount: number;
+    lostCount: number;
+    totalRevenue: number;
     winRate: number;
-    activitiesCompleted: number;
+    averageDealSize: number;
 }
 
 export interface IActivitiesSummaryDto {
