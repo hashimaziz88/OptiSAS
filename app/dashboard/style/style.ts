@@ -23,8 +23,8 @@ export const useStyles = createStyles(({ token }) => ({
     }
 
     .ant-menu-item-selected {
-      background-color: ${token.colorPrimary} !important;
-      box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+      background-color: rgba(255, 255, 255, 0.12) !important;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
     }
   `,
 

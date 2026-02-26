@@ -70,6 +70,17 @@ a {
   background: #1e2128 !important;
 }
 
+/* ── Table: clickable link buttons in rows ── */
+.ant-table-tbody .ant-btn-link {
+  color: #60a5fa !important;
+  font-weight: 600;
+  padding: 0;
+}
+
+.ant-table-tbody .ant-btn-link:hover {
+  color: #93c5fd !important;
+}
+
 /* ── Ant Design Modal: dark glass ── */
 .ant-modal-content {
   background: rgba(22, 26, 34, 0.98) !important;
@@ -124,22 +135,29 @@ a {
   color: rgba(255, 255, 255, 0.75) !important;
 }
 
+.ant-pagination-item {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
 .ant-pagination-item:hover a {
-  color: #1890ff !important;
+  color: #60a5fa !important;
 }
 
 .ant-pagination-item-active a {
-  color: #1890ff !important;
+  color: #60a5fa !important;
 }
 
 .ant-pagination-prev button,
 .ant-pagination-next button {
   color: rgba(255, 255, 255, 0.75) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 .ant-pagination-prev:hover button,
 .ant-pagination-next:hover button {
-  color: #1890ff !important;
+  color: #60a5fa !important;
 }
 
 .ant-pagination-disabled button {
@@ -153,6 +171,39 @@ a {
   .ant-pagination-item-container
   .ant-pagination-item-ellipsis {
   color: rgba(255, 255, 255, 0.45) !important;
+}
+
+/* ── Pagination: total text & size changer ── */
+.ant-pagination-total-text {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+
+.ant-pagination .ant-select .ant-select-selector {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.ant-pagination .ant-select .ant-select-arrow {
+  color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.ant-pagination .ant-select-dropdown {
+  background: #1e2128 !important;
+}
+
+.ant-pagination .ant-select-item {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.ant-pagination .ant-select-item:hover,
+.ant-pagination .ant-select-item-option-active {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.ant-pagination-item-active {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
 @media (prefers-color-scheme: dark) {

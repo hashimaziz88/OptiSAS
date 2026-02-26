@@ -149,13 +149,17 @@ export const useStyles = createStyles(({ token }) => ({
       color: ${token.colorPrimary};
     }
 
+    .ant-pagination-total-text {
+      color: rgba(255, 255, 255, 0.55);
+    }
+
     .ant-pagination-item a {
       color: rgba(255, 255, 255, 0.65);
     }
 
     .ant-pagination-item-active {
-      background: ${token.colorPrimary};
-      border-color: ${token.colorPrimary};
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
       a {
         color: white;
       }

@@ -124,14 +124,17 @@ export const useStyles = createStyles(({ token }) => ({
     }
 
     .ant-pagination {
+      .ant-pagination-total-text {
+        color: rgba(255, 255, 255, 0.55);
+      }
       .ant-pagination-item a,
       .ant-pagination-prev button,
       .ant-pagination-next button {
         color: #cbd5e0;
       }
       .ant-pagination-item-active {
-        background: ${token.colorPrimary};
-        border-color: ${token.colorPrimary};
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
         a {
           color: white;
         }
