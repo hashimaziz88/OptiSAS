@@ -45,16 +45,25 @@ export const useStyles = createStyles(({ token }) => ({
 
   searchInput: css`
     max-width: 260px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.05) !important;
     border-color: rgba(255, 255, 255, 0.12);
     color: white;
 
     .ant-input {
-      background: transparent;
-      color: white;
+      background: transparent !important;
+      color: white !important;
       &::placeholder {
         color: #666;
       }
+      &:focus,
+      &:active {
+        background: transparent !important;
+        color: white !important;
+      }
+    }
+
+    .ant-input-affix-wrapper {
+      background: transparent !important;
     }
 
     .anticon {
@@ -64,6 +73,7 @@ export const useStyles = createStyles(({ token }) => ({
     &:hover,
     &:focus-within {
       border-color: ${token.colorPrimary};
+      background: rgba(255, 255, 255, 0.05) !important;
     }
   `,
 
@@ -114,14 +124,17 @@ export const useStyles = createStyles(({ token }) => ({
     }
 
     .ant-pagination {
+      .ant-pagination-total-text {
+        color: rgba(255, 255, 255, 0.55);
+      }
       .ant-pagination-item a,
       .ant-pagination-prev button,
       .ant-pagination-next button {
         color: #cbd5e0;
       }
       .ant-pagination-item-active {
-        background: ${token.colorPrimary};
-        border-color: ${token.colorPrimary};
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
         a {
           color: white;
         }
@@ -346,5 +359,27 @@ export const useStyles = createStyles(({ token }) => ({
         color: white;
       }
     }
+  `,
+
+  viewAction: css`
+    color: #60a5fa;
+  `,
+
+  editAction: css`
+    color: #facc15;
+  `,
+
+  deleteAction: css`
+    color: #f87171;
+  `,
+
+  clientNameLink: css`
+    padding: 0;
+    color: #60a5fa;
+    font-weight: 600;
+  `,
+
+  fullWidth: css`
+    width: 100%;
   `,
 }));

@@ -29,6 +29,8 @@ interface ContractsTableProps {
     onActivate: (record: IContractDto) => void;
     onCancel: (record: IContractDto) => void;
     onRenew: (record: IContractDto) => void;
+    canDelete?: boolean;
+    canActivateCancel?: boolean;
 }
 
 const ContractsTable: React.FC<ContractsTableProps> = ({
@@ -44,6 +46,8 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
     onActivate,
     onCancel,
     onRenew,
+    canDelete,
+    canActivateCancel,
 }) => {
     const { styles } = useStyles();
 
@@ -54,7 +58,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
             key: 'contractNumber',
             width: 150,
             render: (v: string, record) => (
-                <Button type="link" style={{ padding: 0 }} onClick={() => onView(record)}>
+                <Button type="link" className={styles.btnNoPadding} onClick={() => onView(record)}>
                     {v}
                 </Button>
             ),
@@ -91,7 +95,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                     </Tag>
                     {record.isExpiringSoon && (
                         <Tooltip title={`Expires in ${record.daysUntilExpiry} day(s)`}>
-                            <WarningOutlined style={{ color: '#facc15' }} />
+                            <WarningOutlined className={styles.warningIcon} />
                         </Tooltip>
                     )}
                 </Space>
@@ -123,7 +127,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                             type="text"
                             size="small"
                             icon={<EyeOutlined />}
-                            style={{ color: '#60a5fa' }}
+                            className={styles.viewAction}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
@@ -136,36 +140,40 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<EditOutlined />}
-                                    style={{ color: '#facc15' }}
+                                    className={styles.editAction}
                                     onClick={() => onEdit(record)}
                                 />
                             </Tooltip>
-                            <Tooltip title="Activate">
-                                <Popconfirm
-                                    title="Activate this contract?"
-                                    onConfirm={() => onActivate(record)}
-                                >
-                                    <Button
-                                        type="text"
-                                        size="small"
-                                        icon={<CheckCircleOutlined />}
-                                        style={{ color: '#22c55e' }}
-                                    />
-                                </Popconfirm>
-                            </Tooltip>
-                            <Tooltip title="Delete">
-                                <Popconfirm
-                                    title="Delete this contract?"
-                                    onConfirm={() => onDelete(record.id)}
-                                >
-                                    <Button
-                                        type="text"
-                                        size="small"
-                                        icon={<DeleteOutlined />}
-                                        style={{ color: '#f87171' }}
-                                    />
-                                </Popconfirm>
-                            </Tooltip>
+                            {canActivateCancel && (
+                                <Tooltip title="Activate">
+                                    <Popconfirm
+                                        title="Activate this contract?"
+                                        onConfirm={() => onActivate(record)}
+                                    >
+                                        <Button
+                                            type="text"
+                                            size="small"
+                                            icon={<CheckCircleOutlined />}
+                                            className={styles.activateAction}
+                                        />
+                                    </Popconfirm>
+                                </Tooltip>
+                            )}
+                            {canDelete && (
+                                <Tooltip title="Delete">
+                                    <Popconfirm
+                                        title="Delete this contract?"
+                                        onConfirm={() => onDelete(record.id)}
+                                    >
+                                        <Button
+                                            type="text"
+                                            size="small"
+                                            icon={<DeleteOutlined />}
+                                            className={styles.deleteAction}
+                                        />
+                                    </Popconfirm>
+                                </Tooltip>
+                            )}
                         </>
                     )}
 
@@ -177,7 +185,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<EditOutlined />}
-                                    style={{ color: '#facc15' }}
+                                    className={styles.editAction}
                                     onClick={() => onEdit(record)}
                                 />
                             </Tooltip>
@@ -186,23 +194,25 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<RedoOutlined />}
-                                    style={{ color: '#a78bfa' }}
+                                    className={styles.renewAction}
                                     onClick={() => onRenew(record)}
                                 />
                             </Tooltip>
-                            <Tooltip title="Cancel">
-                                <Popconfirm
-                                    title="Cancel this contract?"
-                                    onConfirm={() => onCancel(record)}
-                                >
-                                    <Button
-                                        type="text"
-                                        size="small"
-                                        icon={<StopOutlined />}
-                                        style={{ color: '#f87171' }}
-                                    />
-                                </Popconfirm>
-                            </Tooltip>
+                            {canActivateCancel && (
+                                <Tooltip title="Cancel">
+                                    <Popconfirm
+                                        title="Cancel this contract?"
+                                        onConfirm={() => onCancel(record)}
+                                    >
+                                        <Button
+                                            type="text"
+                                            size="small"
+                                            icon={<StopOutlined />}
+                                            className={styles.cancelAction}
+                                        />
+                                    </Popconfirm>
+                                </Tooltip>
+                            )}
                         </>
                     )}
 
@@ -213,7 +223,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                 type="text"
                                 size="small"
                                 icon={<RedoOutlined />}
-                                style={{ color: '#a78bfa' }}
+                                className={styles.renewAction}
                                 onClick={() => onRenew(record)}
                             />
                         </Tooltip>

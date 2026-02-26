@@ -120,9 +120,7 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
                 };
                 await onSubmit(payload);
             }
-        } catch {
-            // validation failed
-        }
+        } catch { }
     };
 
     return (

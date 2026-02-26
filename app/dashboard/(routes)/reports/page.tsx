@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Tabs, Typography } from 'antd';
-import { ReportProvider } from '@/providers/reportProvider';
 import OpportunitiesReportTab from '@/components/dashboard/reports/OpportunitiesReportTab';
 import SalesByPeriodTab from '@/components/dashboard/reports/SalesByPeriodTab';
 import { useStyles } from '@/components/dashboard/reports/style/style';

@@ -55,7 +55,6 @@ const PricingRequestFormModal: React.FC<PricingRequestFormModalProps> = ({
             form.resetFields();
         }
 
-        // Fetch opportunities for the dropdown
         const fetchOpportunities = async () => {
             setOpportunitiesLoading(true);
             try {
@@ -90,9 +89,7 @@ const PricingRequestFormModal: React.FC<PricingRequestFormModalProps> = ({
                 ...(!editing && { requestedById: user?.userId }),
             };
             await onSubmit(payload);
-        } catch {
-            // validation failed
-        }
+        } catch { }
     };
 
     return (

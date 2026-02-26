@@ -18,11 +18,12 @@ interface ClientsTableProps {
     onEdit: (client: IClientDto) => void;
     onDelete: (id: string) => void;
     onView: (client: IClientDto) => void;
+    canDelete?: boolean;
 }
 
 const ClientsTable: React.FC<ClientsTableProps> = ({
     data, total, page, pageSize, loading,
-    onPageChange, onEdit, onDelete, onView,
+    onPageChange, onEdit, onDelete, onView, canDelete,
 }) => {
     const { styles, cx } = useStyles();
 
@@ -32,7 +33,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({
             dataIndex: 'name',
             key: 'name',
             render: (name: string, record) => (
-                <Button type="link" style={{ padding: 0, color: '#60a5fa', fontWeight: 600 }} onClick={() => onView(record)}>
+                <Button type="link" className={styles.clientNameLink} onClick={() => onView(record)}>
                     {name}
                 </Button>
             ),
@@ -94,7 +95,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({
                             type="text"
                             size="small"
                             icon={<EyeOutlined />}
-                            style={{ color: '#60a5fa' }}
+                            className={styles.viewAction}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
@@ -103,22 +104,24 @@ const ClientsTable: React.FC<ClientsTableProps> = ({
                             type="text"
                             size="small"
                             icon={<EditOutlined />}
-                            style={{ color: '#facc15' }}
+                            className={styles.editAction}
                             onClick={() => onEdit(record)}
                         />
                     </Tooltip>
-                    <Tooltip title="Delete">
-                        <Popconfirm
-                            title="Delete this client?"
-                            description="This action cannot be undone."
-                            onConfirm={() => onDelete(record.id)}
-                            okText="Delete"
-                            cancelText="Cancel"
-                            okButtonProps={{ danger: true }}
-                        >
-                            <Button type="text" size="small" icon={<DeleteOutlined />} style={{ color: '#f87171' }} />
-                        </Popconfirm>
-                    </Tooltip>
+                    {canDelete && (
+                        <Tooltip title="Delete">
+                            <Popconfirm
+                                title="Delete this client?"
+                                description="This action cannot be undone."
+                                onConfirm={() => onDelete(record.id)}
+                                okText="Delete"
+                                cancelText="Cancel"
+                                okButtonProps={{ danger: true }}
+                            >
+                                <Button type="text" size="small" icon={<DeleteOutlined />} className={styles.deleteAction} />
+                            </Popconfirm>
+                        </Tooltip>
+                    )}
                 </Space>
             ),
         },

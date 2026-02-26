@@ -10,21 +10,23 @@ import {
     ReloadOutlined, SendOutlined,
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
-import { ProposalProvider, useProposalState, useProposalActions } from '@/providers/proposalProvider';
+import { useProposalState, useProposalActions } from '@/providers/proposalProvider';
 import { ICreateProposalDto, IProposalDto, IProposalLineItemDto, IUpdateProposalDto } from '@/providers/proposalProvider/context';
 import { PROPOSAL_STATUS_COLORS, PROPOSAL_STATUS_LABELS, PROPOSAL_STATUS_OPTIONS, PROPOSALS_PAGE_SIZE } from '@/constants/proposals';
 import ProposalFormModal from '@/components/dashboard/proposals/ProposalFormModal';
 import ProposalsTable from '@/components/dashboard/proposals/ProposalsTable';
 import RejectProposalModal from '@/components/dashboard/proposals/RejectProposalModal';
 import { useStyles } from '@/components/dashboard/proposals/style/style';
+import { useAuthState } from '@/providers/authProvider';
+import { isAdminOrManager } from '@/utils/roles';
+import { formatCurrency } from '@/utils/dashboard/proposals';
 
 const { Title, Text } = Typography;
-
-const formatCurrency = (amount: number) =>
-    `ZAR ${(amount ?? 0).toLocaleString('en-ZA', { minimumFractionDigits: 2 })}`;
-
 const ProposalsContent: React.FC = () => {
     const { styles } = useStyles();
+    const { user } = useAuthState();
+    const canDelete = isAdminOrManager(user?.roles);
+    const canApproveReject = isAdminOrManager(user?.roles);
     const { isPending, pagedResult, currentProposal } = useProposalState();
     const {
         getProposals,
@@ -191,6 +193,8 @@ const ProposalsContent: React.FC = () => {
                 onSubmit={handleSubmitProposal}
                 onApprove={handleApprove}
                 onReject={handleOpenReject}
+                canDelete={canDelete}
+                canApproveReject={canApproveReject}
             />
 
             <ProposalFormModal
@@ -242,7 +246,7 @@ const ProposalsContent: React.FC = () => {
                                     </Popconfirm>
                                 </>
                             )}
-                            {drawerStatus === 2 && (
+                            {canApproveReject && drawerStatus === 2 && (
                                 <>
                                     <Popconfirm
                                         title="Approve this proposal?"
@@ -323,7 +327,7 @@ const ProposalsContent: React.FC = () => {
 };
 
 const ProposalsPage: React.FC = () => (
-        <ProposalsContent />
+    <ProposalsContent />
 );
 
 export default ProposalsPage;

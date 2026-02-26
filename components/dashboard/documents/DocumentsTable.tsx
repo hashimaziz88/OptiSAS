@@ -23,6 +23,7 @@ interface DocumentsTableProps {
     onView: (doc: IDocumentDto) => void;
     onDownload: (doc: IDocumentDto) => void;
     onDelete: (id: string) => void;
+    canDelete?: boolean;
 }
 
 const DocumentsTable: React.FC<DocumentsTableProps> = ({
@@ -35,6 +36,7 @@ const DocumentsTable: React.FC<DocumentsTableProps> = ({
     onView,
     onDownload,
     onDelete,
+    canDelete,
 }) => {
     const { styles } = useStyles();
 
@@ -47,7 +49,7 @@ const DocumentsTable: React.FC<DocumentsTableProps> = ({
             render: (fileName: string, record) => (
                 <div className={styles.fileNameCell}>
                     <FileOutlined className="file-icon" />
-                    <Button type="link" style={{ padding: 0 }} onClick={() => onView(record)}>
+                    <Button type="link" className={styles.btnNoPadding} onClick={() => onView(record)}>
                         {fileName}
                     </Button>
                 </div>
@@ -105,7 +107,7 @@ const DocumentsTable: React.FC<DocumentsTableProps> = ({
                             type="text"
                             size="small"
                             icon={<EyeOutlined />}
-                            style={{ color: '#60a5fa' }}
+                            className={styles.viewAction}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
@@ -114,27 +116,29 @@ const DocumentsTable: React.FC<DocumentsTableProps> = ({
                             type="text"
                             size="small"
                             icon={<DownloadOutlined />}
-                            style={{ color: '#34d399' }}
+                            className={styles.downloadAction}
                             onClick={() => onDownload(record)}
                         />
                     </Tooltip>
-                    <Popconfirm
-                        title="Delete this document?"
-                        description="This action cannot be undone."
-                        onConfirm={() => onDelete(record.id)}
-                        okText="Delete"
-                        cancelText="No"
-                        okButtonProps={{ danger: true }}
-                    >
-                        <Tooltip title="Delete">
-                            <Button
-                                type="text"
-                                size="small"
-                                icon={<DeleteOutlined />}
-                                style={{ color: '#f87171' }}
-                            />
-                        </Tooltip>
-                    </Popconfirm>
+                    {canDelete && (
+                        <Popconfirm
+                            title="Delete this document?"
+                            description="This action cannot be undone."
+                            onConfirm={() => onDelete(record.id)}
+                            okText="Delete"
+                            cancelText="No"
+                            okButtonProps={{ danger: true }}
+                        >
+                            <Tooltip title="Delete">
+                                <Button
+                                    type="text"
+                                    size="small"
+                                    icon={<DeleteOutlined />}
+                                    className={styles.deleteAction}
+                                />
+                            </Tooltip>
+                        </Popconfirm>
+                    )}
                 </Space>
             ),
         },

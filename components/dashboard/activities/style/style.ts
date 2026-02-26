@@ -45,16 +45,25 @@ export const useStyles = createStyles(({ token }) => ({
 
   searchInput: css`
     max-width: 260px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.05) !important;
     border-color: rgba(255, 255, 255, 0.12);
     color: white;
 
     .ant-input {
-      background: transparent;
-      color: white;
+      background: transparent !important;
+      color: white !important;
       &::placeholder {
         color: #666;
       }
+      &:focus,
+      &:active {
+        background: transparent !important;
+        color: white !important;
+      }
+    }
+
+    .ant-input-affix-wrapper {
+      background: transparent !important;
     }
 
     .anticon {
@@ -64,6 +73,7 @@ export const useStyles = createStyles(({ token }) => ({
     &:hover,
     &:focus-within {
       border-color: ${token.colorPrimary};
+      background: rgba(255, 255, 255, 0.05) !important;
     }
   `,
 
@@ -135,6 +145,10 @@ export const useStyles = createStyles(({ token }) => ({
       margin-top: 16px;
     }
 
+    .ant-pagination-total-text {
+      color: rgba(255, 255, 255, 0.55);
+    }
+
     .ant-pagination-item a,
     .ant-pagination-prev button,
     .ant-pagination-next button {
@@ -142,11 +156,12 @@ export const useStyles = createStyles(({ token }) => ({
     }
 
     .ant-pagination-item-active {
-      border-color: ${token.colorPrimary};
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
     .ant-pagination-item-active a {
-      color: ${token.colorPrimary};
+      color: white;
     }
   `,
 
@@ -272,5 +287,72 @@ export const useStyles = createStyles(({ token }) => ({
     .ant-tabs-ink-bar {
       background: ${token.colorPrimary};
     }
+  `,
+
+  viewAction: css`
+    color: #60a5fa;
+  `,
+
+  editAction: css`
+    color: #facc15;
+  `,
+
+  deleteAction: css`
+    color: #f87171;
+  `,
+
+  completeAction: css`
+    color: #22c55e;
+  `,
+
+  cancelAction: css`
+    color: #f59e0b;
+  `,
+
+  subjectLink: css`
+    padding: 0;
+    color: #60a5fa;
+    font-weight: 600;
+  `,
+
+  helperText: css`
+    color: #64748b;
+    font-size: 12px;
+  `,
+
+  noResize: css`
+    resize: none;
+  `,
+
+  formItemNm: css`
+    margin-bottom: 0;
+  `,
+
+  fullWidth: css`
+    width: 100%;
+  `,
+
+  disabledInput: css`
+    color: #e2e8f0;
+    cursor: default;
+  `,
+
+  inputSuffix: css`
+    color: #64748b;
+    font-size: 12px;
+  `,
+
+  badgeMargin: css`
+    margin-left: 6px;
+  `,
+
+  completeBtnGreen: css`
+    background: #22c55e;
+    border-color: #22c55e;
+    color: white;
+  `,
+
+  spaceBlock: css`
+    margin-bottom: 16px;
   `,
 }));

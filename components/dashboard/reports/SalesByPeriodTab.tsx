@@ -94,7 +94,6 @@ const SalesByPeriodTab: React.FC = () => {
                     value={dateRange as [Dayjs, Dayjs] | null}
                     onChange={(vals) => setDateRange(vals as [Dayjs | null, Dayjs | null] | null)}
                     allowClear
-                    style={{ background: 'rgba(255,255,255,0.05)', borderColor: 'rgba(255,255,255,0.12)' }}
                 />
                 <span className={styles.filterLabel}>Group By:</span>
                 <Select

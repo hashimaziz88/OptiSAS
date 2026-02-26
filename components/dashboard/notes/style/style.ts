@@ -45,16 +45,25 @@ export const useStyles = createStyles(({ token }) => ({
 
   searchInput: css`
     max-width: 280px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.05) !important;
     border-color: rgba(255, 255, 255, 0.12);
     color: white;
 
     .ant-input {
-      background: transparent;
-      color: white;
+      background: transparent !important;
+      color: white !important;
       &::placeholder {
         color: #666;
       }
+      &:focus,
+      &:active {
+        background: transparent !important;
+        color: white !important;
+      }
+    }
+
+    .ant-input-affix-wrapper {
+      background: transparent !important;
     }
 
     .anticon {
@@ -64,6 +73,7 @@ export const useStyles = createStyles(({ token }) => ({
     &:hover,
     &:focus-within {
       border-color: ${token.colorPrimary};
+      background: rgba(255, 255, 255, 0.05) !important;
     }
   `,
 
@@ -198,5 +208,33 @@ export const useStyles = createStyles(({ token }) => ({
     display: flex;
     gap: 8px;
     margin-top: 20px;
+  `,
+
+  viewAction: css`
+    color: #60a5fa;
+  `,
+
+  editAction: css`
+    color: #facc15;
+  `,
+
+  deleteAction: css`
+    color: #f87171;
+  `,
+
+  btnNoPadding: css`
+    padding: 0;
+  `,
+
+  noResize: css`
+    resize: none;
+  `,
+
+  formItemNm: css`
+    margin-bottom: 0;
+  `,
+
+  spaceBlock: css`
+    margin-bottom: 16px;
   `,
 }));

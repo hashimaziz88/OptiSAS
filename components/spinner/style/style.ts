@@ -1,8 +1,6 @@
 import { createStyles, css } from "antd-style";
 
 export const useStyles = createStyles(({ token }) => ({
-
-  // style/style.ts additions
   spinnerWrapper: css`
     display: flex;
     flex-direction: column;
@@ -17,5 +15,5 @@ export const useStyles = createStyles(({ token }) => ({
     font-size: 14px;
     letter-spacing: 1px;
     font-weight: 500;
-  `
+  `,
 }));

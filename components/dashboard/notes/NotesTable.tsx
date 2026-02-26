@@ -40,7 +40,7 @@ const NotesTable: React.FC<NotesTableProps> = ({
             key: 'content',
             ellipsis: true,
             render: (content: string, record) => (
-                <Button type="link" style={{ padding: 0 }} onClick={() => onView(record)}>
+                <Button type="link" className={styles.btnNoPadding} onClick={() => onView(record)}>
                     {content}
                 </Button>
             ),
@@ -84,10 +84,10 @@ const NotesTable: React.FC<NotesTableProps> = ({
             render: (_: unknown, record: INoteDto) => (
                 <Space size={4}>
                     <Tooltip title="View">
-                        <Button type="text" size="small" icon={<EyeOutlined />} style={{ color: '#60a5fa' }} onClick={() => onView(record)} />
+                        <Button type="text" size="small" icon={<EyeOutlined />} className={styles.viewAction} onClick={() => onView(record)} />
                     </Tooltip>
                     <Tooltip title="Edit">
-                        <Button type="text" size="small" icon={<EditOutlined />} style={{ color: '#facc15' }} onClick={() => onEdit(record)} />
+                        <Button type="text" size="small" icon={<EditOutlined />} className={styles.editAction} onClick={() => onEdit(record)} />
                     </Tooltip>
                     <Popconfirm
                         title="Delete this note?"
@@ -98,7 +98,7 @@ const NotesTable: React.FC<NotesTableProps> = ({
                         okButtonProps={{ danger: true }}
                     >
                         <Tooltip title="Delete">
-                            <Button type="text" size="small" icon={<DeleteOutlined />} style={{ color: '#f87171' }} />
+                            <Button type="text" size="small" icon={<DeleteOutlined />} className={styles.deleteAction} />
                         </Tooltip>
                     </Popconfirm>
                 </Space>

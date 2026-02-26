@@ -35,9 +35,7 @@ const RenewalModal: React.FC<RenewalModalProps> = ({
             };
             await onSubmit(contract.id, payload);
             form.resetFields();
-        } catch {
-            // validation failed
-        }
+        } catch { }
     };
 
     const handleCancel = () => {

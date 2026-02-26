@@ -3,18 +3,22 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag, Statistic, Row, Col } from 'antd';
 import { PlusOutlined, SearchOutlined, ReloadOutlined } from '@ant-design/icons';
-import { ClientProvider, useClientActions, useClientState } from '@/providers/clientProvider';
+import { useClientActions, useClientState } from '@/providers/clientProvider';
 import { IClientDto, ICreateClientDto, IUpdateClientDto } from '@/providers/clientProvider/context';
 import { CLIENT_TYPE_OPTIONS, CLIENTS_PAGE_SIZE, INDUSTRY_OPTIONS } from '@/constants/clients';
 import { buildClientsParams, getClientTypeLabel } from '@/utils/dashboard/clients';
 import ClientsTable from '@/components/dashboard/clients/ClientsTable';
 import ClientFormModal from '@/components/dashboard/clients/ClientFormModal';
 import { useStyles } from '@/components/dashboard/clients/style/style';
+import { useAuthState } from '@/providers/authProvider';
+import { isAdminOrManager } from '@/utils/roles';
 
 const { Title } = Typography;
 
 const ClientsContent: React.FC = () => {
     const { styles } = useStyles();
+    const { user } = useAuthState();
+    const canDelete = isAdminOrManager(user?.roles);
     const { getClients, createClient, updateClient, deleteClient } = useClientActions();
     const { isPending, pagedResult } = useClientState();
 
@@ -136,6 +140,7 @@ const ClientsContent: React.FC = () => {
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onView={setViewingClient}
+                canDelete={canDelete}
             />
 
             <ClientFormModal
@@ -197,7 +202,7 @@ const ClientsContent: React.FC = () => {
 };
 
 const ClientsPage: React.FC = () => (
-        <ClientsContent />
+    <ClientsContent />
 );
 
 export default ClientsPage;

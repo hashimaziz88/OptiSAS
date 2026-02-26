@@ -31,6 +31,8 @@ interface PricingRequestsTableProps {
     onDelete: (id: string) => void;
     onComplete: (record: IPricingRequestDto) => void;
     onAssign: (record: IPricingRequestDto) => void;
+    canDelete?: boolean;
+    canAssign?: boolean;
 }
 
 const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
@@ -45,6 +47,8 @@ const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
     onDelete,
     onComplete,
     onAssign,
+    canDelete,
+    canAssign,
 }) => {
     const { styles } = useStyles();
 
@@ -150,15 +154,17 @@ const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
                                     onClick={() => onEdit(record)}
                                 />
                             </Tooltip>
-                            <Tooltip title="Assign">
-                                <Button
-                                    type="text"
-                                    size="small"
-                                    icon={<UserAddOutlined />}
-                                    style={{ color: '#a78bfa' }}
-                                    onClick={() => onAssign(record)}
-                                />
-                            </Tooltip>
+                            {canAssign && (
+                                <Tooltip title="Assign">
+                                    <Button
+                                        type="text"
+                                        size="small"
+                                        icon={<UserAddOutlined />}
+                                        style={{ color: '#a78bfa' }}
+                                        onClick={() => onAssign(record)}
+                                    />
+                                </Tooltip>
+                            )}
                             <Tooltip title="Complete">
                                 <Button
                                     type="text"
@@ -170,23 +176,25 @@ const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
                             </Tooltip>
                         </>
                     )}
-                    <Popconfirm
-                        title="Delete this pricing request?"
-                        description="This action cannot be undone."
-                        onConfirm={() => onDelete(record.id)}
-                        okText="Delete"
-                        cancelText="No"
-                        okButtonProps={{ danger: true }}
-                    >
-                        <Tooltip title="Delete">
-                            <Button
-                                type="text"
-                                size="small"
-                                icon={<DeleteOutlined />}
-                                style={{ color: '#f87171' }}
-                            />
-                        </Tooltip>
-                    </Popconfirm>
+                    {canDelete && (
+                        <Popconfirm
+                            title="Delete this pricing request?"
+                            description="This action cannot be undone."
+                            onConfirm={() => onDelete(record.id)}
+                            okText="Delete"
+                            cancelText="No"
+                            okButtonProps={{ danger: true }}
+                        >
+                            <Tooltip title="Delete">
+                                <Button
+                                    type="text"
+                                    size="small"
+                                    icon={<DeleteOutlined />}
+                                    style={{ color: '#f87171' }}
+                                />
+                            </Tooltip>
+                        </Popconfirm>
+                    )}
                 </Space>
             ),
         },

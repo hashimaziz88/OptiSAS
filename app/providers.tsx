@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { ConfigProvider, App } from "antd";
 import { AuthProvider } from "@/providers/authProvider";
 import { ClientProvider } from "@/providers/clientProvider";
 import { ContactProvider } from "@/providers/contactProvider";
@@ -15,30 +16,42 @@ import { ReportProvider } from "@/providers/reportProvider";
 
 export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     return (
-        <AuthProvider>
-            <ClientProvider>
-                <ContactProvider>
-                    <OpportunityProvider>
-                        <ProposalProvider>
-                            <PricingRequestProvider>
-                                <ContractProvider>
-                                    <ActivityProvider>
-                                        <DocumentProvider>
-                                            <NoteProvider>
-                                                <DashboardProvider>
-                                                    <ReportProvider>
-                                                        {children}
-                                                    </ReportProvider>
-                                                </DashboardProvider>
-                                            </NoteProvider>
-                                        </DocumentProvider>
-                                    </ActivityProvider>
-                                </ContractProvider>
-                            </PricingRequestProvider>
-                        </ProposalProvider>
-                    </OpportunityProvider>
-                </ContactProvider>
-            </ClientProvider>
-        </AuthProvider>
+        <ConfigProvider
+            theme={{
+                token: {
+                    colorPrimary: '#494c51',
+                    colorLink: '#393b3d',
+                    colorLinkHover: '#93c5fd',
+                },
+            }}
+        >
+            <App>
+                <AuthProvider>
+                    <ClientProvider>
+                        <ContactProvider>
+                            <OpportunityProvider>
+                                <ProposalProvider>
+                                    <PricingRequestProvider>
+                                        <ContractProvider>
+                                            <ActivityProvider>
+                                                <DocumentProvider>
+                                                    <NoteProvider>
+                                                        <DashboardProvider>
+                                                            <ReportProvider>
+                                                                {children}
+                                                            </ReportProvider>
+                                                        </DashboardProvider>
+                                                    </NoteProvider>
+                                                </DocumentProvider>
+                                            </ActivityProvider>
+                                        </ContractProvider>
+                                    </PricingRequestProvider>
+                                </ProposalProvider>
+                            </OpportunityProvider>
+                        </ContactProvider>
+                    </ClientProvider>
+                </AuthProvider>
+            </App>
+        </ConfigProvider>
     );
 };

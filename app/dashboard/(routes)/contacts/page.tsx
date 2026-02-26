@@ -11,11 +11,15 @@ import { buildContactsParams } from '@/utils/dashboard/contacts';
 import ContactsTable from '@/components/dashboard/contacts/ContactsTable';
 import ContactFormModal from '@/components/dashboard/contacts/ContactFormModal';
 import { useStyles } from '@/components/dashboard/contacts/style/style';
+import { useAuthState } from '@/providers/authProvider';
+import { isAdminOrManagerOrBDM } from '@/utils/roles';
 
 const { Title } = Typography;
 
 const ContactsContent: React.FC = () => {
     const { styles } = useStyles();
+    const { user } = useAuthState();
+    const canDelete = isAdminOrManagerOrBDM(user?.roles);
     const { getContacts, createContact, updateContact, deleteContact, setContactPrimary } = useContactActions();
     const { isPending, pagedResult } = useContactState();
     const { getClients } = useClientActions();
@@ -141,6 +145,7 @@ const ContactsContent: React.FC = () => {
                 onDelete={handleDelete}
                 onView={setViewingContact}
                 onSetPrimary={handleSetPrimary}
+                canDelete={canDelete}
             />
 
             <ContactFormModal
@@ -166,7 +171,7 @@ const ContactsContent: React.FC = () => {
                 {viewingContact && (
                     <>
                         {viewingContact.isPrimaryContact && (
-                            <Tag icon={<StarFilled />} color="gold" style={{ marginBottom: 16 }}>
+                            <Tag icon={<StarFilled />} color="gold" className={styles.tagSpacing}>
                                 Primary Contact
                             </Tag>
                         )}

@@ -21,11 +21,15 @@ import { buildOpportunitiesParams, getSourceLabel, formatCurrency } from '@/util
 import OpportunitiesTable from '@/components/dashboard/opportunities/OpportunitiesTable';
 import OpportunityFormModal from '@/components/dashboard/opportunities/OpportunityFormModal';
 import { useStyles } from '@/components/dashboard/opportunities/style/style';
+import { useAuthState } from '@/providers/authProvider';
+import { isAdminOrManager } from '@/utils/roles';
 
 const { Title, Text } = Typography;
 
 const OpportunitiesContent: React.FC = () => {
     const { styles } = useStyles();
+    const { user } = useAuthState();
+    const canDelete = isAdminOrManager(user?.roles);
     const {
         getOpportunities, createOpportunity, updateOpportunity, deleteOpportunity,
         getPipelineMetrics, getStageHistory, updateStage,
@@ -109,7 +113,6 @@ const OpportunitiesContent: React.FC = () => {
         setStageModalOpen(false);
         fetchOpportunities();
         getPipelineMetrics();
-        // refresh viewing opp
         const updated = pagedResult?.items?.find((o) => o.id === viewingOpp.id);
         if (updated) setViewingOpp({ ...viewingOpp, stage: values.stage, stageName: OPPORTUNITY_STAGE_LABELS[values.stage] });
         await getStageHistory(viewingOpp.id);
@@ -195,6 +198,7 @@ const OpportunitiesContent: React.FC = () => {
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onView={handleView}
+                canDelete={canDelete}
             />
 
             <OpportunityFormModal
@@ -250,7 +254,7 @@ const OpportunitiesContent: React.FC = () => {
                                 <Timeline
                                     items={stageHistory.map((h) => ({
                                         color: 'blue',
-                                        children: (
+                                        content: (
                                             <div className={styles.stageHistoryItem}>
                                                 <div>
                                                     <Tag color={OPPORTUNITY_STAGE_COLORS[h.fromStage] ?? 'default'} style={{ fontSize: 11 }}>

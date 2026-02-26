@@ -1,5 +1,5 @@
 import { createAction } from "redux-actions";
-import { IAuthStateContext, IUserLoginResponse,  } from "./context";
+import { IAuthStateContext, IUserLoginResponse, } from "./context";
 
 export enum AuthActionEnums {
     loginPending = "LOGIN_PENDING",
@@ -19,7 +19,6 @@ export enum AuthActionEnums {
     getMeError = "GET_ME_ERROR",
 }
 
-// Login
 export const loginPending = createAction<IAuthStateContext>(
     AuthActionEnums.loginPending,
     () => ({ isPending: true, isError: false, isSuccess: false, isAuthenticated: false })
@@ -36,7 +35,6 @@ export const loginError = createAction<IAuthStateContext>(
 );
 
 
-// Register
 export const registerPending = createAction<IAuthStateContext>(
     AuthActionEnums.registerPending,
     () => ({ isPending: true, isError: false, isSuccess: false, isAuthenticated: false })
@@ -53,7 +51,6 @@ export const registerError = createAction<IAuthStateContext>(
 );
 
 
-// Logout
 export const logoutPending = createAction<IAuthStateContext>(
     AuthActionEnums.logoutPending,
     () => ({ isPending: true, isError: false, isSuccess: false, isAuthenticated: false })
@@ -69,7 +66,6 @@ export const logoutSuccess = createAction<IAuthStateContext>(
     () => ({ isSuccess: false, isPending: false, isError: false, user: null, isAuthenticated: false })
 );
 
-// GetMe
 export const getMePending = createAction<IAuthStateContext>(
     AuthActionEnums.getMePending,
     () => ({ isPending: true, isError: false, isSuccess: false, isAuthenticated: false })

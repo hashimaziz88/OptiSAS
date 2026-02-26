@@ -16,11 +16,10 @@ import {
     ACTIVITY_TYPE_COLORS,
     ACTIVITY_STATUS_LABELS,
     ACTIVITY_STATUS_COLORS,
+    PRIORITY_LABELS,
+    PRIORITY_COLORS,
 } from '@/constants/activities';
 import { useStyles } from './style/style';
-
-const PRIORITY_LABELS: Record<number, string> = { 1: 'Low', 2: 'Medium', 3: 'High', 4: 'Urgent' };
-const PRIORITY_COLORS: Record<number, string> = { 1: 'default', 2: 'blue', 3: 'orange', 4: 'red' };
 
 interface ActivitiesTableProps {
     data: IActivityDto[];
@@ -34,11 +33,12 @@ interface ActivitiesTableProps {
     onView: (activity: IActivityDto) => void;
     onComplete: (activity: IActivityDto) => void;
     onCancel: (id: string) => void;
+    canDelete?: boolean;
 }
 
 const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
     data, total, page, pageSize, loading,
-    onPageChange, onEdit, onDelete, onView, onComplete, onCancel,
+    onPageChange, onEdit, onDelete, onView, onComplete, onCancel, canDelete,
 }) => {
     const { styles } = useStyles();
 
@@ -51,7 +51,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
             render: (subject: string, record) => (
                 <Button
                     type="link"
-                    style={{ padding: 0, color: '#60a5fa', fontWeight: 600 }}
+                    className={styles.subjectLink}
                     onClick={() => onView(record)}
                 >
                     {record.isOverdue && <span className={styles.overdueBadge} />}
@@ -119,7 +119,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                             type="text"
                             icon={<EyeOutlined />}
                             size="small"
-                            style={{ color: '#60a5fa' }}
+                            className={styles.viewAction}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
@@ -130,7 +130,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                                     type="text"
                                     icon={<EditOutlined />}
                                     size="small"
-                                    style={{ color: '#facc15' }}
+                                    className={styles.editAction}
                                     onClick={() => onEdit(record)}
                                 />
                             </Tooltip>
@@ -139,7 +139,7 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                                     type="text"
                                     icon={<CheckCircleOutlined />}
                                     size="small"
-                                    style={{ color: '#22c55e' }}
+                                    className={styles.completeAction}
                                     onClick={() => onComplete(record)}
                                 />
                             </Tooltip>
@@ -154,29 +154,31 @@ const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
                                         type="text"
                                         icon={<StopOutlined />}
                                         size="small"
-                                        style={{ color: '#f59e0b' }}
+                                        className={styles.cancelAction}
                                     />
                                 </Tooltip>
                             </Popconfirm>
                         </>
                     )}
-                    <Popconfirm
-                        title="Delete this activity?"
-                        description="This action cannot be undone."
-                        onConfirm={() => onDelete(record.id)}
-                        okText="Delete"
-                        cancelText="No"
-                        okButtonProps={{ danger: true }}
-                    >
-                        <Tooltip title="Delete">
-                            <Button
-                                type="text"
-                                icon={<DeleteOutlined />}
-                                size="small"
-                                style={{ color: '#f87171' }}
-                            />
-                        </Tooltip>
-                    </Popconfirm>
+                    {canDelete && (
+                        <Popconfirm
+                            title="Delete this activity?"
+                            description="This action cannot be undone."
+                            onConfirm={() => onDelete(record.id)}
+                            okText="Delete"
+                            cancelText="No"
+                            okButtonProps={{ danger: true }}
+                        >
+                            <Tooltip title="Delete">
+                                <Button
+                                    type="text"
+                                    icon={<DeleteOutlined />}
+                                    size="small"
+                                    className={styles.deleteAction}
+                                />
+                            </Tooltip>
+                        </Popconfirm>
+                    )}
                 </Space>
             ),
         },

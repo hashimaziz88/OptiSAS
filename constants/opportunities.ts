@@ -45,7 +45,6 @@ export const OPPORTUNITIES_PAGE_SIZE = 10;
 
 export const STAGE_ORDER = [1, 2, 3, 4, 5, 6];
 
-// Keys match the API's PipelineMetricsDto.stageMetrics property names
 export const STAGE_API_KEYS: Record<number, string> = {
   1: "Lead",
   2: "Qualified",
@@ -54,3 +53,12 @@ export const STAGE_API_KEYS: Record<number, string> = {
   5: "ClosedWon",
   6: "ClosedLost",
 };
+
+export const PIPELINE_STAGE_COLORS = [
+  "rgba(96,165,250,0.85)",
+  "rgba(52,211,153,0.85)",
+  "rgba(167,139,250,0.85)",
+  "rgba(251,191,36,0.85)",
+  "rgba(56,189,248,0.85)",
+  "rgba(248,113,113,0.85)",
+];

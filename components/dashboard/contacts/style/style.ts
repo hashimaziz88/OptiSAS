@@ -46,16 +46,25 @@ export const useStyles = createStyles(({ token }) => ({
 
   searchInput: css`
     max-width: 260px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.05) !important;
     border-color: rgba(255, 255, 255, 0.12);
     color: white;
 
     .ant-input {
-      background: transparent;
-      color: white;
+      background: transparent !important;
+      color: white !important;
       &::placeholder {
         color: #666;
       }
+      &:focus,
+      &:active {
+        background: transparent !important;
+        color: white !important;
+      }
+    }
+
+    .ant-input-affix-wrapper {
+      background: transparent !important;
     }
 
     .anticon {
@@ -65,6 +74,7 @@ export const useStyles = createStyles(({ token }) => ({
     &:hover,
     &:focus-within {
       border-color: ${token.colorPrimary};
+      background: rgba(255, 255, 255, 0.05) !important;
     }
   `,
 
@@ -115,14 +125,17 @@ export const useStyles = createStyles(({ token }) => ({
     }
 
     .ant-pagination {
+      .ant-pagination-total-text {
+        color: rgba(255, 255, 255, 0.55);
+      }
       .ant-pagination-item a,
       .ant-pagination-prev button,
       .ant-pagination-next button {
         color: #cbd5e0;
       }
       .ant-pagination-item-active {
-        background: ${token.colorPrimary};
-        border-color: ${token.colorPrimary};
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
         a {
           color: white;
         }
@@ -342,5 +355,48 @@ export const useStyles = createStyles(({ token }) => ({
       color: #cbd5e0 !important;
       background: transparent !important;
     }
+  `,
+
+  viewAction: css`
+    color: #60a5fa;
+  `,
+
+  editAction: css`
+    color: #facc15;
+  `,
+
+  deleteAction: css`
+    color: #f87171;
+  `,
+
+  contactAvatar: css`
+    background: #3b82f6;
+    flex-shrink: 0;
+  `,
+
+  contactNameLink: css`
+    padding: 0;
+    color: #e2e8f0;
+    font-weight: 600;
+  `,
+
+  emailLink: css`
+    color: #60a5fa;
+  `,
+
+  starActive: css`
+    color: #faad14;
+  `,
+
+  starInactive: css`
+    color: #666;
+  `,
+
+  btnNoPadding: css`
+    padding: 0;
+  `,
+
+  tagSpacing: css`
+    margin-bottom: 16px;
   `,
 }));

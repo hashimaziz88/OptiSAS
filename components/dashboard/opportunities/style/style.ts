@@ -83,16 +83,25 @@ export const useStyles = createStyles(({ token }) => ({
 
   searchInput: css`
     max-width: 260px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.05) !important;
     border-color: rgba(255, 255, 255, 0.12);
     color: white;
 
     .ant-input {
-      background: transparent;
-      color: white;
+      background: transparent !important;
+      color: white !important;
       &::placeholder {
         color: #666;
       }
+      &:focus,
+      &:active {
+        background: transparent !important;
+        color: white !important;
+      }
+    }
+
+    .ant-input-affix-wrapper {
+      background: transparent !important;
     }
 
     .anticon {
@@ -102,6 +111,7 @@ export const useStyles = createStyles(({ token }) => ({
     &:hover,
     &:focus-within {
       border-color: ${token.colorPrimary};
+      background: rgba(255, 255, 255, 0.05) !important;
     }
   `,
 
@@ -152,14 +162,17 @@ export const useStyles = createStyles(({ token }) => ({
     }
 
     .ant-pagination {
+      .ant-pagination-total-text {
+        color: rgba(255, 255, 255, 0.55);
+      }
       .ant-pagination-item a,
       .ant-pagination-prev button,
       .ant-pagination-next button {
         color: #cbd5e0;
       }
       .ant-pagination-item-active {
-        background: ${token.colorPrimary};
-        border-color: ${token.colorPrimary};
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
         a {
           color: white;
         }
@@ -406,5 +419,55 @@ export const useStyles = createStyles(({ token }) => ({
   valueText: css`
     font-weight: 600;
     color: #e2e8f0;
+  `,
+
+  viewAction: css`
+    color: #60a5fa;
+  `,
+
+  editAction: css`
+    color: #facc15;
+  `,
+
+  deleteAction: css`
+    color: #f87171;
+  `,
+
+  opportunityNameLink: css`
+    padding: 0;
+    color: #60a5fa;
+    font-weight: 600;
+    text-align: left;
+    height: auto;
+    white-space: normal;
+  `,
+
+  fullWidth: css`
+    width: 100%;
+  `,
+
+  stageTagSmall: css`
+    margin: 0;
+    font-size: 11px;
+  `,
+
+  stageTagKanban: css`
+    margin-bottom: 16px;
+    font-size: 13px;
+    padding: 2px 12px;
+  `,
+
+  kanbanCardText: css`
+    color: #e2e8f0;
+  `,
+
+  kanbanTagSmall: css`
+    font-size: 11px;
+  `,
+
+  historyNoteText: css`
+    color: #a0aec0;
+    font-size: 12px;
+    margin-top: 2px;
   `,
 }));

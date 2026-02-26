@@ -10,6 +10,7 @@ import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { ICreateProposalDto, ICreateProposalLineItemDto, IProposalDto, IUpdateProposalDto } from '@/providers/proposalProvider/context';
 import { axiosInstance } from '@/utils/axiosInstance';
+import { calcLineTotal } from '@/utils/dashboard/proposals';
 import { useStyles } from './style/style';
 
 const { Text } = Typography;
@@ -25,14 +26,6 @@ interface OpportunityOption {
 interface DraftLineItem extends ICreateProposalLineItemDto {
     _key: number;
 }
-
-const calcLineTotal = (item: ICreateProposalLineItemDto): number => {
-    const qty = item.quantity ?? 0;
-    const price = item.unitPrice ?? 0;
-    const disc = item.discount ?? 0;
-    const tax = item.taxRate ?? 0;
-    return qty * price * (1 - disc / 100) * (1 + tax / 100);
-};
 
 interface ProposalFormModalProps {
     open: boolean;
@@ -107,9 +100,7 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
             setLineItems((prev) => [...prev, { ...values, _key: nextKey }]);
             setNextKey((k) => k + 1);
             lineForm.resetFields();
-        } catch {
-            // validation failed
-        }
+        } catch { }
     };
 
     const removeLineItem = (key: number) => {
@@ -160,9 +151,7 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
                 }),
             };
             await onSubmit(payload);
-        } catch {
-            // validation failed
-        }
+        } catch { }
     };
 
     return (

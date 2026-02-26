@@ -9,18 +9,23 @@ import {
     CheckCircleOutlined, EditOutlined, PlusOutlined,
     RedoOutlined, ReloadOutlined, StopOutlined, WarningOutlined,
 } from '@ant-design/icons';
-import { ContractProvider, useContractState, useContractActions } from '@/providers/contractProvider';
+import { useContractState, useContractActions } from '@/providers/contractProvider';
 import { IContractDto, ICreateContractDto, ICreateContractRenewalDto, IUpdateContractDto } from '@/providers/contractProvider/context';
 import { CONTRACT_STATUS_COLORS, CONTRACT_STATUS_LABELS, CONTRACT_STATUS_OPTIONS, CONTRACTS_PAGE_SIZE } from '@/constants/contracts';
 import ContractsTable from '@/components/dashboard/contracts/ContractsTable';
 import ContractFormModal from '@/components/dashboard/contracts/ContractFormModal';
 import RenewalModal from '@/components/dashboard/contracts/RenewalModal';
 import { useStyles } from '@/components/dashboard/contracts/style/style';
+import { useAuthState } from '@/providers/authProvider';
+import { isAdmin, isAdminOrManager } from '@/utils/roles';
 
 const { Title, Text } = Typography;
 
 const ContractsContent: React.FC = () => {
     const { styles } = useStyles();
+    const { user } = useAuthState();
+    const canDelete = isAdmin(user?.roles);
+    const canActivateCancel = isAdminOrManager(user?.roles);
     const { isPending, pagedResult } = useContractState();
     const {
         getContracts,
@@ -167,6 +172,8 @@ const ContractsContent: React.FC = () => {
                 onActivate={handleActivate}
                 onCancel={handleCancel}
                 onRenew={handleOpenRenewal}
+                canDelete={canDelete}
+                canActivateCancel={canActivateCancel}
             />
 
             <ContractFormModal
@@ -210,7 +217,7 @@ const ContractsContent: React.FC = () => {
                                     </Button>
                                 </Tooltip>
                             )}
-                            {drawerStatus === 1 && (
+                            {canActivateCancel && drawerStatus === 1 && (
                                 <Popconfirm title="Activate this contract?" onConfirm={() => handleActivate(viewingContract)}>
                                     <Button icon={<CheckCircleOutlined />} style={{ color: '#22c55e', borderColor: '#22c55e' }}>
                                         Activate
@@ -226,7 +233,7 @@ const ContractsContent: React.FC = () => {
                                     Renew
                                 </Button>
                             )}
-                            {drawerStatus === 2 && (
+                            {canActivateCancel && drawerStatus === 2 && (
                                 <Popconfirm title="Cancel this contract?" onConfirm={() => handleCancel(viewingContract)}>
                                     <Button icon={<StopOutlined />} danger>
                                         Cancel
@@ -289,7 +296,7 @@ const ContractsContent: React.FC = () => {
 };
 
 const ContractsPage: React.FC = () => (
-        <ContractsContent />
+    <ContractsContent />
 );
 
 export default ContractsPage;

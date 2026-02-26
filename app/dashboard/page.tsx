@@ -6,6 +6,9 @@ import { ReloadOutlined } from '@ant-design/icons';
 import { DashboardProvider, useDashboardActions, useDashboardState } from '@/providers/dashboardProvider';
 import { IContractDto } from '@/providers/contractProvider/context';
 import { ISalesPerformanceDto } from '@/providers/dashboardProvider/context';
+import { useAuthState } from '@/providers/authProvider';
+import { isAdminOrManager } from '@/utils/roles';
+import { toArray } from '@/utils/helpers';
 import KpiCards from '@/components/dashboard/overview/KpiCards';
 import ActivitiesSummaryCards from '@/components/dashboard/overview/ActivitiesSummaryCards';
 import PipelineBarChart from '@/components/dashboard/overview/PipelineBarChart';
@@ -16,15 +19,9 @@ import { useStyles } from '@/components/dashboard/overview/style/style';
 
 const { Title } = Typography;
 
-// Safely coerce API responses that may be arrays OR paged result objects
-const toArray = <T,>(data: T[] | { items?: T[] } | null | undefined): T[] => {
-    if (!data) return [];
-    if (Array.isArray(data)) return data;
-    if (Array.isArray((data as { items?: T[] }).items)) return (data as { items: T[] }).items;
-    return [];
-};
-
 const DashboardContent: React.FC = () => {
+    const { user } = useAuthState();
+    const canViewTopPerformers = isAdminOrManager(user?.roles);
     const {
         getDashboardOverview,
         getSalesPerformance,
@@ -37,7 +34,7 @@ const DashboardContent: React.FC = () => {
 
     const fetchAll = () => {
         getDashboardOverview();
-        getSalesPerformance(5);
+        if (canViewTopPerformers) getSalesPerformance(5);
         getContractsExpiring(30);
         getActivitiesSummary();
         getDashboardPipelineMetrics();
@@ -45,13 +42,13 @@ const DashboardContent: React.FC = () => {
 
     useEffect(() => {
         getDashboardOverview();
-        getSalesPerformance(5);
+        if (canViewTopPerformers) getSalesPerformance(5);
         getContractsExpiring(30);
         getActivitiesSummary();
         getDashboardPipelineMetrics();
-    }, [getDashboardOverview, getSalesPerformance, getContractsExpiring, getActivitiesSummary, getDashboardPipelineMetrics]);
+    }, [getDashboardOverview, getSalesPerformance, getContractsExpiring, getActivitiesSummary, getDashboardPipelineMetrics, canViewTopPerformers]);
 
-    const performanceList = toArray<ISalesPerformanceDto>(salesPerformance as ISalesPerformanceDto[] | null);
+    const performanceList: ISalesPerformanceDto[] = Array.isArray(salesPerformance) ? salesPerformance : [];
     const expiringList = toArray<IContractDto>(contractsExpiring as IContractDto[] | null);
     const pipelineStages = overview?.pipeline.stages ?? [];
 
@@ -99,10 +96,12 @@ const DashboardContent: React.FC = () => {
 
             {/* Bottom Row: Top Performers + Expiring Contracts */}
             <Row gutter={[16, 16]}>
-                <Col xs={24} xl={14}>
-                    <TopPerformersTable performers={performanceList} loading={isPending} />
-                </Col>
-                <Col xs={24} xl={10}>
+                {canViewTopPerformers && (
+                    <Col xs={24} xl={14}>
+                        <TopPerformersTable performers={performanceList} loading={isPending} />
+                    </Col>
+                )}
+                <Col xs={24} xl={canViewTopPerformers ? 10 : 24}>
                     <ContractsExpiringTable contracts={expiringList} loading={isPending} />
                 </Col>
             </Row>
