@@ -7,18 +7,19 @@ export const modalStyles: {
   body: CSSProperties;
 } = {
   content: {
-    background: "#1e2128",
+    background: "#1e2128 !important",
     border: "1px solid rgba(255,255,255,0.1)",
     borderRadius: 16,
     padding: 0,
   },
   header: {
-    background: "transparent",
+    background: "#1e2128",
     borderBottom: "1px solid rgba(255,255,255,0.08)",
     padding: "20px 24px",
     marginBottom: 0,
   },
   body: {
+    background: "#1e2128",
     padding: "24px",
   },
 };
