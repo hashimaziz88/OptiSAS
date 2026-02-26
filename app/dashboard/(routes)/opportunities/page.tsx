@@ -5,7 +5,8 @@ import {
     Button, Input, Select, Typography, message, Drawer,
     Descriptions, Tag, Timeline, Modal, Form, Row, Col,
 } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined, SwapOutlined } from '@ant-design/icons';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, SwapOutlined, UserSwitchOutlined } from '@ant-design/icons';
+import { axiosInstance } from '@/utils/axiosInstance';
 import { useOpportunityActions, useOpportunityState } from '@/providers/opportunityProvider';
 import { IOpportunityDto, ICreateOpportunityDto, IUpdateOpportunityDto } from '@/providers/opportunityProvider/context';
 import { useClientActions, useClientState } from '@/providers/clientProvider';
@@ -32,7 +33,7 @@ const OpportunitiesContent: React.FC = () => {
     const canDelete = isAdminOrManager(user?.roles);
     const {
         getOpportunities, createOpportunity, updateOpportunity, deleteOpportunity,
-        getPipelineMetrics, getStageHistory, updateStage,
+        getPipelineMetrics, getStageHistory, updateStage, assignOpportunity,
     } = useOpportunityActions();
     const { isPending, pagedResult, pipelineMetrics, stageHistory } = useOpportunityState();
 
@@ -50,6 +51,12 @@ const OpportunitiesContent: React.FC = () => {
     const [viewingOpp, setViewingOpp] = useState<IOpportunityDto | null>(null);
     const [stageModalOpen, setStageModalOpen] = useState(false);
     const [stageForm] = Form.useForm();
+
+    const [assignModalOpen, setAssignModalOpen] = useState(false);
+    const [assignForm] = Form.useForm();
+    const [assignUsers, setAssignUsers] = useState<{ label: string; value: string }[]>([]);
+    const [assignUsersLoading, setAssignUsersLoading] = useState(false);
+    const canAssign = isAdminOrManager(user?.roles);
 
     const clients = clientPagedResult?.items ?? [];
 
@@ -116,6 +123,40 @@ const OpportunitiesContent: React.FC = () => {
         const updated = pagedResult?.items?.find((o) => o.id === viewingOpp.id);
         if (updated) setViewingOpp({ ...viewingOpp, stage: values.stage, stageName: OPPORTUNITY_STAGE_LABELS[values.stage] });
         await getStageHistory(viewingOpp.id);
+    };
+
+    const handleOpenAssignModal = async () => {
+        assignForm.resetFields();
+        assignForm.setFieldsValue({ userId: viewingOpp?.ownerId });
+        setAssignModalOpen(true);
+        setAssignUsersLoading(true);
+        try {
+            const res = await axiosInstance().get(`${process.env.NEXT_PUBLIC_API_LINK}/api/users`, {
+                params: { pageSize: 200 },
+            });
+            setAssignUsers(
+                (res.data?.items ?? []).map((u: { id: string; fullName: string; roles: string[] }) => ({
+                    value: u.id,
+                    label: `${u.fullName}${u.roles?.length ? ` (${u.roles[0]})` : ''}`,
+                }))
+            );
+        } catch {
+            message.error('Failed to load users');
+        } finally {
+            setAssignUsersLoading(false);
+        }
+    };
+
+    const handleAssignSubmit = async (values: { userId: string }) => {
+        if (!viewingOpp) return;
+        await assignOpportunity(viewingOpp.id, values.userId);
+        message.success('Opportunity reassigned');
+        setAssignModalOpen(false);
+        fetchOpportunities();
+        const assignedUser = assignUsers.find((u) => u.value === values.userId);
+        if (assignedUser) {
+            setViewingOpp({ ...viewingOpp, ownerId: values.userId, ownerName: assignedUser.label.split(' (')[0] });
+        }
     };
 
     const clientOptions = clients.map((c) => ({ label: c.name, value: c.id }));
@@ -283,6 +324,11 @@ const OpportunitiesContent: React.FC = () => {
                             <Button icon={<SwapOutlined />} onClick={handleOpenStageModal}>
                                 Change Stage
                             </Button>
+                            {canAssign && (
+                                <Button icon={<UserSwitchOutlined />} onClick={handleOpenAssignModal}>
+                                    Reassign
+                                </Button>
+                            )}
                         </div>
                     </>
                 )}
@@ -309,6 +355,37 @@ const OpportunitiesContent: React.FC = () => {
                             <div className={styles.formFooterActions}>
                                 <Button onClick={() => setStageModalOpen(false)} size="large">Cancel</Button>
                                 <Button type="primary" htmlType="submit" loading={isPending} size="large">Update Stage</Button>
+                            </div>
+                        </Form.Item>
+                    </Form>
+                </div>
+            </Modal>
+
+            {/* Reassign Modal */}
+            <Modal
+                open={assignModalOpen}
+                title="Reassign Opportunity"
+                onCancel={() => setAssignModalOpen(false)}
+                footer={null}
+                destroyOnHidden
+                classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
+            >
+                <div className={styles.formBody}>
+                    <Form form={assignForm} layout="vertical" requiredMark={false} onFinish={handleAssignSubmit}>
+                        <Form.Item label="Assign To" name="userId" rules={[{ required: true, message: 'Select a user' }]}>
+                            <Select
+                                size="large"
+                                showSearch
+                                options={assignUsers}
+                                loading={assignUsersLoading}
+                                placeholder="Select a user"
+                                optionFilterProp="label"
+                            />
+                        </Form.Item>
+                        <Form.Item className={styles.formFooter}>
+                            <div className={styles.formFooterActions}>
+                                <Button onClick={() => setAssignModalOpen(false)} size="large">Cancel</Button>
+                                <Button type="primary" htmlType="submit" loading={isPending} size="large">Reassign</Button>
                             </div>
                         </Form.Item>
                     </Form>

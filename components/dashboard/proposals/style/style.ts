@@ -251,10 +251,18 @@ export const useStyles = createStyles(({ token }) => ({
 
   addLineItemRow: css`
     margin-top: 12px;
-    padding: 12px;
+    padding: 16px;
     border: 1px dashed rgba(255, 255, 255, 0.15);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.02);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .ant-form-item-label > label {
+      color: #94a3b8;
+      font-size: 12px;
+    }
 
     .ant-input,
     .ant-input-number,
@@ -262,6 +270,38 @@ export const useStyles = createStyles(({ token }) => ({
       background: rgba(255, 255, 255, 0.05) !important;
       border-color: rgba(255, 255, 255, 0.12) !important;
       color: white !important;
+    }
+
+    .ant-input::placeholder,
+    .ant-input-number-input::placeholder {
+      color: #555 !important;
+    }
+  `,
+
+  lineItemTopRow: css`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 16px;
+
+    @media (max-width: 520px) {
+      grid-template-columns: 1fr;
+      gap: 12px 0;
+    }
+  `,
+
+  lineItemBottomRow: css`
+    display: grid;
+    grid-template-columns: 70px 1fr 80px 80px auto;
+    gap: 0 12px;
+    align-items: start;
+
+    @media (max-width: 520px) {
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+
+      .ant-form-item:last-child {
+        grid-column: 1 / -1;
+      }
     }
   `,
 
