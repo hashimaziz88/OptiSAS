@@ -54,16 +54,14 @@ const ProposalsContent: React.FC = () => {
     };
 
     useEffect(() => {
-        load();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        getProposals({ pageNumber: 1, pageSize: PROPOSALS_PAGE_SIZE, status: undefined });
+    }, [getProposals]);
 
     useEffect(() => {
         if (viewingProposal) {
             getProposal(viewingProposal.id);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [viewingProposal?.id]);
+    }, [viewingProposal?.id, getProposal]);
 
     const handleStatusFilter = (value: number | undefined) => {
         setStatusFilter(value);

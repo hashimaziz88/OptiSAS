@@ -44,9 +44,12 @@ const DashboardContent: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchAll();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        getDashboardOverview();
+        getSalesPerformance(5);
+        getContractsExpiring(30);
+        getActivitiesSummary();
+        getDashboardPipelineMetrics();
+    }, [getDashboardOverview, getSalesPerformance, getContractsExpiring, getActivitiesSummary, getDashboardPipelineMetrics]);
 
     const performanceList = toArray<ISalesPerformanceDto>(salesPerformance as ISalesPerformanceDto[] | null);
     const expiringList = toArray<IContractDto>(contractsExpiring as IContractDto[] | null);

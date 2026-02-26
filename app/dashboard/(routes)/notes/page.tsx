@@ -66,9 +66,8 @@ const NotesContent: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchNotes(page, pageSize);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page, pageSize, relatedToType]);
+        getNotes({ pageNumber: page, pageSize: pageSize, relatedToType });
+    }, [page, pageSize, relatedToType, getNotes]);
 
     const notes = pagedResult?.items ?? [];
     const filteredItems = searchTerm

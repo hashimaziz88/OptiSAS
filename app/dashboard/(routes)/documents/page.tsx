@@ -44,9 +44,13 @@ const DocumentsContent: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchDocuments(page, pageSize);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page, pageSize, categoryFilter, relatedTypeFilter]);
+        getDocuments({
+            pageNumber: page,
+            pageSize: pageSize,
+            category: categoryFilter,
+            relatedToType: relatedTypeFilter,
+        });
+    }, [page, pageSize, categoryFilter, relatedTypeFilter, getDocuments]);
 
     // Trigger browser download when blob arrives
     useEffect(() => {
@@ -60,8 +64,7 @@ const DocumentsContent: React.FC = () => {
             URL.revokeObjectURL(url);
             setDownloadingId(null);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [downloadBlob]);
+    }, [downloadBlob, downloadingId, pagedResult]);
 
     const documents = pagedResult?.items ?? [];
 

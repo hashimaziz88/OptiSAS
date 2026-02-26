@@ -49,9 +49,8 @@ const ContractsContent: React.FC = () => {
     };
 
     useEffect(() => {
-        load();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        getContracts({ pageNumber: 1, pageSize: CONTRACTS_PAGE_SIZE, status: undefined });
+    }, [getContracts]);
 
     const handleStatusFilter = (value: number | undefined) => {
         setStatusFilter(value);
