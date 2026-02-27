@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag, Statistic, Row, Col } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined } from '@ant-design/icons';
+import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag, Statistic, Row, Col, Space } from 'antd';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, EditOutlined } from '@ant-design/icons';
 import { useClientActions, useClientState } from '@/providers/clientProvider';
 import { IClientDto, ICreateClientDto, IUpdateClientDto } from '@/providers/clientProvider/context';
 import { CLIENT_TYPE_OPTIONS, CLIENTS_PAGE_SIZE, INDUSTRY_OPTIONS } from '@/constants/clients';
@@ -61,7 +61,22 @@ const ClientsContent: React.FC = () => {
 
     const handleDelete = async (id: string) => {
         await deleteClient(id);
-        message.success('Client deleted');
+        message.success('Client marked as inactive');
+        fetchClients();
+    };
+
+    const handleActivate = async (client: IClientDto) => {
+        await updateClient(client.id, {
+            name: client.name,
+            industry: client.industry,
+            companySize: client.companySize,
+            website: client.website,
+            billingAddress: client.billingAddress,
+            taxNumber: client.taxNumber,
+            clientType: client.clientType,
+            isActive: true,
+        });
+        message.success('Client reactivated');
         fetchClients();
     };
 
@@ -139,6 +154,7 @@ const ClientsContent: React.FC = () => {
                 onPageChange={handlePageChange}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                onActivate={handleActivate}
                 onView={setViewingClient}
                 canDelete={canDelete}
             />
@@ -155,16 +171,34 @@ const ClientsContent: React.FC = () => {
                 open={!!viewingClient}
                 title={viewingClient?.name ?? 'Client Details'}
                 onClose={() => setViewingClient(null)}
-                size={480}
+                size="large"
                 styles={{
                     wrapper: { background: '#1e2128' },
                     header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
                     body: { background: '#1e2128', padding: '24px' },
                 }}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
+                extra={
+                    viewingClient && (
+                        <Space>
+                            <Button
+                                icon={<EditOutlined />}
+                                style={{ color: '#facc15', borderColor: '#facc15' }}
+                                onClick={() => { setViewingClient(null); handleEdit(viewingClient); }}
+                            >
+                                Edit
+                            </Button>
+                        </Space>
+                    )
+                }
             >
                 {viewingClient && (
                     <>
+                        <Space style={{ marginBottom: 20 }}>
+                            <Tag color={viewingClient.isActive ? 'green' : 'red'}>
+                                {viewingClient.isActive ? 'Active' : 'Inactive'}
+                            </Tag>
+                        </Space>
                         <Row gutter={16} className={styles.statsRow}>
                             <Col span={12}>
                                 <Statistic title={<span className={styles.statLabel}>Contacts</span>} value={viewingClient.contactsCount} className={styles.statContacts} />
@@ -173,30 +207,18 @@ const ClientsContent: React.FC = () => {
                                 <Statistic title={<span className={styles.statLabel}>Opportunities</span>} value={viewingClient.opportunitiesCount} className={styles.statOpportunities} />
                             </Col>
                         </Row>
-                        <Descriptions
-                            column={1}
-
-                            size="small"
-                        >
+                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
                             <Descriptions.Item label="Type">{getClientTypeLabel(viewingClient.clientType)}</Descriptions.Item>
                             <Descriptions.Item label="Industry">{viewingClient.industry || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Company Size">{viewingClient.companySize || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Website">{viewingClient.website || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Billing Address">{viewingClient.billingAddress || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Tax Number">{viewingClient.taxNumber || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Status">
-                                <Tag color={viewingClient.isActive ? 'green' : 'red'}>
-                                    {viewingClient.isActive ? 'Active' : 'Inactive'}
-                                </Tag>
-                            </Descriptions.Item>
                             <Descriptions.Item label="Created By">{viewingClient.createdByName || '—'}</Descriptions.Item>
+                            <Descriptions.Item label="Billing Address" span={2}>{viewingClient.billingAddress || '—'}</Descriptions.Item>
                         </Descriptions>
-                        <div className={styles.drawerActions}>
-                            <Button type="primary" onClick={() => { setViewingClient(null); handleEdit(viewingClient); }}>Edit Client</Button>
-                        </div>
                     </>
                 )}
-            </Drawer >
+            </Drawer>
         </>
     );
 };

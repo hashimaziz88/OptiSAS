@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Table, Button, Popconfirm, Tooltip, Space } from 'antd';
-import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
+import { EditOutlined, MinusCircleOutlined, EyeOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { IClientDto } from '@/providers/clientProvider/context';
 import { getClientTypeLabel } from '@/utils/dashboard/clients';
@@ -17,13 +17,14 @@ interface ClientsTableProps {
     onPageChange: (page: number, pageSize: number) => void;
     onEdit: (client: IClientDto) => void;
     onDelete: (id: string) => void;
+    onActivate: (client: IClientDto) => void;
     onView: (client: IClientDto) => void;
     canDelete?: boolean;
 }
 
 const ClientsTable: React.FC<ClientsTableProps> = ({
     data, total, page, pageSize, loading,
-    onPageChange, onEdit, onDelete, onView, canDelete,
+    onPageChange, onEdit, onDelete, onActivate, onView, canDelete,
 }) => {
     const { styles, cx } = useStyles();
 
@@ -59,7 +60,7 @@ const ClientsTable: React.FC<ClientsTableProps> = ({
             width: 140,
         },
         {
-            title: 'Status',
+            title: 'Active',
             dataIndex: 'isActive',
             key: 'isActive',
             width: 100,
@@ -108,17 +109,29 @@ const ClientsTable: React.FC<ClientsTableProps> = ({
                             onClick={() => onEdit(record)}
                         />
                     </Tooltip>
-                    {canDelete && (
-                        <Tooltip title="Delete">
+                    {canDelete && record.isActive && (
+                        <Tooltip title="Mark as Inactive">
                             <Popconfirm
-                                title="Delete this client?"
-                                description="This action cannot be undone."
+                                title="Mark this client as inactive?"
+                                description="The client will be deactivated and hidden from active lists."
                                 onConfirm={() => onDelete(record.id)}
-                                okText="Delete"
+                                okText="Mark Inactive"
                                 cancelText="Cancel"
                                 okButtonProps={{ danger: true }}
                             >
-                                <Button type="text" size="small" icon={<DeleteOutlined />} className={styles.deleteAction} />
+                                <Button type="text" size="small" icon={<MinusCircleOutlined />} className={styles.deleteAction} />
+                            </Popconfirm>
+                        </Tooltip>
+                    )}
+                    {canDelete && !record.isActive && (
+                        <Tooltip title="Activate">
+                            <Popconfirm
+                                title="Reactivate this client?"
+                                onConfirm={() => onActivate(record)}
+                                okText="Activate"
+                                cancelText="Cancel"
+                            >
+                                <Button type="text" size="small" icon={<CheckCircleOutlined />} className={styles.activateAction} />
                             </Popconfirm>
                         </Tooltip>
                     )}

@@ -83,12 +83,12 @@ const OpportunitiesContent: React.FC = () => {
 
     const handleDelete = async (id: string) => {
         await deleteOpportunity(id);
-        message.success('Opportunity deleted');
+        message.success('Opportunity marked as inactive');
         fetchOpportunities();
         getPipelineMetrics();
     };
 
-    const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDto) => {
+const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDto) => {
         if (editingOpp) {
             await updateOpportunity(editingOpp.id, values as IUpdateOpportunityDto);
             message.success('Opportunity updated');

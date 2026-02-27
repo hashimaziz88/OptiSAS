@@ -80,6 +80,7 @@ export interface IUpdateOpportunityDto {
     source?: number;
     expectedCloseDate?: string;
     description?: string;
+    isActive?: boolean;
 }
 
 export interface IUpdateStageDto {
