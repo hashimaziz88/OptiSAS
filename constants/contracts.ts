@@ -23,3 +23,17 @@ export const CONTRACT_STATUS_OPTIONS = [
 ];
 
 export const CONTRACTS_PAGE_SIZE = 10;
+
+export const RENEWAL_STATUS_LABELS: Record<number, string> = {
+    1: 'Pending',
+    2: 'In Progress',
+    3: 'Renewed',
+    4: 'Not Renewed',
+};
+
+export const RENEWAL_STATUS_COLORS: Record<number, string> = {
+    1: 'orange',
+    2: 'blue',
+    3: 'green',
+    4: 'red',
+};

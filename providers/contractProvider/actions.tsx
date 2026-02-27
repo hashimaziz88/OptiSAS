@@ -46,6 +46,10 @@ export enum ContractActionEnums {
     completeRenewalPending = "COMPLETE_RENEWAL_PENDING",
     completeRenewalSuccess = "COMPLETE_RENEWAL_SUCCESS",
     completeRenewalError = "COMPLETE_RENEWAL_ERROR",
+
+    getContractRenewalsPending = "GET_CONTRACT_RENEWALS_PENDING",
+    getContractRenewalsSuccess = "GET_CONTRACT_RENEWALS_SUCCESS",
+    getContractRenewalsError = "GET_CONTRACT_RENEWALS_ERROR",
 }
 
 export const getContractsPending = createAction<IContractStateContext>(ContractActionEnums.getContractsPending, () => ({ isPending: true, isError: false, isSuccess: false }));
@@ -91,3 +95,7 @@ export const createRenewalError = createAction<IContractStateContext>(ContractAc
 export const completeRenewalPending = createAction<IContractStateContext>(ContractActionEnums.completeRenewalPending, () => ({ isPending: true, isError: false, isSuccess: false }));
 export const completeRenewalSuccess = createAction<IContractStateContext, IContractRenewalDto>(ContractActionEnums.completeRenewalSuccess, (currentRenewal) => ({ isPending: false, isError: false, isSuccess: true, currentRenewal }));
 export const completeRenewalError = createAction<IContractStateContext>(ContractActionEnums.completeRenewalError, () => ({ isPending: false, isError: true, isSuccess: false }));
+
+export const getContractRenewalsPending = createAction<IContractStateContext>(ContractActionEnums.getContractRenewalsPending, () => ({ isPending: true, isError: false, isSuccess: false }));
+export const getContractRenewalsSuccess = createAction<IContractStateContext, IContractRenewalDto[]>(ContractActionEnums.getContractRenewalsSuccess, (contractRenewals) => ({ isPending: false, isError: false, isSuccess: true, contractRenewals }));
+export const getContractRenewalsError = createAction<IContractStateContext>(ContractActionEnums.getContractRenewalsError, () => ({ isPending: false, isError: true, isSuccess: false }));

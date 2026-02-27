@@ -92,6 +92,7 @@ export interface IContractStateContext {
     expiringContracts?: IPagedResult<IContractDto> | null;
     currentContract?: IContractDto | null;
     currentRenewal?: IContractRenewalDto | null;
+    contractRenewals?: IContractRenewalDto[] | null;
 }
 
 export interface IContractActionContext {
@@ -106,6 +107,7 @@ export interface IContractActionContext {
     cancelContract: (id: string) => Promise<void>;
     createRenewal: (contractId: string, payload: ICreateContractRenewalDto) => Promise<void>;
     completeRenewal: (renewalId: string) => Promise<void>;
+    getContractRenewals: (contractId: string) => Promise<void>;
 }
 
 export const INITIAL_STATE: IContractStateContext = {
@@ -116,6 +118,7 @@ export const INITIAL_STATE: IContractStateContext = {
     expiringContracts: null,
     currentContract: null,
     currentRenewal: null,
+    contractRenewals: null,
 };
 
 export const ContractStateContext = createContext<IContractStateContext>(INITIAL_STATE);

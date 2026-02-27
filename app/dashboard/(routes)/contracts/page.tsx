@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import {
-    Button, Descriptions, Drawer, Input, message, Popconfirm,
+    Button, Descriptions, Divider, Drawer, Input, message, Popconfirm,
     Select, Space, Tag, Tooltip, Typography,
 } from 'antd';
 import {
@@ -11,7 +11,10 @@ import {
 } from '@ant-design/icons';
 import { useContractState, useContractActions } from '@/providers/contractProvider';
 import { IContractDto, ICreateContractDto, ICreateContractRenewalDto, IUpdateContractDto } from '@/providers/contractProvider/context';
-import { CONTRACT_STATUS_COLORS, CONTRACT_STATUS_LABELS, CONTRACT_STATUS_OPTIONS, CONTRACTS_PAGE_SIZE } from '@/constants/contracts';
+import {
+    CONTRACT_STATUS_COLORS, CONTRACT_STATUS_LABELS, CONTRACT_STATUS_OPTIONS,
+    CONTRACTS_PAGE_SIZE, RENEWAL_STATUS_COLORS, RENEWAL_STATUS_LABELS,
+} from '@/constants/contracts';
 import ContractsTable from '@/components/dashboard/contracts/ContractsTable';
 import ContractFormModal from '@/components/dashboard/contracts/ContractFormModal';
 import RenewalModal from '@/components/dashboard/contracts/RenewalModal';
@@ -27,7 +30,7 @@ const ContractsContent: React.FC = () => {
     const canDelete = isAdmin(user?.roles);
     const canActivateCancel = isAdminOrManager(user?.roles);
     const canEditRenew = isAdminOrManager(user?.roles);
-    const { isPending, pagedResult } = useContractState();
+    const { isPending, pagedResult, contractRenewals } = useContractState();
     const {
         getContracts,
         createContract,
@@ -36,6 +39,8 @@ const ContractsContent: React.FC = () => {
         activateContract,
         cancelContract,
         createRenewal,
+        completeRenewal,
+        getContractRenewals,
     } = useContractActions();
 
     const [page, setPage] = useState(1);
@@ -83,6 +88,7 @@ const ContractsContent: React.FC = () => {
     const handleView = (record: IContractDto) => {
         setViewingContract(record);
         setDrawerOpen(true);
+        getContractRenewals(record.id);
     };
 
     const handleDelete = async (id: string) => {
@@ -116,6 +122,16 @@ const ContractsContent: React.FC = () => {
         setRenewalModalOpen(false);
         setRenewingContract(null);
         load();
+        if (viewingContract?.id === contractId) {
+            getContractRenewals(contractId);
+        }
+    };
+
+    const handleCompleteRenewal = async (renewalId: string) => {
+        await completeRenewal(renewalId);
+        message.success('Renewal completed — contract marked as Renewed');
+        load();
+        if (viewingContract) getContractRenewals(viewingContract.id);
     };
 
     const handleModalSubmit = async (values: ICreateContractDto | IUpdateContractDto) => {
@@ -142,6 +158,8 @@ const ContractsContent: React.FC = () => {
     });
 
     const drawerStatus = viewingContract?.status;
+    // Block new renewal creation if one already exists with Pending (1) or Not Renewed (4)
+    const hasBlockingRenewal = (contractRenewals ?? []).some(r => r.status === 1 || r.status === 4);
 
     return (
         <div>
@@ -240,7 +258,7 @@ const ContractsContent: React.FC = () => {
                                     </Button>
                                 </Popconfirm>
                             )}
-                            {canEditRenew && (drawerStatus === 2 || drawerStatus === 3) && (
+                            {canEditRenew && !hasBlockingRenewal && (drawerStatus === 2 || drawerStatus === 3) && (
                                 <Button
                                     icon={<RedoOutlined />}
                                     style={{ color: '#a78bfa', borderColor: '#a78bfa' }}
@@ -304,6 +322,63 @@ const ContractsContent: React.FC = () => {
                                 </Descriptions.Item>
                             )}
                         </Descriptions>
+
+                        {/* Renewals section */}
+                        {(contractRenewals ?? []).length > 0 && (
+                            <>
+                                <Divider style={{ borderColor: 'rgba(255,255,255,0.12)', color: '#94a3b8', fontSize: 13 }}>
+                                    Renewals
+                                </Divider>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                                    {(contractRenewals ?? []).map((renewal) => (
+                                        <div
+                                            key={renewal.id}
+                                            style={{
+                                                background: 'rgba(255,255,255,0.04)',
+                                                border: '1px solid rgba(255,255,255,0.08)',
+                                                borderRadius: 8,
+                                                padding: '12px 16px',
+                                            }}
+                                        >
+                                            <Space style={{ width: '100%', justifyContent: 'space-between' }} wrap>
+                                                <Space size={8}>
+                                                    <Tag color={RENEWAL_STATUS_COLORS[renewal.status]}>
+                                                        {RENEWAL_STATUS_LABELS[renewal.status]}
+                                                    </Tag>
+                                                    {renewal.renewalOpportunityTitle && (
+                                                        <Text style={{ color: '#94a3b8', fontSize: 13 }}>
+                                                            Opp: {renewal.renewalOpportunityTitle}
+                                                        </Text>
+                                                    )}
+                                                    <Text style={{ color: '#64748b', fontSize: 12 }}>
+                                                        {new Date(renewal.createdAt).toLocaleDateString('en-ZA')}
+                                                    </Text>
+                                                </Space>
+                                                {canActivateCancel && (renewal.status === 1 || renewal.status === 2) && (
+                                                    <Popconfirm
+                                                        title="Mark this renewal as complete? The contract will be set to Renewed."
+                                                        onConfirm={() => handleCompleteRenewal(renewal.id)}
+                                                    >
+                                                        <Button
+                                                            size="small"
+                                                            icon={<CheckCircleOutlined />}
+                                                            style={{ color: '#22c55e', borderColor: '#22c55e' }}
+                                                        >
+                                                            Complete
+                                                        </Button>
+                                                    </Popconfirm>
+                                                )}
+                                            </Space>
+                                            {renewal.notes && (
+                                                <Text style={{ color: '#94a3b8', fontSize: 13, display: 'block', marginTop: 6 }}>
+                                                    {renewal.notes}
+                                                </Text>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </>
+                        )}
                     </>
                 )}
             </Drawer>

@@ -22,6 +22,7 @@ import {
     cancelContractPending, cancelContractSuccess, cancelContractError,
     createRenewalPending, createRenewalSuccess, createRenewalError,
     completeRenewalPending, completeRenewalSuccess, completeRenewalError,
+    getContractRenewalsPending, getContractRenewalsSuccess, getContractRenewalsError,
 } from "./actions";
 import { axiosInstance } from "@/utils/axiosInstance";
 
@@ -118,9 +119,17 @@ export const ContractProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             .catch(() => { dispatch(completeRenewalError()); });
     };
 
+    const getContractRenewals = async (contractId: string) => {
+        const instance = axiosInstance();
+        dispatch(getContractRenewalsPending());
+        await instance.get(`${BASE_URL}/api/Contracts/${contractId}/renewals`)
+            .then((response) => { dispatch(getContractRenewalsSuccess(response.data)); })
+            .catch(() => { dispatch(getContractRenewalsError()); });
+    };
+
     return (
         <ContractStateContext.Provider value={state}>
-            <ContractActionContext.Provider value={{ getContracts, getContract, createContract, updateContract, deleteContract, getExpiringContracts, getClientContracts, activateContract, cancelContract, createRenewal, completeRenewal }}>
+            <ContractActionContext.Provider value={{ getContracts, getContract, createContract, updateContract, deleteContract, getExpiringContracts, getClientContracts, activateContract, cancelContract, createRenewal, completeRenewal, getContractRenewals }}>
                 {children}
             </ContractActionContext.Provider>
         </ContractStateContext.Provider>

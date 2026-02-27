@@ -3,6 +3,7 @@
 import React from 'react';
 import { Button, Popconfirm, Space, Table, Tag, Tooltip } from 'antd';
 import {
+    AuditOutlined,
     CheckCircleOutlined,
     DeleteOutlined,
     EditOutlined,
@@ -180,7 +181,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                         </>
                     )}
 
-                    {/* Active: Edit + Renew + Cancel */}
+                    {/* Active: Edit + Renew/Approve + Cancel */}
                     {record.status === 2 && (
                         <>
                             {canEditRenew && (
@@ -194,7 +195,17 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                     />
                                 </Tooltip>
                             )}
-                            {canEditRenew && (
+                            {canActivateCancel && record.renewalsCount > 0 ? (
+                                <Tooltip title="Approve Renewal">
+                                    <Button
+                                        type="text"
+                                        size="small"
+                                        icon={<AuditOutlined />}
+                                        className={styles.activateAction}
+                                        onClick={() => onView(record)}
+                                    />
+                                </Tooltip>
+                            ) : canEditRenew && (
                                 <Tooltip title="Create Renewal">
                                     <Button
                                         type="text"
@@ -223,17 +234,29 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                         </>
                     )}
 
-                    {/* Expired: Renew */}
-                    {record.status === 3 && canEditRenew && (
-                        <Tooltip title="Create Renewal">
-                            <Button
-                                type="text"
-                                size="small"
-                                icon={<RedoOutlined />}
-                                className={styles.renewAction}
-                                onClick={() => onRenew(record)}
-                            />
-                        </Tooltip>
+                    {/* Expired: Renew or Approve */}
+                    {record.status === 3 && (
+                        canActivateCancel && record.renewalsCount > 0 ? (
+                            <Tooltip title="Approve Renewal">
+                                <Button
+                                    type="text"
+                                    size="small"
+                                    icon={<AuditOutlined />}
+                                    className={styles.activateAction}
+                                    onClick={() => onView(record)}
+                                />
+                            </Tooltip>
+                        ) : canEditRenew && (
+                            <Tooltip title="Create Renewal">
+                                <Button
+                                    type="text"
+                                    size="small"
+                                    icon={<RedoOutlined />}
+                                    className={styles.renewAction}
+                                    onClick={() => onRenew(record)}
+                                />
+                            </Tooltip>
+                        )
                     )}
                 </Space>
             ),
