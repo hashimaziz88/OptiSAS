@@ -168,41 +168,26 @@ export const useStyles = createStyles(({ token }) => ({
   table: css`
     .ant-table {
       background: transparent;
+      color: white;
     }
 
     .ant-table-thead > tr > th {
-      background: rgba(255, 255, 255, 0.05);
-      color: #cbd5e0;
+      background: rgba(255, 255, 255, 0.04);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
       font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .ant-table-tbody > tr > td {
-      background: transparent;
-      color: #e2e8f0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
     }
 
     .ant-table-tbody > tr:hover > td {
       background: rgba(255, 255, 255, 0.04) !important;
-    }
-
-    .ant-pagination {
-      .ant-pagination-total-text {
-        color: rgba(255, 255, 255, 0.55);
-      }
-      .ant-pagination-item a,
-      .ant-pagination-prev button,
-      .ant-pagination-next button {
-        color: #cbd5e0;
-      }
-      .ant-pagination-item-active {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.2);
-        a {
-          color: white;
-        }
-      }
     }
   `,
 
@@ -495,5 +480,29 @@ export const useStyles = createStyles(({ token }) => ({
     color: #a0aec0;
     font-size: 12px;
     margin-top: 2px;
+  `,
+
+  statusBadge: css`
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  `,
+
+  activeBadge: css`
+    background: rgba(82, 196, 26, 0.15);
+    color: #52c41a;
+    border: 1px solid rgba(82, 196, 26, 0.3);
+  `,
+
+  inactiveBadge: css`
+    background: rgba(255, 77, 79, 0.15);
+    color: #ff4d4f;
+    border: 1px solid rgba(255, 77, 79, 0.3);
+  `,
+
+  activateAction: css`
+    color: #34d399;
   `,
 }));

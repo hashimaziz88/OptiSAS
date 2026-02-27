@@ -1,5 +1,4 @@
 import { createStyles, css } from "antd-style";
-import type { CSSProperties } from "react";
 
 export const useStyles = createStyles(({ token }) => ({
   modalContainer: css`
@@ -105,41 +104,26 @@ export const useStyles = createStyles(({ token }) => ({
   table: css`
     .ant-table {
       background: transparent;
+      color: white;
     }
 
     .ant-table-thead > tr > th {
-      background: rgba(255, 255, 255, 0.05);
-      color: #cbd5e0;
+      background: rgba(255, 255, 255, 0.04);
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
       font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .ant-table-tbody > tr > td {
-      background: transparent;
-      color: #e2e8f0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
     }
 
     .ant-table-tbody > tr:hover > td {
       background: rgba(255, 255, 255, 0.04) !important;
-    }
-
-    .ant-pagination {
-      .ant-pagination-total-text {
-        color: rgba(255, 255, 255, 0.55);
-      }
-      .ant-pagination-item a,
-      .ant-pagination-prev button,
-      .ant-pagination-next button {
-        color: #cbd5e0;
-      }
-      .ant-pagination-item-active {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.2);
-        a {
-          color: white;
-        }
-      }
     }
   `,
 
@@ -350,10 +334,24 @@ export const useStyles = createStyles(({ token }) => ({
   `,
 
   drawerBody: css`
-    .ant-descriptions-item-label,
+    .ant-descriptions-item-label {
+      color: #94a3b8 !important;
+      font-size: 13px;
+      background: rgba(255, 255, 255, 0.04) !important;
+    }
+
     .ant-descriptions-item-content {
-      color: #cbd5e0 !important;
+      color: #e2e8f0 !important;
       background: transparent !important;
+    }
+
+    .ant-descriptions-view {
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .ant-descriptions-row > th,
+    .ant-descriptions-row > td {
+      border-color: rgba(255, 255, 255, 0.1) !important;
     }
   `,
 
@@ -367,6 +365,10 @@ export const useStyles = createStyles(({ token }) => ({
 
   deleteAction: css`
     color: #f87171;
+  `,
+
+  activateAction: css`
+    color: #34d399;
   `,
 
   contactAvatar: css`

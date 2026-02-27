@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Table, Button, Popconfirm, Tooltip, Space, Avatar } from 'antd';
-import { EditOutlined, DeleteOutlined, EyeOutlined, StarOutlined, StarFilled } from '@ant-design/icons';
+import { EditOutlined, MinusCircleOutlined, EyeOutlined, StarOutlined, StarFilled, CheckCircleOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { IContactDto } from '@/providers/contactProvider/context';
 import { useStyles } from './style/style';
@@ -16,6 +16,7 @@ interface ContactsTableProps {
     onPageChange: (page: number, pageSize: number) => void;
     onEdit: (contact: IContactDto) => void;
     onDelete: (id: string) => void;
+    onActivate: (contact: IContactDto) => void;
     onView: (contact: IContactDto) => void;
     onSetPrimary: (id: string) => void;
     canDelete?: boolean;
@@ -23,7 +24,7 @@ interface ContactsTableProps {
 
 const ContactsTable: React.FC<ContactsTableProps> = ({
     data, total, page, pageSize, loading,
-    onPageChange, onEdit, onDelete, onView, onSetPrimary, canDelete,
+    onPageChange, onEdit, onDelete, onActivate, onView, onSetPrimary, canDelete,
 }) => {
     const { styles, cx } = useStyles();
 
@@ -87,7 +88,7 @@ const ContactsTable: React.FC<ContactsTableProps> = ({
             ),
         },
         {
-            title: 'Status',
+            title: 'Active',
             dataIndex: 'isActive',
             key: 'isActive',
             width: 90,
@@ -122,21 +123,38 @@ const ContactsTable: React.FC<ContactsTableProps> = ({
                             onClick={() => onEdit(record)}
                         />
                     </Tooltip>
-                    {canDelete && (
+                    {canDelete && record.isActive && (
                         <Popconfirm
-                            title="Delete contact?"
-                            description="This action cannot be undone."
+                            title="Mark this contact as inactive?"
+                            description="The contact will be deactivated and hidden from active lists."
                             onConfirm={() => onDelete(record.id)}
-                            okText="Delete"
+                            okText="Mark Inactive"
                             okButtonProps={{ danger: true }}
                             cancelText="Cancel"
                         >
-                            <Tooltip title="Delete">
+                            <Tooltip title="Mark as Inactive">
                                 <Button
                                     type="text"
                                     size="small"
-                                    icon={<DeleteOutlined />}
+                                    icon={<MinusCircleOutlined />}
                                     className={styles.deleteAction}
+                                />
+                            </Tooltip>
+                        </Popconfirm>
+                    )}
+                    {canDelete && !record.isActive && (
+                        <Popconfirm
+                            title="Reactivate this contact?"
+                            onConfirm={() => onActivate(record)}
+                            okText="Activate"
+                            cancelText="Cancel"
+                        >
+                            <Tooltip title="Activate">
+                                <Button
+                                    type="text"
+                                    size="small"
+                                    icon={<CheckCircleOutlined />}
+                                    className={styles.activateAction}
                                 />
                             </Tooltip>
                         </Popconfirm>

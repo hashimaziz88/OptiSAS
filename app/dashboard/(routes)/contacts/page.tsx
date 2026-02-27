@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined, StarFilled } from '@ant-design/icons';
+import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag, Space } from 'antd';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, StarFilled, StarOutlined, EditOutlined } from '@ant-design/icons';
 import { useContactActions, useContactState } from '@/providers/contactProvider';
 import { IContactDto, ICreateContactDto, IUpdateContactDto } from '@/providers/contactProvider/context';
 import { useClientActions, useClientState } from '@/providers/clientProvider';
@@ -65,7 +65,21 @@ const ContactsContent: React.FC = () => {
 
     const handleDelete = async (id: string) => {
         await deleteContact(id);
-        message.success('Contact deleted');
+        message.success('Contact marked as inactive');
+        fetchContacts();
+    };
+
+    const handleActivate = async (contact: IContactDto) => {
+        await updateContact(contact.id, {
+            firstName: contact.firstName,
+            lastName: contact.lastName,
+            email: contact.email,
+            phoneNumber: contact.phoneNumber,
+            position: contact.position,
+            isPrimaryContact: contact.isPrimaryContact,
+            isActive: true,
+        });
+        message.success('Contact reactivated');
         fetchContacts();
     };
 
@@ -143,6 +157,7 @@ const ContactsContent: React.FC = () => {
                 onPageChange={handlePageChange}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                onActivate={handleActivate}
                 onView={setViewingContact}
                 onSetPrimary={handleSetPrimary}
                 canDelete={canDelete}
@@ -161,56 +176,59 @@ const ContactsContent: React.FC = () => {
                 open={!!viewingContact}
                 title={viewingContact?.fullName ?? 'Contact Details'}
                 onClose={() => setViewingContact(null)}
+                size="large"
                 styles={{
-                    wrapper: { background: '#1e2128', color: 'white' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white !important' },
-                    body: { background: '#1e2128', padding: '24px', color: 'white' },
+                    wrapper: { background: '#1e2128' },
+                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
+                    body: { background: '#1e2128', padding: '24px' },
                 }}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
+                extra={
+                    viewingContact && (
+                        <Space>
+                            <Button
+                                icon={<EditOutlined />}
+                                style={{ color: '#facc15', borderColor: '#facc15' }}
+                                onClick={() => { setViewingContact(null); handleEdit(viewingContact); }}
+                            >
+                                Edit
+                            </Button>
+                            {!viewingContact.isPrimaryContact && (
+                                <Button
+                                    icon={<StarOutlined />}
+                                    style={{ color: '#f59e0b', borderColor: '#f59e0b' }}
+                                    onClick={() => { handleSetPrimary(viewingContact.id); setViewingContact(null); }}
+                                >
+                                    Set as Primary
+                                </Button>
+                            )}
+                        </Space>
+                    )
+                }
             >
                 {viewingContact && (
                     <>
-                        {viewingContact.isPrimaryContact && (
-                            <Tag icon={<StarFilled />} color="gold" className={styles.tagSpacing}>
-                                Primary Contact
+                        <Space style={{ marginBottom: 16 }}>
+                            {viewingContact.isPrimaryContact && (
+                                <Tag icon={<StarFilled />} color="gold">Primary Contact</Tag>
+                            )}
+                            <Tag color={viewingContact.isActive ? 'green' : 'red'}>
+                                {viewingContact.isActive ? 'Active' : 'Inactive'}
                             </Tag>
-                        )}
-                        <Descriptions column={1} size="small">
-                            <Descriptions.Item label="Client">{viewingContact.clientName || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Position">{viewingContact.position || '—'}</Descriptions.Item>
+                        </Space>
+                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                            <Descriptions.Item label="Client" span={2}>{viewingContact.clientName || '—'}</Descriptions.Item>
+                            <Descriptions.Item label="Position" span={2}>{viewingContact.position || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Email">
                                 {viewingContact.email
                                     ? <a href={`mailto:${viewingContact.email}`}>{viewingContact.email}</a>
                                     : '—'}
                             </Descriptions.Item>
                             <Descriptions.Item label="Phone">{viewingContact.phoneNumber || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Status">
-                                <Tag color={viewingContact.isActive ? 'green' : 'red'}>
-                                    {viewingContact.isActive ? 'Active' : 'Inactive'}
-                                </Tag>
-                            </Descriptions.Item>
                         </Descriptions>
-                        <div className={styles.drawerActions}>
-                            <Button
-                                type="primary"
-                                onClick={() => { setViewingContact(null); handleEdit(viewingContact); }}
-                            >
-                                Edit Contact
-                            </Button>
-                            {!viewingContact.isPrimaryContact && (
-                                <Button
-                                    onClick={() => {
-                                        handleSetPrimary(viewingContact.id);
-                                        setViewingContact(null);
-                                    }}
-                                >
-                                    Set as Primary
-                                </Button>
-                            )}
-                        </div>
                     </>
                 )}
-            </Drawer >
+            </Drawer>
         </>
     );
 };
