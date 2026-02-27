@@ -21,7 +21,7 @@ export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children
                 token: {
                     colorPrimary: '#494c51',
                     colorLink: '#393b3d',
-                    colorLinkHover: '#93c5fd',
+                    colorLinkHover: '#515a65',
                 },
             }}
         >

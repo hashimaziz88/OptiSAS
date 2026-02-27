@@ -26,6 +26,7 @@ const ContractsContent: React.FC = () => {
     const { user } = useAuthState();
     const canDelete = isAdmin(user?.roles);
     const canActivateCancel = isAdminOrManager(user?.roles);
+    const canEditRenew = isAdminOrManager(user?.roles);
     const { isPending, pagedResult } = useContractState();
     const {
         getContracts,
@@ -188,6 +189,7 @@ const ContractsContent: React.FC = () => {
                 onRenew={handleOpenRenewal}
                 canDelete={canDelete}
                 canActivateCancel={canActivateCancel}
+                canEditRenew={canEditRenew}
             />
 
             <ContractFormModal
@@ -220,7 +222,7 @@ const ContractsContent: React.FC = () => {
                 extra={
                     viewingContract && (
                         <Space>
-                            {(drawerStatus === 1 || drawerStatus === 2) && (
+                            {canEditRenew && (drawerStatus === 1 || drawerStatus === 2) && (
                                 <Tooltip title="Edit">
                                     <Button
                                         icon={<EditOutlined />}
@@ -238,7 +240,7 @@ const ContractsContent: React.FC = () => {
                                     </Button>
                                 </Popconfirm>
                             )}
-                            {(drawerStatus === 2 || drawerStatus === 3) && (
+                            {canEditRenew && (drawerStatus === 2 || drawerStatus === 3) && (
                                 <Button
                                     icon={<RedoOutlined />}
                                     style={{ color: '#a78bfa', borderColor: '#a78bfa' }}

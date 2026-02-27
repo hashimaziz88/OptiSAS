@@ -31,6 +31,7 @@ interface ContractsTableProps {
     onRenew: (record: IContractDto) => void;
     canDelete?: boolean;
     canActivateCancel?: boolean;
+    canEditRenew?: boolean;
 }
 
 const ContractsTable: React.FC<ContractsTableProps> = ({
@@ -48,6 +49,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
     onRenew,
     canDelete,
     canActivateCancel,
+    canEditRenew,
 }) => {
     const { styles } = useStyles();
 
@@ -134,15 +136,17 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                     {/* Draft: Edit + Activate + Delete */}
                     {record.status === 1 && (
                         <>
-                            <Tooltip title="Edit">
-                                <Button
-                                    type="text"
-                                    size="small"
-                                    icon={<EditOutlined />}
-                                    className={styles.editAction}
-                                    onClick={() => onEdit(record)}
-                                />
-                            </Tooltip>
+                            {canEditRenew && (
+                                <Tooltip title="Edit">
+                                    <Button
+                                        type="text"
+                                        size="small"
+                                        icon={<EditOutlined />}
+                                        className={styles.editAction}
+                                        onClick={() => onEdit(record)}
+                                    />
+                                </Tooltip>
+                            )}
                             {canActivateCancel && (
                                 <Tooltip title="Activate">
                                     <Popconfirm
@@ -179,24 +183,28 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                     {/* Active: Edit + Renew + Cancel */}
                     {record.status === 2 && (
                         <>
-                            <Tooltip title="Edit">
-                                <Button
-                                    type="text"
-                                    size="small"
-                                    icon={<EditOutlined />}
-                                    className={styles.editAction}
-                                    onClick={() => onEdit(record)}
-                                />
-                            </Tooltip>
-                            <Tooltip title="Create Renewal">
-                                <Button
-                                    type="text"
-                                    size="small"
-                                    icon={<RedoOutlined />}
-                                    className={styles.renewAction}
-                                    onClick={() => onRenew(record)}
-                                />
-                            </Tooltip>
+                            {canEditRenew && (
+                                <Tooltip title="Edit">
+                                    <Button
+                                        type="text"
+                                        size="small"
+                                        icon={<EditOutlined />}
+                                        className={styles.editAction}
+                                        onClick={() => onEdit(record)}
+                                    />
+                                </Tooltip>
+                            )}
+                            {canEditRenew && (
+                                <Tooltip title="Create Renewal">
+                                    <Button
+                                        type="text"
+                                        size="small"
+                                        icon={<RedoOutlined />}
+                                        className={styles.renewAction}
+                                        onClick={() => onRenew(record)}
+                                    />
+                                </Tooltip>
+                            )}
                             {canActivateCancel && (
                                 <Tooltip title="Cancel">
                                     <Popconfirm
@@ -216,7 +224,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                     )}
 
                     {/* Expired: Renew */}
-                    {record.status === 3 && (
+                    {record.status === 3 && canEditRenew && (
                         <Tooltip title="Create Renewal">
                             <Button
                                 type="text"

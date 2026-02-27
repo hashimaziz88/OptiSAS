@@ -102,6 +102,7 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
                     renewalNoticePeriod: values.renewalNoticePeriod,
                     autoRenew: values.autoRenew,
                     terms: values.terms,
+                    ownerId: editing.ownerId,
                 };
                 await onSubmit(payload);
             } else {
