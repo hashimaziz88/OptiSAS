@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button, Descriptions, Drawer, Input, Select, Space, Tag, Typography, message } from 'antd';
-import { PlusOutlined, ReloadOutlined, SearchOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Descriptions, Drawer, Input, Select, Space, Tag, Typography, message, Popconfirm } from 'antd';
+import { PlusOutlined, ReloadOutlined, SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useNoteActions, useNoteState } from '@/providers/noteProvider';
 import { ICreateNoteDto, INoteDto, IUpdateNoteDto } from '@/providers/noteProvider/context';
 import { NOTES_PAGE_SIZE, RELATED_TO_TYPE_LABELS, RELATED_TO_TYPE_OPTIONS } from '@/constants/notes';
@@ -185,6 +185,15 @@ const NotesContent: React.FC = () => {
                             >
                                 Edit
                             </Button>
+                            <Popconfirm
+                                title="Delete this note?"
+                                onConfirm={async () => { await handleDelete(viewingNote.id); setViewingNote(null); }}
+                                okText="Delete"
+                                okButtonProps={{ danger: true }}
+                                cancelText="Cancel"
+                            >
+                                <Button icon={<DeleteOutlined />} danger>Delete</Button>
+                            </Popconfirm>
                         </Space>
                     )
                 }

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button, Descriptions, Drawer, Select, Space, Tag, Typography, message } from 'antd';
-import { ReloadOutlined, UploadOutlined } from '@ant-design/icons';
+import { Button, Descriptions, Drawer, Select, Space, Tag, Typography, message, Popconfirm } from 'antd';
+import { ReloadOutlined, UploadOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useDocumentActions, useDocumentState } from '@/providers/documentProvider';
 import { IDocumentDto } from '@/providers/documentProvider/context';
 import {
@@ -184,6 +184,17 @@ const DocumentsContent: React.FC = () => {
                             >
                                 Download
                             </Button>
+                            {canDelete && (
+                                <Popconfirm
+                                    title="Delete this document?"
+                                    onConfirm={async () => { await handleDelete(viewingDoc.id); setViewingDoc(null); }}
+                                    okText="Delete"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<DeleteOutlined />} danger>Delete</Button>
+                                </Popconfirm>
+                            )}
                         </Space>
                     )
                 }

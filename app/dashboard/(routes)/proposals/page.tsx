@@ -6,7 +6,7 @@ import {
     Select, Space, Table, Tag, Typography,
 } from 'antd';
 import {
-    CheckOutlined, CloseOutlined, EditOutlined, PlusOutlined,
+    CheckOutlined, CloseOutlined, DeleteOutlined, EditOutlined, PlusOutlined,
     ReloadOutlined, SendOutlined,
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
@@ -270,6 +270,17 @@ const ProposalsContent: React.FC = () => {
                                             Submit
                                         </Button>
                                     </Popconfirm>
+                                    {canDelete && (
+                                        <Popconfirm
+                                            title="Delete this proposal?"
+                                            onConfirm={async () => { await handleDelete(viewingProposal.id); setDrawerOpen(false); setViewingProposal(null); }}
+                                            okText="Delete"
+                                            okButtonProps={{ danger: true }}
+                                            cancelText="Cancel"
+                                        >
+                                            <Button icon={<DeleteOutlined />} danger>Delete</Button>
+                                        </Popconfirm>
+                                    )}
                                 </>
                             )}
                             {canApproveReject && drawerStatus === 2 && (

@@ -14,7 +14,7 @@ import {
 import dayjs from 'dayjs';
 import { useAuthState } from '@/providers/authProvider';
 import { generateInvitationCode } from '@/utils/auth/invitationCode';
-import { useStyles } from './style/style';
+import { useStyles } from '@/components/profile/style/style';
 
 const { Title, Text } = Typography;
 

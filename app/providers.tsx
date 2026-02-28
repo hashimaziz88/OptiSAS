@@ -41,6 +41,21 @@ export const AppProviders: React.FC<{ children: React.ReactNode }> = ({ children
                         primaryShadow: 'none',
                         defaultShadow: 'none',
                         dangerShadow: 'none',
+                        // Default button dark theme
+                        defaultBg: 'rgba(255, 255, 255, 0.04)',
+                        defaultBorderColor: 'rgba(255, 255, 255, 0.15)',
+                        defaultColor: 'rgba(255, 255, 255, 0.85)',
+                        defaultHoverBg: 'rgba(255, 255, 255, 0.08)',
+                        defaultHoverBorderColor: 'rgba(255, 255, 255, 0.3)',
+                        defaultHoverColor: '#ffffff',
+                        defaultActiveBg: 'rgba(255, 255, 255, 0.12)',
+                        defaultActiveColor: '#ffffff',
+                        defaultActiveBorderColor: 'rgba(255, 255, 255, 0.4)',
+                        // Danger button dark theme
+                        colorError: '#f87171',
+                        colorErrorHover: '#fca5a5',
+                        colorErrorBorderHover: '#fca5a5',
+                        colorErrorActive: '#ef4444',
                     },
                     Input: {
                         colorBgContainer: 'rgba(255, 255, 255, 0.03)',

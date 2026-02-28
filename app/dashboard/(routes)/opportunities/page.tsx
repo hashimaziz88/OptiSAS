@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import {
     Button, Input, Select, Typography, message, Drawer,
-    Descriptions, Tag, Timeline, Modal, Form, Row, Col, Space,
+    Descriptions, Tag, Timeline, Modal, Form, Row, Col, Space, Popconfirm,
 } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined, SwapOutlined, UserSwitchOutlined, EditOutlined } from '@ant-design/icons';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, SwapOutlined, UserSwitchOutlined, EditOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { axiosInstance } from '@/utils/axiosInstance';
 import { useOpportunityActions, useOpportunityState } from '@/providers/opportunityProvider';
 import { IOpportunityDto, ICreateOpportunityDto, IUpdateOpportunityDto } from '@/providers/opportunityProvider/context';
@@ -275,6 +275,17 @@ const OpportunitiesContent: React.FC = () => {
                                 <Button type="primary" icon={<UserSwitchOutlined />} onClick={handleOpenAssignModal}>
                                     Reassign
                                 </Button>
+                            )}
+                            {canDelete && viewingOpp.isActive && (
+                                <Popconfirm
+                                    title="Mark this opportunity as inactive?"
+                                    onConfirm={async () => { await handleDelete(viewingOpp.id); setViewingOpp(null); }}
+                                    okText="Mark Inactive"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<MinusCircleOutlined />} danger>Mark Inactive</Button>
+                                </Popconfirm>
                             )}
                         </Space>
                     )

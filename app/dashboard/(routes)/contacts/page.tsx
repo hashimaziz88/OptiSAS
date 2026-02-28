@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Typography, message, Drawer, Descriptions, Tag, Space } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined, StarFilled, StarOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Input, Typography, message, Drawer, Descriptions, Tag, Space, Popconfirm } from 'antd';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, StarFilled, StarOutlined, EditOutlined, MinusCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { useContactActions, useContactState } from '@/providers/contactProvider';
 import { IContactDto, ICreateContactDto, IUpdateContactDto } from '@/providers/contactProvider/context';
 import { useClientActions, useClientState } from '@/providers/clientProvider';
@@ -196,6 +196,27 @@ const ContactsContent: React.FC = () => {
                                 >
                                     Set as Primary
                                 </Button>
+                            )}
+                            {canDelete && viewingContact.isActive && (
+                                <Popconfirm
+                                    title="Mark this contact as inactive?"
+                                    onConfirm={async () => { await handleDelete(viewingContact.id); setViewingContact(null); }}
+                                    okText="Mark Inactive"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<MinusCircleOutlined />} danger>Mark Inactive</Button>
+                                </Popconfirm>
+                            )}
+                            {canDelete && !viewingContact.isActive && (
+                                <Popconfirm
+                                    title="Reactivate this contact?"
+                                    onConfirm={async () => { await handleActivate(viewingContact); setViewingContact(null); }}
+                                    okText="Activate"
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<CheckCircleOutlined />} type="primary">Activate</Button>
+                                </Popconfirm>
                             )}
                         </Space>
                     )

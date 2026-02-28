@@ -6,7 +6,7 @@ import {
     Select, Space, Tag, Tooltip, Typography,
 } from 'antd';
 import {
-    CheckCircleOutlined, EditOutlined, PlusOutlined, RedoOutlined,
+    CheckCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined, RedoOutlined,
     ReloadOutlined, StopOutlined, WarningOutlined,
 } from '@ant-design/icons';
 import { useContractState, useContractActions } from '@/providers/contractProvider';
@@ -280,6 +280,17 @@ const ContractsContent: React.FC = () => {
                                     <Button icon={<StopOutlined />} danger>
                                         Cancel
                                     </Button>
+                                </Popconfirm>
+                            )}
+                            {canDelete && drawerStatus === 1 && (
+                                <Popconfirm
+                                    title="Delete this contract?"
+                                    onConfirm={async () => { await handleDelete(viewingContract.id); setDrawerOpen(false); setViewingContract(null); }}
+                                    okText="Delete"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<DeleteOutlined />} danger>Delete</Button>
                                 </Popconfirm>
                             )}
                         </Space>

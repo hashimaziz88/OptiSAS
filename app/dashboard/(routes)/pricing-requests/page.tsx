@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import {
     Badge, Button, Descriptions, Drawer, Input, Popconfirm, Select, Space, Tag, Tabs, Typography, message,
 } from 'antd';
-import { PlusOutlined, ReloadOutlined, SearchOutlined, EditOutlined } from '@ant-design/icons';
+import { PlusOutlined, ReloadOutlined, SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { axiosInstance } from '@/utils/axiosInstance';
 import {
     usePricingRequestActions,
@@ -321,28 +321,43 @@ const PricingRequestsContent: React.FC = () => {
                 }}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
-                    viewingRequest && viewingRequest.status !== 3 && (
+                    viewingRequest && (
                         <Space>
-                            <Button
-                                type="primary"
-                                icon={<EditOutlined />}
-                                onClick={() => { setViewingRequest(null); handleEdit(viewingRequest); }}
-                            >
-                                Edit
-                            </Button>
-                            {canAssign && (
-                                <Button type="primary" onClick={() => { setViewingRequest(null); setAssigningRequest(viewingRequest); }}>
-                                    Assign
-                                </Button>
+                            {viewingRequest.status !== 3 && (
+                                <>
+                                    <Button
+                                        type="primary"
+                                        icon={<EditOutlined />}
+                                        onClick={() => { setViewingRequest(null); handleEdit(viewingRequest); }}
+                                    >
+                                        Edit
+                                    </Button>
+                                    {canAssign && (
+                                        <Button type="primary" onClick={() => { setViewingRequest(null); setAssigningRequest(viewingRequest); }}>
+                                            Assign
+                                        </Button>
+                                    )}
+                                    <Popconfirm
+                                        title="Mark as completed?"
+                                        onConfirm={async () => { await handleComplete(viewingRequest); setViewingRequest(null); }}
+                                        okText="Complete"
+                                        cancelText="No"
+                                    >
+                                        <Button type="primary">Complete</Button>
+                                    </Popconfirm>
+                                </>
                             )}
-                            <Popconfirm
-                                title="Mark as completed?"
-                                onConfirm={async () => { await handleComplete(viewingRequest); setViewingRequest(null); }}
-                                okText="Complete"
-                                cancelText="No"
-                            >
-                                <Button type="primary">Complete</Button>
-                            </Popconfirm>
+                            {canDelete && (
+                                <Popconfirm
+                                    title="Delete this pricing request?"
+                                    onConfirm={async () => { await handleDelete(viewingRequest.id); setViewingRequest(null); }}
+                                    okText="Delete"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<DeleteOutlined />} danger>Delete</Button>
+                                </Popconfirm>
+                            )}
                         </Space>
                     )
                 }

@@ -41,18 +41,22 @@ interface ActivityFormModalProps {
     open: boolean;
     editing?: IActivityDto | null;
     loading: boolean;
+    canAssign?: boolean;
     onSubmit: (values: ICreateActivityDto | IUpdateActivityDto) => void;
     onClose: () => void;
 }
 
-const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, loading, onSubmit, onClose }) => {
+const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, loading, canAssign, onSubmit, onClose }) => {
     const { styles } = useStyles();
     const [form] = Form.useForm();
     const { user } = useAuthState();
+    const userId = user?.userId;
     const currentUserName = [user?.firstName, user?.lastName].filter(Boolean).join(' ') || user?.email || 'You';
     const [relatedToType, setRelatedToType] = useState<number | undefined>(undefined);
     const [relatedOptions, setRelatedOptions] = useState<{ value: string; label: string }[]>([]);
     const [relatedLoading, setRelatedLoading] = useState(false);
+    const [userOptions, setUserOptions] = useState<{ value: string; label: string }[]>([]);
+    const [usersLoading, setUsersLoading] = useState(false);
 
     const fetchRelatedRecords = useCallback(async (type: number) => {
         setRelatedLoading(true);
@@ -93,12 +97,28 @@ const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, lo
                 });
             } else {
                 form.resetFields();
-                form.setFieldsValue({ priority: 2, assignedToId: user?.userId });
+                form.setFieldsValue({ priority: 2, assignedToId: userId });
                 setRelatedToType(undefined);
                 setRelatedOptions([]);
             }
+
+            if (canAssign && userOptions.length === 0) {
+                setUsersLoading(true);
+                axiosInstance()
+                    .get(`${BASE_URL}/api/users`, { params: { pageSize: 200 } })
+                    .then((res) => {
+                        setUserOptions(
+                            (res.data?.items ?? []).map((u: { id: string; fullName: string; roles: string[] }) => ({
+                                value: u.id,
+                                label: `${u.fullName}${u.roles?.length ? ` (${u.roles[0]})` : ''}`,
+                            }))
+                        );
+                    })
+                    .catch(() => { })
+                    .finally(() => setUsersLoading(false));
+            }
         }
-    }, [open, editing, form, user?.userId ?? '']);
+    }, [open, editing, form, userId, canAssign, userOptions.length]);
 
     const handleFinish = (values: Record<string, unknown>) => {
         const payload = {
@@ -226,18 +246,31 @@ const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, lo
                         </Row>
                     )}
 
-                    <Form.Item label="Assigned To" name="assignedToId" hidden>
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Assigned To">
-                        <Input
-                            size="large"
-                            value={currentUserName}
-                            disabled
-                            className={styles.disabledInput}
-                            suffix={<span className={styles.inputSuffix}>you</span>}
-                        />
-                    </Form.Item>
+                    {canAssign ? (
+                        <Form.Item label="Assigned To" name="assignedToId" rules={[{ required: true, message: 'Please assign this activity' }]}>
+                            <Select
+                                size="large"
+                                showSearch
+                                optionFilterProp="label"
+                                options={userOptions}
+                                loading={usersLoading}
+                                placeholder="Select a team member"
+                            />
+                        </Form.Item>
+                    ) : (
+                        <>
+                            <Form.Item name="assignedToId" hidden><Input /></Form.Item>
+                            <Form.Item label="Assigned To">
+                                <Input
+                                    size="large"
+                                    value={currentUserName}
+                                    disabled
+                                    className={styles.disabledInput}
+                                    suffix={<span className={styles.inputSuffix}>you</span>}
+                                />
+                            </Form.Item>
+                        </>
+                    )}
 
                     <Form.Item className={styles.formItemNm}>
                         <Button

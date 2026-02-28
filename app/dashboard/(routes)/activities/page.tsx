@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import {
     Button, Input, Select, Typography, message, Drawer,
-    Descriptions, Tag, Space, Tabs, Badge,
+    Descriptions, Tag, Space, Tabs, Badge, Popconfirm,
 } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined, EditOutlined } from '@ant-design/icons';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, EditOutlined, StopOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useActivityActions, useActivityState } from '@/providers/activityProvider';
 import {
     IActivityDto,
@@ -37,6 +37,7 @@ const ActivitiesContent: React.FC = () => {
     const { styles } = useStyles();
     const { user } = useAuthState();
     const canDelete = isAdminOrManager(user?.roles);
+    const canAssign = isAdminOrManager(user?.roles);
     const {
         getActivities,
         getMyActivities,
@@ -297,6 +298,7 @@ const ActivitiesContent: React.FC = () => {
                 open={modalOpen}
                 editing={editingActivity}
                 loading={isPending}
+                canAssign={canAssign}
                 onSubmit={handleSubmit}
                 onClose={() => { setModalOpen(false); setEditingActivity(null); }}
             />
@@ -320,21 +322,44 @@ const ActivitiesContent: React.FC = () => {
                 }}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
-                    viewingActivity && viewingActivity.status === 1 && (
+                    viewingActivity && (
                         <Space>
-                            <Button
-                                type="primary"
-                                icon={<EditOutlined />}
-                                onClick={() => { setViewingActivity(null); handleEdit(viewingActivity); }}
-                            >
-                                Edit
-                            </Button>
-                            <Button
-                                type="primary"
-                                onClick={() => { setViewingActivity(null); setCompletingActivity(viewingActivity); }}
-                            >
-                                Complete
-                            </Button>
+                            {viewingActivity.status === 1 && (
+                                <>
+                                    <Button
+                                        type="primary"
+                                        icon={<EditOutlined />}
+                                        onClick={() => { setViewingActivity(null); handleEdit(viewingActivity); }}
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => { setViewingActivity(null); setCompletingActivity(viewingActivity); }}
+                                    >
+                                        Complete
+                                    </Button>
+                                    <Popconfirm
+                                        title="Cancel this activity?"
+                                        onConfirm={async () => { await handleCancel(viewingActivity.id); setViewingActivity(null); }}
+                                        okText="Cancel Activity"
+                                        cancelText="No"
+                                    >
+                                        <Button icon={<StopOutlined />} danger>Cancel</Button>
+                                    </Popconfirm>
+                                </>
+                            )}
+                            {canDelete && (
+                                <Popconfirm
+                                    title="Delete this activity?"
+                                    onConfirm={async () => { await handleDelete(viewingActivity.id); setViewingActivity(null); }}
+                                    okText="Delete"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="No"
+                                >
+                                    <Button icon={<DeleteOutlined />} danger>Delete</Button>
+                                </Popconfirm>
+                            )}
                         </Space>
                     )
                 }

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag, Statistic, Row, Col, Space } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag, Statistic, Row, Col, Space, Popconfirm } from 'antd';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, EditOutlined, MinusCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { useClientActions, useClientState } from '@/providers/clientProvider';
 import { IClientDto, ICreateClientDto, IUpdateClientDto } from '@/providers/clientProvider/context';
 import { CLIENT_TYPE_OPTIONS, CLIENTS_PAGE_SIZE, INDUSTRY_OPTIONS } from '@/constants/clients';
@@ -188,6 +188,27 @@ const ClientsContent: React.FC = () => {
                             >
                                 Edit
                             </Button>
+                            {canDelete && viewingClient.isActive && (
+                                <Popconfirm
+                                    title="Mark this client as inactive?"
+                                    onConfirm={async () => { await handleDelete(viewingClient.id); setViewingClient(null); }}
+                                    okText="Mark Inactive"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<MinusCircleOutlined />} danger>Mark Inactive</Button>
+                                </Popconfirm>
+                            )}
+                            {canDelete && !viewingClient.isActive && (
+                                <Popconfirm
+                                    title="Reactivate this client?"
+                                    onConfirm={async () => { await handleActivate(viewingClient); setViewingClient(null); }}
+                                    okText="Activate"
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<CheckCircleOutlined />} type="primary">Activate</Button>
+                                </Popconfirm>
+                            )}
                         </Space>
                     )
                 }
