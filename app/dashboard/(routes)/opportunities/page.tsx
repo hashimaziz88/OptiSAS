@@ -17,6 +17,7 @@ import {
     STAGE_ORDER,
     STAGE_API_KEYS,
 } from '@/constants/opportunities';
+import { ACTIVE_STATUS_OPTIONS } from '@/constants/clients';
 import { buildOpportunitiesParams, getSourceLabel, formatCurrency } from '@/utils/dashboard/opportunities';
 import OpportunitiesTable from '@/components/dashboard/opportunities/OpportunitiesTable';
 import OpportunityFormModal from '@/components/dashboard/opportunities/OpportunityFormModal';
@@ -48,6 +49,7 @@ const OpportunitiesContent: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [stageFilter, setStageFilter] = useState<number | undefined>(undefined);
     const [clientFilter, setClientFilter] = useState<string | undefined>(undefined);
+    const [isActive, setIsActive] = useState<boolean | undefined>(true);
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingOpp, setEditingOpp] = useState<IOpportunityDto | null>(null);
@@ -58,6 +60,10 @@ const OpportunitiesContent: React.FC = () => {
     const canAssign = isAdminOrManager(user?.roles);
 
     const clients = clientPagedResult?.items ?? [];
+
+    const oppTableData = isActive !== undefined
+        ? (pagedResult?.items ?? []).filter((o) => o.isActive === isActive)
+        : (pagedResult?.items ?? []);
 
     const fetchOpportunities = (p = page, ps = pageSize) => {
         getOpportunities(buildOpportunitiesParams(p, ps, { searchTerm, stage: stageFilter, clientId: clientFilter }));
@@ -193,13 +199,22 @@ const OpportunitiesContent: React.FC = () => {
                     value={clientFilter}
                     onChange={(v) => { setClientFilter(v); setPage(1); }}
                 />
+                <Select
+                    className={styles.filterSelect}
+                    placeholder="All Statuses"
+                    allowClear
+                    options={ACTIVE_STATUS_OPTIONS}
+                    value={isActive}
+                    onChange={(value) => { setIsActive(value); setPage(1); }}
+                    size="large"
+                />
                 <Button icon={<ReloadOutlined />} size="large" className={styles.refreshButton} onClick={() => fetchOpportunities()}>
                     Refresh
                 </Button>
             </div>
 
             <OpportunitiesTable
-                data={pagedResult?.items ?? []}
+                data={oppTableData}
                 total={pagedResult?.totalCount ?? 0}
                 page={page}
                 pageSize={pageSize}

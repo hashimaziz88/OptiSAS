@@ -5,7 +5,7 @@ import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag, 
 import { PlusOutlined, SearchOutlined, ReloadOutlined, EditOutlined, MinusCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { useClientActions, useClientState } from '@/providers/clientProvider';
 import { IClientDto, ICreateClientDto, IUpdateClientDto } from '@/providers/clientProvider/context';
-import { CLIENT_TYPE_OPTIONS, CLIENTS_PAGE_SIZE, INDUSTRY_OPTIONS } from '@/constants/clients';
+import { CLIENT_TYPE_OPTIONS, CLIENTS_PAGE_SIZE, INDUSTRY_OPTIONS, ACTIVE_STATUS_OPTIONS } from '@/constants/clients';
 import { buildClientsParams, getClientTypeLabel } from '@/utils/dashboard/clients';
 import ClientsTable from '@/components/dashboard/clients/ClientsTable';
 import ClientFormModal from '@/components/dashboard/clients/ClientFormModal';
@@ -28,18 +28,19 @@ const ClientsContent: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [industry, setIndustry] = useState<string | undefined>(undefined);
     const [clientType, setClientType] = useState<number | undefined>(undefined);
+    const [isActive, setIsActive] = useState<boolean | undefined>(true);
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingClient, setEditingClient] = useState<IClientDto | null>(null);
     const [viewingClient, setViewingClient] = useState<IClientDto | null>(null);
 
     const fetchClients = (p = page, ps = pageSize) => {
-        getClients(buildClientsParams(p, ps, { searchTerm, industry }));
+        getClients(buildClientsParams(p, ps, { searchTerm, industry, clientType, isActive }));
     };
 
     useEffect(() => {
-        getClients(buildClientsParams(page, pageSize, { searchTerm, industry, clientType }));
-    }, [page, pageSize, searchTerm, industry, clientType, getClients]);
+        getClients(buildClientsParams(page, pageSize, { searchTerm, industry, clientType, isActive }));
+    }, [page, pageSize, searchTerm, industry, clientType, isActive, getClients]);
 
     const tableData = clientType !== undefined
         ? (pagedResult?.items ?? []).filter((c) => c.clientType === clientType)
@@ -134,6 +135,15 @@ const ClientsContent: React.FC = () => {
                     options={CLIENT_TYPE_OPTIONS}
                     value={clientType}
                     onChange={(value) => { setClientType(value); setPage(1); }}
+                    size="large"
+                />
+                <Select
+                    className={styles.filterSelect}
+                    placeholder="All Statuses"
+                    allowClear
+                    options={ACTIVE_STATUS_OPTIONS}
+                    value={isActive}
+                    onChange={(value) => { setIsActive(value); setPage(1); }}
                     size="large"
                 />
                 <Button
