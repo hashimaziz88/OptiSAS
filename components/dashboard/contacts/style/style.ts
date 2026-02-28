@@ -2,17 +2,13 @@ import { createStyles, css } from "antd-style";
 
 export const useStyles = createStyles(({ token }) => ({
   modalContainer: css`
-    background: "#1e2128",
-    border: "1px solid rgba(255,255,255,0.1)",
-    border-radius: 16,
-    padding: 0,
-`,
+    padding: 0;
+  `,
 
   modalHeader: css`
-    background: "transparent",
-    border-bottom: "1px solid rgba(255,255,255,0.08)",
-    padding: "20px 24px",
-    margin-bottom: 0,
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 20px 24px;
+    margin-bottom: 0;
   `,
 
   modalBody: css`
