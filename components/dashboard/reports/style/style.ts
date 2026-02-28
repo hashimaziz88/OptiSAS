@@ -133,6 +133,7 @@ export const useStyles = createStyles(({ token }) => ({
 
     .ant-col {
       margin-bottom: 12px;
+      display: flex;
     }
   `,
 
@@ -143,6 +144,11 @@ export const useStyles = createStyles(({ token }) => ({
     padding: 20px 24px;
     text-align: center;
     overflow: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     .ant-statistic-title {
       color: rgba(255, 255, 255, 0.5);
@@ -150,11 +156,12 @@ export const useStyles = createStyles(({ token }) => ({
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      width: 100%;
     }
 
     .ant-statistic-content {
       color: white;
-      font-size: 28px;
+      font-size: 22px;
       font-weight: 700;
       word-break: break-word;
     }
@@ -163,12 +170,12 @@ export const useStyles = createStyles(({ token }) => ({
       padding: 14px 12px;
 
       .ant-statistic-content {
-        font-size: 18px;
+        font-size: 16px;
       }
 
       .ant-statistic-content-value-int,
       .ant-statistic-content-value-decimal {
-        font-size: 18px;
+        font-size: 16px;
       }
     }
   `,
@@ -180,6 +187,11 @@ export const useStyles = createStyles(({ token }) => ({
     padding: 20px 24px;
     text-align: center;
     overflow: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     .ant-statistic-title {
       color: rgba(255, 255, 255, 0.5);
@@ -187,6 +199,7 @@ export const useStyles = createStyles(({ token }) => ({
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      width: 100%;
     }
 
     @media (max-width: 768px) {
@@ -196,12 +209,12 @@ export const useStyles = createStyles(({ token }) => ({
 
   statAccentValue: css`
     color: #6366f1 !important;
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 700;
     word-break: break-word;
 
     @media (max-width: 768px) {
-      font-size: 18px;
+      font-size: 16px;
     }
   `,
 

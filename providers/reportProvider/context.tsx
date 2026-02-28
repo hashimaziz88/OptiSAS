@@ -27,10 +27,16 @@ export interface IOpportunityReportItemDto {
 }
 
 export interface ISalesByPeriodItemDto {
-    period: string;
-    dealsWon: number;
+    year: number;
+    month: number | null;
+    week: number | null;
+    periodName: string;
+    opportunitiesCount: number;
+    wonCount: number;
+    lostCount: number;
     totalValue: number;
-    averageDealSize: number;
+    wonValue: number;
+    winRate: number;
 }
 
 export interface IReportStateContext {
