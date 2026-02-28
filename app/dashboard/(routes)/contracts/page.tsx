@@ -6,8 +6,8 @@ import {
     Select, Space, Tag, Tooltip, Typography,
 } from 'antd';
 import {
-    CheckCircleOutlined, EditOutlined, PlusOutlined,
-    RedoOutlined, ReloadOutlined, StopOutlined, WarningOutlined,
+    CheckCircleOutlined, EditOutlined, PlusOutlined, RedoOutlined,
+    ReloadOutlined, StopOutlined, WarningOutlined,
 } from '@ant-design/icons';
 import { useContractState, useContractActions } from '@/providers/contractProvider';
 import { IContractDto, ICreateContractDto, ICreateContractRenewalDto, IUpdateContractDto } from '@/providers/contractProvider/context';
@@ -15,18 +15,20 @@ import { CONTRACT_STATUS_COLORS, CONTRACT_STATUS_LABELS, CONTRACT_STATUS_OPTIONS
 import ContractsTable from '@/components/dashboard/contracts/ContractsTable';
 import ContractFormModal from '@/components/dashboard/contracts/ContractFormModal';
 import RenewalModal from '@/components/dashboard/contracts/RenewalModal';
+import ContractRenewalsTable from '@/components/dashboard/contracts/ContractRenewalsTable';
 import { useStyles } from '@/components/dashboard/contracts/style/style';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdmin, isAdminOrManager } from '@/utils/roles';
 
 const { Title, Text } = Typography;
 
+
 const ContractsContent: React.FC = () => {
     const { styles } = useStyles();
     const { user } = useAuthState();
     const canDelete = isAdmin(user?.roles);
     const canActivateCancel = isAdminOrManager(user?.roles);
-    const { isPending, pagedResult } = useContractState();
+    const { isPending, pagedResult, contractRenewals } = useContractState();
     const {
         getContracts,
         createContract,
@@ -35,6 +37,8 @@ const ContractsContent: React.FC = () => {
         activateContract,
         cancelContract,
         createRenewal,
+        completeRenewal,
+        getContractRenewals,
     } = useContractActions();
 
     const [page, setPage] = useState(1);
@@ -82,6 +86,9 @@ const ContractsContent: React.FC = () => {
     const handleView = (record: IContractDto) => {
         setViewingContract(record);
         setDrawerOpen(true);
+        if (record.renewalsCount > 0) {
+            getContractRenewals(record.id);
+        }
     };
 
     const handleDelete = async (id: string) => {
@@ -114,6 +121,14 @@ const ContractsContent: React.FC = () => {
         message.success('Renewal created');
         setRenewalModalOpen(false);
         setRenewingContract(null);
+        load();
+    };
+
+    const handleCompleteRenewal = async (renewalId: string) => {
+        await completeRenewal(renewalId);
+        message.success('Renewal completed — contract marked as Renewed');
+        setDrawerOpen(false);
+        setViewingContract(null);
         load();
     };
 
@@ -186,6 +201,7 @@ const ContractsContent: React.FC = () => {
                 onActivate={handleActivate}
                 onCancel={handleCancel}
                 onRenew={handleOpenRenewal}
+                onCompleteRenewal={handleView}
                 canDelete={canDelete}
                 canActivateCancel={canActivateCancel}
             />
@@ -238,7 +254,7 @@ const ContractsContent: React.FC = () => {
                                     </Button>
                                 </Popconfirm>
                             )}
-                            {(drawerStatus === 2 || drawerStatus === 3) && (
+                            {(drawerStatus === 2 || drawerStatus === 3) && (viewingContract.renewalsCount ?? 0) === 0 && (
                                 <Button
                                     icon={<RedoOutlined />}
                                     style={{ color: '#a78bfa', borderColor: '#a78bfa' }}
@@ -302,6 +318,18 @@ const ContractsContent: React.FC = () => {
                                 </Descriptions.Item>
                             )}
                         </Descriptions>
+
+                        {viewingContract.renewalsCount > 0 && (
+                            <div className={styles.renewalsSection}>
+                                <div className={styles.renewalsSectionTitle}>Renewal History</div>
+                                <ContractRenewalsTable
+                                    renewals={contractRenewals ?? []}
+                                    loading={isPending}
+                                    canComplete={canActivateCancel}
+                                    onComplete={handleCompleteRenewal}
+                                />
+                            </div>
+                        )}
                     </>
                 )}
             </Drawer>

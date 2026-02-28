@@ -47,6 +47,10 @@ export const ContractReducer = handleActions<IContractStateContext, Partial<ICon
         [ContractActionEnums.completeRenewalPending]: (state, action) => ({ ...state, ...action.payload }),
         [ContractActionEnums.completeRenewalSuccess]: (state, action) => ({ ...state, ...action.payload }),
         [ContractActionEnums.completeRenewalError]: (state, action) => ({ ...state, ...action.payload }),
+
+        [ContractActionEnums.getContractRenewalsPending]: (state, action) => ({ ...state, ...action.payload }),
+        [ContractActionEnums.getContractRenewalsSuccess]: (state, action) => ({ ...state, ...action.payload }),
+        [ContractActionEnums.getContractRenewalsError]: (state, action) => ({ ...state, ...action.payload }),
     },
     INITIAL_STATE,
 );
