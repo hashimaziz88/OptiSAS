@@ -3,15 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal, Select, message } from 'antd';
 import { axiosInstance } from '@/utils/axiosInstance';
+import { AssignOpportunityModalProps } from '@/types/componentProps';
 import { useStyles } from '@/components/dashboard/opportunities/style/style';
-
-interface AssignOpportunityModalProps {
-    open: boolean;
-    loading: boolean;
-    currentOwnerId?: string;
-    onSubmit: (values: { userId: string }) => void;
-    onClose: () => void;
-}
 
 const AssignOpportunityModal: React.FC<AssignOpportunityModalProps> = ({
     open, loading, currentOwnerId, onSubmit, onClose,

@@ -17,23 +17,8 @@ import {
     PRIORITY_COLORS,
     PRIORITY_LABELS,
 } from '@/constants/pricingRequests';
+import { PricingRequestsTableProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface PricingRequestsTableProps {
-    data: IPricingRequestDto[];
-    total: number;
-    page: number;
-    pageSize: number;
-    loading: boolean;
-    onPageChange: (page: number, pageSize: number) => void;
-    onView: (record: IPricingRequestDto) => void;
-    onEdit: (record: IPricingRequestDto) => void;
-    onDelete: (id: string) => void;
-    onComplete: (record: IPricingRequestDto) => void;
-    onAssign: (record: IPricingRequestDto) => void;
-    canDelete?: boolean;
-    canAssign?: boolean;
-}
 
 const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
     data,

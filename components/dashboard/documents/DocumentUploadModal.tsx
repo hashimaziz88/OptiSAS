@@ -8,20 +8,14 @@ import {
     DOCUMENT_CATEGORY_OPTIONS,
     RELATED_TO_TYPE_OPTIONS,
 } from '@/constants/documents';
+import { RELATED_ENDPOINTS } from '@/constants/notes';
 import { axiosInstance } from '@/utils/axiosInstance';
+import { DocumentUploadModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
 const { Dragger } = Upload;
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
-
-const RELATED_ENDPOINTS: Record<number, string> = {
-    1: '/api/Clients',
-    2: '/api/Opportunities',
-    3: '/api/Proposals',
-    4: '/api/Contracts',
-    5: '/api/Activities',
-};
 
 const getRecordLabel = (type: number, record: Record<string, unknown>): string => {
     if (type === 1) return (record.name as string) ?? String(record.id);
@@ -33,13 +27,6 @@ const getRecordLabel = (type: number, record: Record<string, unknown>): string =
         String(record.id)
     );
 };
-
-interface DocumentUploadModalProps {
-    open: boolean;
-    loading: boolean;
-    onUpload: (formData: FormData) => Promise<void>;
-    onClose: () => void;
-}
 
 const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
     open,

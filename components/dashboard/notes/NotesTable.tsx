@@ -6,19 +6,8 @@ import { EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { INoteDto } from '@/providers/noteProvider/context';
 import { RELATED_TO_TYPE_LABELS } from '@/constants/notes';
+import { NotesTableProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface NotesTableProps {
-    data: INoteDto[];
-    total: number;
-    page: number;
-    pageSize: number;
-    loading: boolean;
-    onPageChange: (page: number, pageSize: number) => void;
-    onEdit: (note: INoteDto) => void;
-    onDelete: (id: string) => void;
-    onView: (note: INoteDto) => void;
-}
 
 const NotesTable: React.FC<NotesTableProps> = ({
     data,

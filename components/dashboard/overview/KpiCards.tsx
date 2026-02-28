@@ -12,14 +12,10 @@ import {
 } from '@ant-design/icons';
 import { IDashboardOverviewDto } from '@/providers/dashboardProvider/context';
 import { formatCurrency } from '@/utils/dashboard/opportunities';
+import { KpiCardsProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
-interface Props {
-    overview: IDashboardOverviewDto | null | undefined;
-    loading: boolean;
-}
-
-const KpiCards: React.FC<Props> = ({ overview, loading }) => {
+const KpiCards: React.FC<KpiCardsProps> = ({ overview, loading }) => {
     const { styles } = useStyles();
 
     const cards = [

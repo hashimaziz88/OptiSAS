@@ -32,10 +32,9 @@ import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter
 import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
+import { TabKey } from '@/types/componentProps';
 
 const { Title } = Typography;
-
-type TabKey = 'all' | 'mine' | 'pending';
 
 const PricingRequestsContent: React.FC = () => {
     const { styles } = useStyles();

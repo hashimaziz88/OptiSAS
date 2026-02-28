@@ -12,41 +12,12 @@ import Spinner from '@/components/spinner/Spinner';
 import { useAuthActions, useAuthState } from '@/providers/authProvider';
 import { IUserRegisterRequest } from '@/providers/authProvider/context';
 import { decodeInvitationCode } from '@/utils/auth/invitationCode';
-
-type ScenarioType = 'shared' | 'new-org' | 'join-org';
-
-type FieldType = {
-    email: string;
-    password: string;
-    firstName: string;
-    lastName: string;
-    phoneNumber?: string;
-    tenantName?: string;
-    invitationCode?: string;
-    role?: string;
-};
-
-const ROLE_OPTIONS = [
-    { value: 'SalesRep', label: 'Sales Representative' },
-    { value: 'SalesManager', label: 'Sales Manager' },
-    { value: 'BusinessDevelopmentManager', label: 'Business Development Manager' },
-];
-
-const SCENARIO_OPTIONS = [
-    { value: 'shared', label: 'Shared' },
-    { value: 'new-org', label: 'New Org' },
-    { value: 'join-org', label: 'Join Org' },
-];
-
-const SCENARIO_HINTS: Record<ScenarioType, string> = {
-    shared: 'Access the default shared workspace. Defaults to Sales Representative.',
-    'new-org': 'Create a new isolated organisation. You will become its Admin.',
-    'join-org': 'Join an existing organisation using an invitation code from your Admin.',
-};
+import { ScenarioType, RegisterFieldType } from '@/types/auth';
+import { ROLE_OPTIONS, SCENARIO_OPTIONS, SCENARIO_HINTS } from '@/constants/auth';
 
 const Register: React.FC = () => {
     const { styles } = useStyles();
-    const [form] = Form.useForm<FieldType>();
+    const [form] = Form.useForm<RegisterFieldType>();
     const { register } = useAuthActions();
     const { isPending, isError } = useAuthState();
     const [scenario, setScenario] = useState<ScenarioType>('shared');
@@ -62,7 +33,7 @@ const Register: React.FC = () => {
         form.resetFields(['tenantName', 'invitationCode', 'role']);
     };
 
-    const onFinish = (values: FieldType) => {
+    const onFinish = (values: RegisterFieldType) => {
         const payload: IUserRegisterRequest = {
             email: values.email,
             password: values.password,

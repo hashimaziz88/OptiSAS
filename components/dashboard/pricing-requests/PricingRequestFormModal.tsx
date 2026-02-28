@@ -7,22 +7,10 @@ import { ICreatePricingRequestDto, IPricingRequestDto, IUpdatePricingRequestDto 
 import { PRIORITY_OPTIONS } from '@/constants/pricingRequests';
 import { useAuthState } from '@/providers/authProvider';
 import { axiosInstance } from '@/utils/axiosInstance';
+import { PricingRequestFormModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
-
-interface OpportunityOption {
-    value: string;
-    label: string;
-}
-
-interface PricingRequestFormModalProps {
-    open: boolean;
-    editing: IPricingRequestDto | null;
-    loading: boolean;
-    onSubmit: (values: ICreatePricingRequestDto | IUpdatePricingRequestDto) => Promise<void>;
-    onClose: () => void;
-}
 
 const PricingRequestFormModal: React.FC<PricingRequestFormModalProps> = ({
     open,
@@ -35,7 +23,7 @@ const PricingRequestFormModal: React.FC<PricingRequestFormModalProps> = ({
     const [form] = Form.useForm();
     const { user } = useAuthState();
 
-    const [opportunities, setOpportunities] = useState<OpportunityOption[]>([]);
+    const [opportunities, setOpportunities] = useState<{ value: string; label: string }[]>([]);
     const [opportunitiesLoading, setOpportunitiesLoading] = useState(false);
 
     useEffect(() => {

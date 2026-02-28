@@ -3,13 +3,9 @@ import Link from 'next/link';
 import { Typography } from 'antd';
 import { useStyles } from '@/app/(auth)/style/style';
 import LogoImage from '@/components/logoImage/LogoImage';
+import { AuthHeaderProps } from '@/types/componentProps';
 
 const { Text, Title } = Typography;
-
-interface AuthHeaderProps {
-    title: string;
-    subtitle: string;
-}
 
 const AuthHeader: React.FC<AuthHeaderProps> = ({ title, subtitle }) => {
     const { styles } = useStyles();

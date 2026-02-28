@@ -7,20 +7,8 @@ import type { ColumnsType } from 'antd/es/table';
 import { IOpportunityDto } from '@/providers/opportunityProvider/context';
 import { OPPORTUNITY_STAGE_COLORS } from '@/constants/opportunities';
 import { getStageLabel, getSourceLabel, formatCurrency } from '@/utils/dashboard/opportunities';
+import { OpportunitiesTableProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface OpportunitiesTableProps {
-    data: IOpportunityDto[];
-    total: number;
-    page: number;
-    pageSize: number;
-    loading: boolean;
-    onPageChange: (page: number, pageSize: number) => void;
-    onEdit: (opp: IOpportunityDto) => void;
-    onDelete: (id: string) => void;
-    onView: (opp: IOpportunityDto) => void;
-    canDelete?: boolean;
-}
 
 const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
     data, total, page, pageSize, loading,

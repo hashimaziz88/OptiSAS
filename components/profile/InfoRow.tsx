@@ -3,16 +3,10 @@
 import React from 'react';
 import { Tooltip, Typography } from 'antd';
 import { CopyOutlined } from '@ant-design/icons';
+import { InfoRowProps } from '@/types/componentProps';
 import { useStyles } from '@/components/profile/style/style';
 
 const { Text } = Typography;
-
-interface InfoRowProps {
-    label: string;
-    value: React.ReactNode;
-    copyable?: boolean;
-    onCopy?: (value: string, label: string) => void;
-}
 
 const InfoRow: React.FC<InfoRowProps> = ({ label, value, copyable, onCopy }) => {
     const { styles } = useStyles();

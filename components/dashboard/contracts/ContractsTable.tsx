@@ -15,25 +15,8 @@ import {
 import type { ColumnsType } from 'antd/es/table';
 import { IContractDto } from '@/providers/contractProvider/context';
 import { CONTRACT_STATUS_COLORS, CONTRACT_STATUS_LABELS } from '@/constants/contracts';
+import { ContractsTableProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface ContractsTableProps {
-    data: IContractDto[];
-    total: number;
-    page: number;
-    pageSize: number;
-    loading: boolean;
-    onPageChange: (page: number, pageSize: number) => void;
-    onView: (record: IContractDto) => void;
-    onEdit: (record: IContractDto) => void;
-    onDelete: (id: string) => void;
-    onActivate: (record: IContractDto) => void;
-    onCancel: (record: IContractDto) => void;
-    onRenew: (record: IContractDto) => void;
-    onCompleteRenewal: (record: IContractDto) => void;
-    canDelete?: boolean;
-    canActivateCancel?: boolean;
-}
 
 const ContractsTable: React.FC<ContractsTableProps> = ({
     data,

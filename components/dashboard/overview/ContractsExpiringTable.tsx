@@ -6,12 +6,8 @@ import type { ColumnsType } from 'antd/es/table';
 import { IContractDto } from '@/providers/contractProvider/context';
 import { CONTRACT_STATUS_COLORS } from '@/constants/contracts';
 import { formatCurrency } from '@/utils/dashboard/opportunities';
+import { ContractsExpiringTableProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface Props {
-    contracts: IContractDto[];
-    loading: boolean;
-}
 
 const columns: ColumnsType<IContractDto> = [
     {
@@ -51,7 +47,7 @@ const columns: ColumnsType<IContractDto> = [
     },
 ];
 
-const ContractsExpiringTable: React.FC<Props> = ({ contracts, loading }) => {
+const ContractsExpiringTable: React.FC<ContractsExpiringTableProps> = ({ contracts, loading }) => {
     const { styles } = useStyles();
 
     if (!loading && contracts.length === 0) return null;

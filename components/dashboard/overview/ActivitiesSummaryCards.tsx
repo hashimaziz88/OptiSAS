@@ -4,14 +4,10 @@ import React from 'react';
 import { Row, Col, Card } from 'antd';
 import { CalendarOutlined, WarningOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { IActivitiesDashboardSummaryDto } from '@/providers/dashboardProvider/context';
+import { ActivitiesSummaryCardsProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
-interface Props {
-    activities: IActivitiesDashboardSummaryDto | undefined;
-    loading: boolean;
-}
-
-const ActivitiesSummaryCards: React.FC<Props> = ({ activities, loading }) => {
+const ActivitiesSummaryCards: React.FC<ActivitiesSummaryCardsProps> = ({ activities, loading }) => {
     const { styles } = useStyles();
 
     const items = [

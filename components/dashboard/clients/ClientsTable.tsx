@@ -6,21 +6,8 @@ import { EditOutlined, MinusCircleOutlined, EyeOutlined, CheckCircleOutlined } f
 import type { ColumnsType } from 'antd/es/table';
 import { IClientDto } from '@/providers/clientProvider/context';
 import { getClientTypeLabel } from '@/utils/dashboard/clients';
+import { ClientsTableProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface ClientsTableProps {
-    data: IClientDto[];
-    total: number;
-    page: number;
-    pageSize: number;
-    loading: boolean;
-    onPageChange: (page: number, pageSize: number) => void;
-    onEdit: (client: IClientDto) => void;
-    onDelete: (id: string) => void;
-    onActivate: (client: IClientDto) => void;
-    onView: (client: IClientDto) => void;
-    canDelete?: boolean;
-}
 
 const ClientsTable: React.FC<ClientsTableProps> = ({
     data, total, page, pageSize, loading,

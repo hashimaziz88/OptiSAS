@@ -11,20 +11,8 @@ import {
     RELATED_TO_TYPE_LABELS,
     formatFileSize,
 } from '@/constants/documents';
+import { DocumentsTableProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface DocumentsTableProps {
-    data: IDocumentDto[];
-    total: number;
-    page: number;
-    pageSize: number;
-    loading: boolean;
-    onPageChange: (page: number, pageSize: number) => void;
-    onView: (doc: IDocumentDto) => void;
-    onDownload: (doc: IDocumentDto) => void;
-    onDelete: (id: string) => void;
-    canDelete?: boolean;
-}
 
 const DocumentsTable: React.FC<DocumentsTableProps> = ({
     data,

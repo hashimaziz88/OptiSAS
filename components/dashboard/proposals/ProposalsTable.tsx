@@ -13,24 +13,8 @@ import {
 import type { ColumnsType } from 'antd/es/table';
 import { IProposalDto } from '@/providers/proposalProvider/context';
 import { PROPOSAL_STATUS_COLORS, PROPOSAL_STATUS_LABELS } from '@/constants/proposals';
+import { ProposalsTableProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface ProposalsTableProps {
-    data: IProposalDto[];
-    total: number;
-    page: number;
-    pageSize: number;
-    loading: boolean;
-    onPageChange: (page: number, pageSize: number) => void;
-    onView: (record: IProposalDto) => void;
-    onEdit: (record: IProposalDto) => void;
-    onDelete: (id: string) => void;
-    onSubmit: (record: IProposalDto) => void;
-    onApprove: (record: IProposalDto) => void;
-    onReject: (record: IProposalDto) => void;
-    canDelete?: boolean;
-    canApproveReject?: boolean;
-}
 
 const ProposalsTable: React.FC<ProposalsTableProps> = ({
     data,

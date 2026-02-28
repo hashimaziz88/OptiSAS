@@ -14,22 +14,9 @@ import { useAuthState } from '@/providers/authProvider';
 import { generateInvitationCode } from '@/utils/auth/invitationCode';
 import { useStyles } from '@/components/profile/style/style';
 import InfoRow from '@/components/profile/InfoRow';
+import { ROLE_COLORS, ROLE_LABELS } from '@/constants/auth';
 
 const { Title, Text } = Typography;
-
-const ROLE_COLORS: Record<string, { color: string; bg: string; border: string }> = {
-    Admin: { color: '#f87171', bg: 'rgba(248,113,113,0.12)', border: 'rgba(248,113,113,0.3)' },
-    SalesManager: { color: '#fb923c', bg: 'rgba(251,146,60,0.12)', border: 'rgba(251,146,60,0.3)' },
-    BusinessDevelopmentManager: { color: '#60a5fa', bg: 'rgba(96,165,250,0.12)', border: 'rgba(96,165,250,0.3)' },
-    SalesRep: { color: '#34d399', bg: 'rgba(52,211,153,0.12)', border: 'rgba(52,211,153,0.3)' },
-};
-
-const ROLE_LABELS: Record<string, string> = {
-    Admin: 'Admin',
-    SalesManager: 'Sales Manager',
-    BusinessDevelopmentManager: 'BDM',
-    SalesRep: 'Sales Rep',
-};
 
 const handleCopy = (value: string, label: string) => {
     navigator.clipboard.writeText(value).then(() => {
@@ -50,7 +37,6 @@ const ProfilePage: React.FC = () => {
 
     const canInvite = roles.some((r) => r === 'Admin' || r === 'SalesManager' || r === 'BusinessDevelopmentManager');
     const inviteCode = canInvite && user?.tenantId ? generateInvitationCode(user.tenantId) : null;
-    // Next UTC midnight expressed in local time
     const nowUtc = new Date();
     const nextUtcMidnight = dayjs(
         new Date(Date.UTC(nowUtc.getUTCFullYear(), nowUtc.getUTCMonth(), nowUtc.getUTCDate() + 1))
@@ -113,7 +99,6 @@ const ProfilePage: React.FC = () => {
             </div>
 
 
-            {/* Invite team members — Admin / SalesManager only */}
             {inviteCode && (
                 <div className={styles.card}>
                     <Text strong className={styles.sectionLabel}>

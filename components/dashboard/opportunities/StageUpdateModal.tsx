@@ -3,15 +3,8 @@
 import React, { useEffect } from 'react';
 import { Button, Form, Input, Modal, Select } from 'antd';
 import { OPPORTUNITY_STAGE_OPTIONS } from '@/constants/opportunities';
+import { StageUpdateModalProps } from '@/types/componentProps';
 import { useStyles } from '@/components/dashboard/opportunities/style/style';
-
-interface StageUpdateModalProps {
-    open: boolean;
-    loading: boolean;
-    initialStage?: number;
-    onSubmit: (values: { stage: number; reason?: string }) => void;
-    onClose: () => void;
-}
 
 const StageUpdateModal: React.FC<StageUpdateModalProps> = ({
     open, loading, initialStage, onSubmit, onClose,

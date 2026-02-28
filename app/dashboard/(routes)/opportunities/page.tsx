@@ -169,7 +169,6 @@ const OpportunitiesContent: React.FC = () => {
                 })}
             </Row>
 
-            {/* Filters */}
             <div className={styles.filterBar}>
                 <Input
                     prefix={<SearchOutlined />}
@@ -221,7 +220,6 @@ const OpportunitiesContent: React.FC = () => {
                 onClose={() => { setModalOpen(false); setEditingOpp(null); }}
             />
 
-            {/* Detail Drawer */}
             <Drawer
                 open={!!viewingOpp}
                 title={viewingOpp?.title ?? 'Opportunity Details'}
@@ -289,7 +287,6 @@ const OpportunitiesContent: React.FC = () => {
                             )}
                         </Descriptions>
 
-                        {/* Stage History */}
                         {stageHistory && stageHistory.length > 0 && (
                             <>
                                 <div className={styles.sectionTitle}>Stage History</div>

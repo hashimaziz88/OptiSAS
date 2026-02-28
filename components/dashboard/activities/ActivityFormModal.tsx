@@ -4,47 +4,18 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Form, Input, Select, Modal, Button, DatePicker, InputNumber, Row, Col } from 'antd';
 import dayjs from 'dayjs';
 import { IActivityDto, ICreateActivityDto, IUpdateActivityDto } from '@/providers/activityProvider/context';
-import { ACTIVITY_TYPE_OPTIONS } from '@/constants/activities';
+import { ACTIVITY_TYPE_OPTIONS, PRIORITY_OPTIONS, ACTIVITY_RELATED_TO_TYPE_OPTIONS, ACTIVITY_RELATED_ENDPOINTS } from '@/constants/activities';
 import { axiosInstance } from '@/utils/axiosInstance';
 import { useAuthState } from '@/providers/authProvider';
+import { ActivityFormModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
-
-const PRIORITY_OPTIONS = [
-    { value: 1, label: 'Low' },
-    { value: 2, label: 'Medium' },
-    { value: 3, label: 'High' },
-    { value: 4, label: 'Urgent' },
-];
-
-const RELATED_TO_TYPE_OPTIONS = [
-    { value: 1, label: 'Client' },
-    { value: 2, label: 'Opportunity' },
-    { value: 3, label: 'Proposal' },
-    { value: 4, label: 'Contract' },
-];
-
-const RELATED_ENDPOINTS: Record<number, string> = {
-    1: '/api/Clients',
-    2: '/api/Opportunities',
-    3: '/api/Proposals',
-    4: '/api/Contracts',
-};
 
 const getRecordLabel = (type: number, record: Record<string, string>): string => {
     if (type === 1) return record.name;
     return record.title;
 };
-
-interface ActivityFormModalProps {
-    open: boolean;
-    editing?: IActivityDto | null;
-    loading: boolean;
-    canAssign?: boolean;
-    onSubmit: (values: ICreateActivityDto | IUpdateActivityDto) => void;
-    onClose: () => void;
-}
 
 const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, loading, canAssign, onSubmit, onClose }) => {
     const { styles } = useStyles();
@@ -62,7 +33,7 @@ const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, lo
         setRelatedLoading(true);
         setRelatedOptions([]);
         try {
-            const res = await axiosInstance().get(`${BASE_URL}${RELATED_ENDPOINTS[type]}`, {
+            const res = await axiosInstance().get(`${BASE_URL}${ACTIVITY_RELATED_ENDPOINTS[type]}`, {
                 params: { pageSize: 100, pageNumber: 1 },
             });
             const items: Record<string, string>[] = res.data?.items ?? res.data ?? [];
@@ -221,7 +192,7 @@ const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, lo
                                 <Form.Item label="Related To Type" name="relatedToType">
                                     <Select
                                         size="large"
-                                        options={RELATED_TO_TYPE_OPTIONS}
+                                        options={ACTIVITY_RELATED_TO_TYPE_OPTIONS}
                                         placeholder="Select entity type"
                                         allowClear
                                         onChange={handleRelatedTypeChange}

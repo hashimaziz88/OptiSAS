@@ -6,16 +6,8 @@ import dayjs from 'dayjs';
 import { IOpportunityDto, ICreateOpportunityDto, IUpdateOpportunityDto } from '@/providers/opportunityProvider/context';
 import { IClientDto } from '@/providers/clientProvider/context';
 import { OPPORTUNITY_STAGE_OPTIONS, OPPORTUNITY_SOURCE_OPTIONS } from '@/constants/opportunities';
+import { OpportunityFormModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface OpportunityFormModalProps {
-    open: boolean;
-    editing?: IOpportunityDto | null;
-    loading: boolean;
-    clients: IClientDto[];
-    onSubmit: (values: ICreateOpportunityDto | IUpdateOpportunityDto) => void;
-    onClose: () => void;
-}
 
 const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
     open, editing, loading, clients, onSubmit, onClose,

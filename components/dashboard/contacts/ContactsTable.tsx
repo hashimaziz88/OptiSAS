@@ -5,22 +5,8 @@ import { Table, Button, Popconfirm, Tooltip, Space, Avatar } from 'antd';
 import { EditOutlined, MinusCircleOutlined, EyeOutlined, StarOutlined, StarFilled, CheckCircleOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { IContactDto } from '@/providers/contactProvider/context';
+import { ContactsTableProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface ContactsTableProps {
-    data: IContactDto[];
-    total: number;
-    page: number;
-    pageSize: number;
-    loading: boolean;
-    onPageChange: (page: number, pageSize: number) => void;
-    onEdit: (contact: IContactDto) => void;
-    onDelete: (id: string) => void;
-    onActivate: (contact: IContactDto) => void;
-    onView: (contact: IContactDto) => void;
-    onSetPrimary: (id: string) => void;
-    canDelete?: boolean;
-}
 
 const ContactsTable: React.FC<ContactsTableProps> = ({
     data, total, page, pageSize, loading,

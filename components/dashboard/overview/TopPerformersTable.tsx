@@ -5,12 +5,8 @@ import { Table, Card, Progress } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { ISalesPerformanceDto } from '@/providers/dashboardProvider/context';
 import { formatCurrency } from '@/utils/dashboard/opportunities';
+import { TopPerformersTableProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface Props {
-    performers: ISalesPerformanceDto[];
-    loading: boolean;
-}
 
 const columns: ColumnsType<ISalesPerformanceDto> = [
     {
@@ -62,7 +58,7 @@ const columns: ColumnsType<ISalesPerformanceDto> = [
     },
 ];
 
-const TopPerformersTable: React.FC<Props> = ({ performers, loading }) => {
+const TopPerformersTable: React.FC<TopPerformersTableProps> = ({ performers, loading }) => {
     const { styles } = useStyles();
 
     return (

@@ -6,14 +6,8 @@ import { CheckCircleOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { IContractRenewalDto } from '@/providers/contractProvider/context';
 import { RENEWAL_STATUS_COLORS } from '@/constants/contracts';
+import { ContractRenewalsTableProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface ContractRenewalsTableProps {
-    renewals: IContractRenewalDto[];
-    loading: boolean;
-    canComplete: boolean;
-    onComplete: (renewalId: string) => Promise<void>;
-}
 
 const ContractRenewalsTable: React.FC<ContractRenewalsTableProps> = ({
     renewals,
@@ -87,7 +81,7 @@ const ContractRenewalsTable: React.FC<ContractRenewalsTableProps> = ({
                             </Popconfirm>
                         ) : null,
                 },
-              ]
+            ]
             : []),
     ];
 

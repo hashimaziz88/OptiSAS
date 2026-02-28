@@ -9,20 +9,10 @@ import dayjs from 'dayjs';
 import { IContractDto, ICreateContractDto, IUpdateContractDto } from '@/providers/contractProvider/context';
 import { useAuthState } from '@/providers/authProvider';
 import { axiosInstance } from '@/utils/axiosInstance';
+import { ContractFormModalProps, OpportunityWithClientOption } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
-
-interface SelectOption { value: string; label: string; }
-interface OpportunityOption extends SelectOption { clientId: string; clientName: string; }
-
-interface ContractFormModalProps {
-    open: boolean;
-    editing: IContractDto | null;
-    loading: boolean;
-    onSubmit: (values: ICreateContractDto | IUpdateContractDto) => Promise<void>;
-    onClose: () => void;
-}
 
 const ContractFormModal: React.FC<ContractFormModalProps> = ({
     open,
@@ -35,7 +25,7 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
     const { user } = useAuthState();
     const [form] = Form.useForm();
 
-    const [opportunities, setOpportunities] = useState<OpportunityOption[]>([]);
+    const [opportunities, setOpportunities] = useState<OpportunityWithClientOption[]>([]);
     const [optionsLoading, setOptionsLoading] = useState(false);
     const [selectedClientName, setSelectedClientName] = useState('');
 

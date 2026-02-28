@@ -7,6 +7,7 @@ import { FilePdfOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/ico
 import type { Dayjs } from 'dayjs';
 import { ISalesByPeriodItemDto } from '@/providers/reportProvider/context';
 import { useReportState, useReportActions } from '@/providers/reportProvider';
+import { SALES_GROUP_BY_OPTIONS } from '@/constants/reports';
 import { useStyles } from './style/style';
 import { formatCurrency } from './utils';
 import { generateSalesByPeriodReportPdf } from './generatePdf';
@@ -157,10 +158,7 @@ const SalesByPeriodTab: React.FC = () => {
                     className={styles.filterSelect}
                     value={groupBy}
                     onChange={(v) => setGroupBy(v)}
-                    options={[
-                        { value: 'month', label: 'Month' },
-                        { value: 'week', label: 'Week' },
-                    ]}
+                    options={SALES_GROUP_BY_OPTIONS}
                     style={{ minWidth: 120 }}
                 />
                 <Button type="primary" icon={<SearchOutlined />} onClick={load} loading={isPending}>

@@ -19,22 +19,8 @@ import {
     PRIORITY_LABELS,
     PRIORITY_COLORS,
 } from '@/constants/activities';
+import { ActivitiesTableProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface ActivitiesTableProps {
-    data: IActivityDto[];
-    total: number;
-    page: number;
-    pageSize: number;
-    loading: boolean;
-    onPageChange: (page: number, pageSize: number) => void;
-    onEdit: (activity: IActivityDto) => void;
-    onDelete: (id: string) => void;
-    onView: (activity: IActivityDto) => void;
-    onComplete: (activity: IActivityDto) => void;
-    onCancel: (id: string) => void;
-    canDelete?: boolean;
-}
 
 const ActivitiesTable: React.FC<ActivitiesTableProps> = ({
     data, total, page, pageSize, loading,

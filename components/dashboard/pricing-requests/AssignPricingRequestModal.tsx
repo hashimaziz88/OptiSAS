@@ -4,22 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal, Select, message } from 'antd';
 import { axiosInstance } from '@/utils/axiosInstance';
 import { IPricingRequestDto } from '@/providers/pricingRequestProvider/context';
+import { AssignPricingRequestModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
-
-interface UserOption {
-    value: string;
-    label: string;
-}
-
-interface AssignPricingRequestModalProps {
-    open: boolean;
-    request: IPricingRequestDto | null;
-    loading: boolean;
-    onAssign: (id: string, userId: string) => Promise<void>;
-    onClose: () => void;
-}
 
 const AssignPricingRequestModal: React.FC<AssignPricingRequestModalProps> = ({
     open,
@@ -30,7 +18,7 @@ const AssignPricingRequestModal: React.FC<AssignPricingRequestModalProps> = ({
 }) => {
     const { styles } = useStyles();
     const [form] = Form.useForm();
-    const [users, setUsers] = useState<UserOption[]>([]);
+    const [users, setUsers] = useState<{ value: string; label: string }[]>([]);
     const [usersLoading, setUsersLoading] = useState(false);
 
     useEffect(() => {
