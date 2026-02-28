@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@google/genai": "^1.43.0",
     "@types/redux-actions": "^2.6.5",
     "antd": "^6.3.1",
     "antd-style": "^4.1.0",

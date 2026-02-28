@@ -293,7 +293,6 @@ export interface TopPerformersTableProps {
   loading: boolean;
 }
 
-
 export interface AssignPricingRequestModalProps {
   open: boolean;
   request: IPricingRequestDto | null;
@@ -381,28 +380,34 @@ export interface InfoRowProps {
 }
 
 export interface AuthHeaderProps {
-    title: string;
-    subtitle: string;
+  title: string;
+  subtitle: string;
 }
 
 export interface AuthLayoutProps {
-    children: ReactNode;
+  children: ReactNode;
 }
 
 export interface AuthFooterLinkProps {
-    text: string;
-    linkHref: string;
-    linkLabel: string;
+  text: string;
+  linkHref: string;
+  linkLabel: string;
 }
 
-
 export interface FormLabelProps {
-    text: string;
+  text: string;
 }
 
 export interface SpinnerProps {
-    tip?: string;
-    size?: number;
+  tip?: string;
+  size?: number;
 }
 
-export type TabKey = 'all' | 'mine' | 'pending';
+export type TabKey = "all" | "mine" | "pending";
+
+export interface AiInsightsCardProps {
+  data: Record<string, unknown>;
+  type: "dashboard" | "report";
+  title?: string;
+  disabled?: boolean;
+}

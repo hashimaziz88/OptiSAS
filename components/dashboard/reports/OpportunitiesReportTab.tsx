@@ -15,6 +15,7 @@ import {
 import { useStyles } from './style/style';
 import { formatCurrency } from './utils';
 import { generateOpportunitiesReportPdf } from './generatePdf';
+import AiInsightsCard from '@/components/aiInsightsCard';
 
 const { RangePicker } = DatePicker;
 
@@ -47,6 +48,30 @@ const OpportunitiesReportTab: React.FC = () => {
     const avgDeal = filteredRows.length ? totalValue / filteredRows.length : 0;
     const wonCount = filteredRows.filter(r => r.stage === 5).length;
     const lostCount = filteredRows.filter(r => r.stage === 6).length;
+
+    const stageCounts = filteredRows.reduce<Record<string, number>>((acc, r) => {
+        const label = OPPORTUNITY_STAGE_LABELS[r.stage] ?? `Stage ${r.stage}`;
+        acc[label] = (acc[label] ?? 0) + 1;
+        return acc;
+    }, {});
+    const topStages = Object.entries(stageCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([l, c]) => `${l} (${c})`)
+        .join(', ') || 'No data';
+
+    const reportsContext = {
+        totalOpportunities: filteredRows.length,
+        totalEstimatedValue: totalValue,
+        wonDeals: wonCount,
+        lostDeals: lostCount,
+        avgDealSize: avgDeal,
+        topStages,
+        dateRange: dateRange
+            ? `${dateRange[0]?.format('DD/MM/YYYY')} to ${dateRange[1]?.format('DD/MM/YYYY')}`
+            : 'All time',
+        stageFilter: stage !== undefined ? OPPORTUNITY_STAGE_LABELS[stage] : 'All stages',
+    };
 
     const columns: ColumnsType<IOpportunityReportItemDto> = [
         {
@@ -225,6 +250,15 @@ const OpportunitiesReportTab: React.FC = () => {
                     </div>
                 </Col>
             </Row>
+
+            <div style={{ marginBottom: 24 }}>
+                <AiInsightsCard
+                    data={reportsContext}
+                    type="report"
+                    title="AI Opportunities Analysis"
+                    disabled={!opportunitiesReport || opportunitiesReport.length === 0}
+                />
+            </div>
 
             <Table<IOpportunityReportItemDto> className={styles.table} {...tableProps} />
         </>
