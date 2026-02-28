@@ -187,16 +187,16 @@ const ContactsContent: React.FC = () => {
                     viewingContact && (
                         <Space>
                             <Button
+                                type="primary"
                                 icon={<EditOutlined />}
-                                style={{ color: '#facc15', borderColor: '#facc15' }}
                                 onClick={() => { setViewingContact(null); handleEdit(viewingContact); }}
                             >
                                 Edit
                             </Button>
                             {!viewingContact.isPrimaryContact && (
                                 <Button
+                                    type="primary"
                                     icon={<StarOutlined />}
-                                    style={{ color: '#f59e0b', borderColor: '#f59e0b' }}
                                     onClick={() => { handleSetPrimary(viewingContact.id); setViewingContact(null); }}
                                 >
                                     Set as Primary

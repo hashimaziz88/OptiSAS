@@ -239,8 +239,8 @@ const ContractsContent: React.FC = () => {
                             {(drawerStatus === 1 || drawerStatus === 2) && (
                                 <Tooltip title="Edit">
                                     <Button
+                                        type="primary"
                                         icon={<EditOutlined />}
-                                        style={{ color: '#facc15', borderColor: '#facc15' }}
                                         onClick={() => { setDrawerOpen(false); handleEdit(viewingContract); }}
                                     >
                                         Edit
@@ -249,15 +249,15 @@ const ContractsContent: React.FC = () => {
                             )}
                             {canActivateCancel && drawerStatus === 1 && (
                                 <Popconfirm title="Activate this contract?" onConfirm={() => handleActivate(viewingContract)}>
-                                    <Button icon={<CheckCircleOutlined />} style={{ color: '#22c55e', borderColor: '#22c55e' }}>
+                                    <Button type="primary" icon={<CheckCircleOutlined />}>
                                         Activate
                                     </Button>
                                 </Popconfirm>
                             )}
                             {(drawerStatus === 2 || drawerStatus === 3) && (viewingContract.renewalsCount ?? 0) === 0 && (
                                 <Button
+                                    type="primary"
                                     icon={<RedoOutlined />}
-                                    style={{ color: '#a78bfa', borderColor: '#a78bfa' }}
                                     onClick={() => { setDrawerOpen(false); handleOpenRenewal(viewingContract); }}
                                 >
                                     Renew

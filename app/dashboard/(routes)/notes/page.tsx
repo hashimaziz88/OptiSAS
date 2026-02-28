@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button, Descriptions, Drawer, Input, Select, Space, Tag, Typography, message } from 'antd';
-import { PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import { PlusOutlined, ReloadOutlined, SearchOutlined, EditOutlined } from '@ant-design/icons';
 import { useNoteActions, useNoteState } from '@/providers/noteProvider';
 import { ICreateNoteDto, INoteDto, IUpdateNoteDto } from '@/providers/noteProvider/context';
 import { NOTES_PAGE_SIZE, RELATED_TO_TYPE_LABELS, RELATED_TO_TYPE_OPTIONS } from '@/constants/notes';
@@ -158,22 +158,31 @@ const NotesContent: React.FC = () => {
                     body: { background: '#1e2128', padding: '24px' },
                 }}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
+                extra={
+                    viewingNote && (
+                        <Space>
+                            <Button
+                                type="primary"
+                                icon={<EditOutlined />}
+                                onClick={() => { setViewingNote(null); handleEdit(viewingNote); }}
+                            >
+                                Edit
+                            </Button>
+                        </Space>
+                    )
+                }
             >
                 {viewingNote && (
                     <>
-                        <Space className={styles.spaceBlock}>
+                        <Space style={{ marginBottom: 20 }}>
                             <Tag color={viewingNote.isPrivate ? 'purple' : 'blue'}>
                                 {viewingNote.isPrivate ? 'Private' : 'Shared'}
                             </Tag>
                         </Space>
 
-                        <Descriptions column={1} size="small" layout="vertical">
-                            <Descriptions.Item label="Content">{viewingNote.content}</Descriptions.Item>
+                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
                             <Descriptions.Item label="Related Type">
                                 {RELATED_TO_TYPE_LABELS[viewingNote.relatedToType] || viewingNote.relatedToTypeName || '—'}
-                            </Descriptions.Item>
-                            <Descriptions.Item label="Related To">
-                                {relatedRecordName || viewingNote.relatedToId || '—'}
                             </Descriptions.Item>
                             <Descriptions.Item label="Created By">{viewingNote.createdByName || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Created At">
@@ -182,19 +191,11 @@ const NotesContent: React.FC = () => {
                             <Descriptions.Item label="Updated At">
                                 {new Date(viewingNote.updatedAt).toLocaleString()}
                             </Descriptions.Item>
+                            <Descriptions.Item label="Related To" span={2}>
+                                {relatedRecordName || viewingNote.relatedToId || '—'}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Content" span={2}>{viewingNote.content}</Descriptions.Item>
                         </Descriptions>
-
-                        <div className={styles.drawerActions}>
-                            <Button
-                                type="primary"
-                                onClick={() => {
-                                    setViewingNote(null);
-                                    handleEdit(viewingNote);
-                                }}
-                            >
-                                Edit
-                            </Button>
-                        </div>
                     </>
                 )}
             </Drawer>

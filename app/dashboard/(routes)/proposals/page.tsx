@@ -244,8 +244,8 @@ const ProposalsContent: React.FC = () => {
                             {drawerStatus === 1 && (
                                 <>
                                     <Button
+                                        type="primary"
                                         icon={<EditOutlined />}
-                                        style={{ color: '#facc15', borderColor: '#facc15' }}
                                         onClick={() => { setDrawerOpen(false); handleEdit(viewingProposal); }}
                                     >
                                         Edit
@@ -254,7 +254,7 @@ const ProposalsContent: React.FC = () => {
                                         title="Submit this proposal?"
                                         onConfirm={() => handleSubmitProposal(viewingProposal)}
                                     >
-                                        <Button icon={<SendOutlined />} style={{ color: '#a78bfa', borderColor: '#a78bfa' }}>
+                                        <Button type="primary" icon={<SendOutlined />}>
                                             Submit
                                         </Button>
                                     </Popconfirm>
@@ -266,7 +266,7 @@ const ProposalsContent: React.FC = () => {
                                         title="Approve this proposal?"
                                         onConfirm={() => handleApprove(viewingProposal)}
                                     >
-                                        <Button icon={<CheckOutlined />} style={{ color: '#22c55e', borderColor: '#22c55e' }}>
+                                        <Button type="primary" icon={<CheckOutlined />}>
                                             Approve
                                         </Button>
                                     </Popconfirm>
