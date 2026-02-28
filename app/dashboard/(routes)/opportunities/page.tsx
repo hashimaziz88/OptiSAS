@@ -447,7 +447,7 @@ const OpportunitiesContent: React.FC = () => {
                             )}
 
                             {aiSuggestion && !aiSuggestionLoading && (
-                                <Space direction="vertical" style={{ width: '100%' }} size={10}>
+                                <Space orientation="vertical" style={{ width: '100%' }} size={10}>
                                     <Space>
                                         <Tag color={ACTIVITY_TYPE_COLORS[aiSuggestion.activityType]}>
                                             {ACTIVITY_TYPE_LABELS[aiSuggestion.activityType]}
