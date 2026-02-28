@@ -3,32 +3,17 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Form, Input, Modal, Select, Switch } from 'antd';
 import { ICreateNoteDto, INoteDto, IUpdateNoteDto } from '@/providers/noteProvider/context';
-import { RELATED_TO_TYPE_OPTIONS } from '@/constants/notes';
+import { RELATED_TO_TYPE_OPTIONS, RELATED_ENDPOINTS } from '@/constants/notes';
 import { axiosInstance } from '@/utils/axiosInstance';
+import { NoteFormModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
-
-const RELATED_ENDPOINTS: Record<number, string> = {
-    1: '/api/Clients',
-    2: '/api/Opportunities',
-    3: '/api/Proposals',
-    4: '/api/Contracts',
-    5: '/api/Activities',
-};
 
 const getRecordLabel = (type: number, record: Record<string, string>): string => {
     if (type === 1) return record.name;
     return record.title ?? record.subject ?? record.proposalNumber ?? record.contractNumber ?? record.id;
 };
-
-interface NoteFormModalProps {
-    open: boolean;
-    editing?: INoteDto | null;
-    loading: boolean;
-    onSubmit: (values: ICreateNoteDto | IUpdateNoteDto) => void;
-    onClose: () => void;
-}
 
 const NoteFormModal: React.FC<NoteFormModalProps> = ({ open, editing, loading, onSubmit, onClose }) => {
     const { styles } = useStyles();

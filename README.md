@@ -1,6 +1,6 @@
 # OptiSAS — Sales Automation System
 
-A full-featured Sales Automation System frontend built for **Boxfusion PTY Ltd** as a Capstone project for the Department of Informatics, University of Pretoria. OptiSAS digitises B2B sales workflows — from lead capture through contract closure — replacing fragmented manual processes with a unified, role-aware web application.
+A full-featured Sales Automation System frontend built for OptiSAS digitises B2B sales workflows — from lead capture through contract closure — replacing fragmented manual processes with a unified, role-aware web application.
 
 ---
 

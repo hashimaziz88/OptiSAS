@@ -3,15 +3,8 @@
 import React from 'react';
 import { Button, DatePicker, Form, Input, InputNumber, Modal } from 'antd';
 import { IContractDto, ICreateContractRenewalDto } from '@/providers/contractProvider/context';
+import { RenewalModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface RenewalModalProps {
-    open: boolean;
-    contract: IContractDto | null;
-    loading: boolean;
-    onSubmit: (contractId: string, payload: ICreateContractRenewalDto) => Promise<void>;
-    onClose: () => void;
-}
 
 const RenewalModal: React.FC<RenewalModalProps> = ({
     open,

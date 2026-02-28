@@ -1,9 +1,6 @@
 "use client";
 import { useStyles } from '@/app/(auth)/style/style';
-
-interface AuthLayoutProps {
-    children: React.ReactNode;
-}
+import { AuthLayoutProps } from '@/types/componentProps';
 
 const AuthLayout: React.FC<AuthLayoutProps> = ({ children }) => {
     const { styles } = useStyles();

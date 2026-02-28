@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button, Descriptions, Drawer, Input, Select, Space, Tag, Typography, message } from 'antd';
-import { PlusOutlined, ReloadOutlined, SearchOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Descriptions, Drawer, Input, Select, Space, Tag, Typography, message, Popconfirm } from 'antd';
+import { PlusOutlined, ReloadOutlined, SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useNoteActions, useNoteState } from '@/providers/noteProvider';
 import { ICreateNoteDto, INoteDto, IUpdateNoteDto } from '@/providers/noteProvider/context';
 import { NOTES_PAGE_SIZE, RELATED_TO_TYPE_LABELS, RELATED_TO_TYPE_OPTIONS } from '@/constants/notes';
@@ -10,6 +10,7 @@ import { resolveRecordName } from '@/utils/dashboard/notes';
 import NoteFormModal from '@/components/dashboard/notes/NoteFormModal';
 import NotesTable from '@/components/dashboard/notes/NotesTable';
 import { useStyles } from '@/components/dashboard/notes/style/style';
+import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 
 const { Title } = Typography;
@@ -169,11 +170,7 @@ const NotesContent: React.FC = () => {
                 title="Note Details"
                 onClose={() => setViewingNote(null)}
                 size="large"
-                styles={{
-                    wrapper: { background: '#1e2128' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
-                    body: { background: '#1e2128', padding: '24px' },
-                }}
+                styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
                     viewingNote && (
@@ -185,19 +182,28 @@ const NotesContent: React.FC = () => {
                             >
                                 Edit
                             </Button>
+                            <Popconfirm
+                                title="Delete this note?"
+                                onConfirm={async () => { await handleDelete(viewingNote.id); setViewingNote(null); }}
+                                okText="Delete"
+                                okButtonProps={{ danger: true }}
+                                cancelText="Cancel"
+                            >
+                                <Button icon={<DeleteOutlined />} danger>Delete</Button>
+                            </Popconfirm>
                         </Space>
                     )
                 }
             >
                 {viewingNote && (
                     <>
-                        <Space style={{ marginBottom: 20 }}>
+                        <Space className={styles.drawerTagRow}>
                             <Tag color={viewingNote.isPrivate ? 'purple' : 'blue'}>
                                 {viewingNote.isPrivate ? 'Private' : 'Shared'}
                             </Tag>
                         </Space>
 
-                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                        <Descriptions column={2} size="small" bordered className={styles.descriptionsSection}>
                             <Descriptions.Item label="Related Type">
                                 {RELATED_TO_TYPE_LABELS[viewingNote.relatedToType] || viewingNote.relatedToTypeName || '—'}
                             </Descriptions.Item>

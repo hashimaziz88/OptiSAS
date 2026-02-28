@@ -6,7 +6,7 @@ import {
     Select, Space, Tag, Tooltip, Typography,
 } from 'antd';
 import {
-    CheckCircleOutlined, EditOutlined, PlusOutlined, RedoOutlined,
+    CheckCircleOutlined, DeleteOutlined, EditOutlined, PlusOutlined, RedoOutlined,
     ReloadOutlined, StopOutlined, WarningOutlined,
 } from '@ant-design/icons';
 import { useContractState, useContractActions } from '@/providers/contractProvider';
@@ -18,6 +18,7 @@ import RenewalModal from '@/components/dashboard/contracts/RenewalModal';
 import ContractRenewalsTable from '@/components/dashboard/contracts/ContractRenewalsTable';
 import { useStyles } from '@/components/dashboard/contracts/style/style';
 import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
+import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdmin, isAdminOrManager } from '@/utils/roles';
 
@@ -239,11 +240,7 @@ const ContractsContent: React.FC = () => {
                 title={viewingContract ? `${viewingContract.contractNumber} – ${viewingContract.title}` : 'Contract Details'}
                 onClose={() => { setDrawerOpen(false); setViewingContract(null); }}
                 size="large"
-                styles={{
-                    wrapper: { background: '#1e2128' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
-                    body: { background: '#1e2128', padding: '24px' },
-                }}
+                styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
                     viewingContract && (
@@ -282,13 +279,24 @@ const ContractsContent: React.FC = () => {
                                     </Button>
                                 </Popconfirm>
                             )}
+                            {canDelete && drawerStatus === 1 && (
+                                <Popconfirm
+                                    title="Delete this contract?"
+                                    onConfirm={async () => { await handleDelete(viewingContract.id); setDrawerOpen(false); setViewingContract(null); }}
+                                    okText="Delete"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<DeleteOutlined />} danger>Delete</Button>
+                                </Popconfirm>
+                            )}
                         </Space>
                     )
                 }
             >
                 {viewingContract && (
                     <>
-                        <Space style={{ marginBottom: 20 }}>
+                        <Space className={styles.spaceBlock}>
                             <Tag color={CONTRACT_STATUS_COLORS[viewingContract.status]}>
                                 {CONTRACT_STATUS_LABELS[viewingContract.status]}
                             </Tag>
@@ -302,7 +310,7 @@ const ContractsContent: React.FC = () => {
                             )}
                         </Space>
 
-                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                        <Descriptions column={2} size="small" bordered className={styles.descriptionsSection}>
                             <Descriptions.Item label="Contract #">{viewingContract.contractNumber}</Descriptions.Item>
                             <Descriptions.Item label="Status">
                                 {CONTRACT_STATUS_LABELS[viewingContract.status]}

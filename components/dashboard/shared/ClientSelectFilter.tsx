@@ -3,14 +3,7 @@
 import React, { useEffect } from 'react';
 import { Select } from 'antd';
 import { useClientActions, useClientState } from '@/providers/clientProvider';
-
-interface ClientSelectFilterProps {
-    value?: string;
-    onChange: (value: string | undefined) => void;
-    className?: string;
-    size?: 'small' | 'middle' | 'large';
-    placeholder?: string;
-}
+import { ClientSelectFilterProps } from '@/types/componentProps';
 
 const ClientSelectFilter: React.FC<ClientSelectFilterProps> = ({
     value,

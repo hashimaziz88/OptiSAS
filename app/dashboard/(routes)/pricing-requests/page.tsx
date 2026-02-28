@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import {
     Badge, Button, Descriptions, Drawer, Input, Popconfirm, Select, Space, Tag, Tabs, Typography, message,
 } from 'antd';
-import { PlusOutlined, ReloadOutlined, SearchOutlined, EditOutlined } from '@ant-design/icons';
+import { PlusOutlined, ReloadOutlined, SearchOutlined, EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { axiosInstance } from '@/utils/axiosInstance';
 import {
     usePricingRequestActions,
@@ -29,12 +29,12 @@ import PricingRequestFormModal from '@/components/dashboard/pricing-requests/Pri
 import AssignPricingRequestModal from '@/components/dashboard/pricing-requests/AssignPricingRequestModal';
 import { useStyles } from '@/components/dashboard/pricing-requests/style/style';
 import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
+import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
+import { TabKey } from '@/types/componentProps';
 
 const { Title } = Typography;
-
-type TabKey = 'all' | 'mine' | 'pending';
 
 const PricingRequestsContent: React.FC = () => {
     const { styles } = useStyles();
@@ -189,7 +189,7 @@ const PricingRequestsContent: React.FC = () => {
             label: (
                 <span>
                     All Requests
-                    <Badge count={pagedResult?.totalCount ?? 0} showZero={false} style={{ marginLeft: 8 }} />
+                    <Badge count={pagedResult?.totalCount ?? 0} showZero={false} className={styles.badgeLeftMargin} />
                 </span>
             ),
         },
@@ -198,7 +198,7 @@ const PricingRequestsContent: React.FC = () => {
             label: (
                 <span>
                     My Requests
-                    <Badge count={myRequests?.totalCount ?? 0} showZero={false} style={{ marginLeft: 8 }} />
+                    <Badge count={myRequests?.totalCount ?? 0} showZero={false} className={styles.badgeLeftMargin} />
                 </span>
             ),
         },
@@ -314,42 +314,53 @@ const PricingRequestsContent: React.FC = () => {
                 title={viewingRequest?.title ?? 'Pricing Request Details'}
                 onClose={() => setViewingRequest(null)}
                 size="large"
-                styles={{
-                    wrapper: { background: '#1e2128' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
-                    body: { background: '#1e2128', padding: '24px' },
-                }}
+                styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
-                    viewingRequest && viewingRequest.status !== 3 && (
+                    viewingRequest && (
                         <Space>
-                            <Button
-                                type="primary"
-                                icon={<EditOutlined />}
-                                onClick={() => { setViewingRequest(null); handleEdit(viewingRequest); }}
-                            >
-                                Edit
-                            </Button>
-                            {canAssign && (
-                                <Button type="primary" onClick={() => { setViewingRequest(null); setAssigningRequest(viewingRequest); }}>
-                                    Assign
-                                </Button>
+                            {viewingRequest.status !== 3 && (
+                                <>
+                                    <Button
+                                        type="primary"
+                                        icon={<EditOutlined />}
+                                        onClick={() => { setViewingRequest(null); handleEdit(viewingRequest); }}
+                                    >
+                                        Edit
+                                    </Button>
+                                    {canAssign && (
+                                        <Button type="primary" onClick={() => { setViewingRequest(null); setAssigningRequest(viewingRequest); }}>
+                                            Assign
+                                        </Button>
+                                    )}
+                                    <Popconfirm
+                                        title="Mark as completed?"
+                                        onConfirm={async () => { await handleComplete(viewingRequest); setViewingRequest(null); }}
+                                        okText="Complete"
+                                        cancelText="No"
+                                    >
+                                        <Button type="primary">Complete</Button>
+                                    </Popconfirm>
+                                </>
                             )}
-                            <Popconfirm
-                                title="Mark as completed?"
-                                onConfirm={async () => { await handleComplete(viewingRequest); setViewingRequest(null); }}
-                                okText="Complete"
-                                cancelText="No"
-                            >
-                                <Button type="primary">Complete</Button>
-                            </Popconfirm>
+                            {canDelete && (
+                                <Popconfirm
+                                    title="Delete this pricing request?"
+                                    onConfirm={async () => { await handleDelete(viewingRequest.id); setViewingRequest(null); }}
+                                    okText="Delete"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<DeleteOutlined />} danger>Delete</Button>
+                                </Popconfirm>
+                            )}
                         </Space>
                     )
                 }
             >
                 {viewingRequest && (
                     <>
-                        <Space style={{ marginBottom: 20 }}>
+                        <Space className={styles.drawerTagRow}>
                             <Tag color={PRICING_REQUEST_STATUS_COLORS[viewingRequest.status] ?? 'default'}>
                                 {PRICING_REQUEST_STATUS_LABELS[viewingRequest.status] ?? '—'}
                             </Tag>
@@ -358,7 +369,7 @@ const PricingRequestsContent: React.FC = () => {
                             </Tag>
                         </Space>
 
-                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                        <Descriptions column={2} size="small" bordered className={styles.descriptionsSection}>
                             <Descriptions.Item label="Request #">{viewingRequest.requestNumber || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Required By">
                                 {viewingRequest.requiredByDate ? new Date(viewingRequest.requiredByDate).toLocaleDateString() : '—'}

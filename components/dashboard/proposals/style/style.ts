@@ -1,22 +1,18 @@
 import { createStyles, css } from "antd-style";
+import { SHARED_STYLES } from '@/components/dashboard/shared/commonStyles';
 
 export const useStyles = createStyles(({ token }) => ({
   modalContainer: css`
-    background: #1e2128;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
     padding: 0;
   `,
 
   modalHeader: css`
-    background: #1e2128;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding: 20px 24px;
     margin-bottom: 0;
   `,
 
   modalBody: css`
-    background: #1e2128;
     padding: 24px;
   `,
 
@@ -50,27 +46,6 @@ export const useStyles = createStyles(({ token }) => ({
     border-color: rgba(255, 255, 255, 0.12);
     color: white;
 
-    .ant-input {
-      background: transparent !important;
-      color: white !important;
-      &::placeholder {
-        color: #666;
-      }
-      &:focus,
-      &:active {
-        background: transparent !important;
-        color: white !important;
-      }
-    }
-
-    .ant-input-affix-wrapper {
-      background: transparent !important;
-    }
-
-    .anticon {
-      color: #666;
-    }
-
     &:hover,
     &:focus-within {
       border-color: ${token.colorPrimary};
@@ -80,21 +55,6 @@ export const useStyles = createStyles(({ token }) => ({
 
   filterSelect: css`
     min-width: 160px;
-
-    .ant-select-selector {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-      color: white !important;
-    }
-
-    .ant-select-selection-placeholder,
-    .ant-select-selection-item {
-      color: #cbd5e0 !important;
-    }
-
-    .ant-select-arrow {
-      color: #666;
-    }
 
     &:hover .ant-select-selector,
     &.ant-select-focused .ant-select-selector {
@@ -113,31 +73,7 @@ export const useStyles = createStyles(({ token }) => ({
     }
   `,
 
-  table: css`
-    .ant-table {
-      background: transparent;
-      color: white;
-    }
-
-    .ant-table-thead > tr > th {
-      background: rgba(255, 255, 255, 0.04);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      color: #94a3b8;
-      font-weight: 600;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .ant-table-tbody > tr > td {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      color: #e2e8f0;
-    }
-
-    .ant-table-tbody > tr:hover > td {
-      background: rgba(255, 255, 255, 0.04) !important;
-    }
-  `,
+  table: css``,
 
   lineItemsTable: css`
     margin-top: 8px;
@@ -185,60 +121,9 @@ export const useStyles = createStyles(({ token }) => ({
     }
   `,
 
-  modal: css`
-    .ant-modal-content {
-      background: #1e2128 !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
-      border-radius: 16px !important;
-      padding: 0;
-    }
+  modal: css``,
 
-    .ant-modal-header {
-      background: transparent !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 20px 24px;
-      margin-bottom: 0;
-    }
-
-    .ant-modal-title {
-      color: white;
-      font-size: 18px;
-      font-weight: 600;
-    }
-  `,
-
-  formBody: css`
-    .ant-form-item-label > label {
-      color: #94a3b8;
-      font-size: 13px;
-    }
-
-    .ant-input,
-    .ant-select-selector,
-    .ant-picker,
-    .ant-input-number {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-      color: white !important;
-    }
-
-    .ant-input::placeholder,
-    .ant-input-number-input::placeholder {
-      color: #666 !important;
-    }
-
-    .ant-picker-input > input {
-      color: white !important;
-    }
-
-    .ant-picker-suffix {
-      color: #666;
-    }
-
-    .ant-input-number-input {
-      color: white !important;
-    }
-  `,
+  formBody: css``,
 
   sectionTitle: css`
     color: #94a3b8;
@@ -265,10 +150,14 @@ export const useStyles = createStyles(({ token }) => ({
     }
 
     .ant-input,
-    .ant-input-number,
-    .ant-input-number .ant-input-number-input {
+    .ant-input-number {
       background: rgba(255, 255, 255, 0.05) !important;
       border-color: rgba(255, 255, 255, 0.12) !important;
+      color: white !important;
+    }
+
+    .ant-input-number-input {
+      background: transparent !important;
       color: white !important;
     }
 
@@ -313,38 +202,9 @@ export const useStyles = createStyles(({ token }) => ({
     font-weight: 600;
   `,
 
-  drawerHeader: css`
-    .ant-drawer-title {
-      color: white !important;
-      font-weight: 600;
-    }
-  `,
+  drawerHeader: css``,
 
-  drawerBody: css`
-    .ant-descriptions-item-label {
-      color: #94a3b8 !important;
-      font-size: 13px;
-      background: rgba(255, 255, 255, 0.04) !important;
-    }
-
-    .ant-descriptions-item-content {
-      color: #e2e8f0 !important;
-      background: transparent !important;
-    }
-
-    .ant-descriptions-view {
-      border-color: rgba(255, 255, 255, 0.1) !important;
-    }
-
-    .ant-descriptions-row > th,
-    .ant-descriptions-row > td {
-      border-color: rgba(255, 255, 255, 0.1) !important;
-    }
-
-    .ant-tag {
-      border-color: rgba(255, 255, 255, 0.15);
-    }
-  `,
+  drawerBody: css``,
 
   drawerSection: css`
     margin-top: 24px;
@@ -369,5 +229,43 @@ export const useStyles = createStyles(({ token }) => ({
   amountText: css`
     font-weight: 600;
     color: ${token.colorPrimary};
+  `,
+
+  statusTagBottom: css`
+    margin-bottom: 16px;
+  `,
+
+  descriptionsSection: css`${SHARED_STYLES.descriptionsSection}`,
+
+  deleteButton: css`
+    color: #f87171;
+  `,
+
+  fullWidth: css`${SHARED_STYLES.fullWidth}`,
+
+  lineItemField: css`
+    margin-bottom: 0;
+  `,
+
+  viewAction: css`${SHARED_STYLES.viewAction}`,
+
+  editAction: css`${SHARED_STYLES.editAction}`,
+
+  submitAction: css`
+    color: #a78bfa;
+  `,
+
+  approveAction: css`
+    color: #22c55e;
+  `,
+
+  rejectAction: css`
+    color: #f87171;
+  `,
+
+  deleteAction: css`${SHARED_STYLES.deleteAction}`,
+
+  titleLink: css`
+    padding: 0;
   `,
 }));

@@ -16,16 +16,12 @@ import {
 import { Line } from 'react-chartjs-2';
 import { IRevenueSummaryDto } from '@/providers/dashboardProvider/context';
 import { formatCurrency } from '@/utils/dashboard/opportunities';
+import { RevenueTrendChartProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
 
-interface Props {
-    revenue: IRevenueSummaryDto | undefined;
-    loading: boolean;
-}
-
-const RevenueTrendChart: React.FC<Props> = ({ revenue, loading }) => {
+const RevenueTrendChart: React.FC<RevenueTrendChartProps> = ({ revenue, loading }) => {
     const { styles } = useStyles();
 
     const trend = revenue?.monthlyTrend ?? [];

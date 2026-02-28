@@ -3,11 +3,7 @@ import React from 'react';
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useStyles } from './style/style';
-
-interface SpinnerProps {
-    tip?: string;
-    size?: number;
-}
+import { SpinnerProps } from '@/types/componentProps';
 
 const Spinner: React.FC<SpinnerProps> = ({ tip = "LOADING...", size = 48 }) => {
     const { styles } = useStyles();

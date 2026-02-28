@@ -3,10 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import {
     Button, Input, Select, Typography, message, Drawer,
-    Descriptions, Tag, Timeline, Modal, Form, Row, Col, Space,
+    Descriptions, Tag, Timeline, Row, Col, Space, Popconfirm,
 } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined, SwapOutlined, UserSwitchOutlined, EditOutlined } from '@ant-design/icons';
-import { axiosInstance } from '@/utils/axiosInstance';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, SwapOutlined, UserSwitchOutlined, EditOutlined, MinusCircleOutlined } from '@ant-design/icons';
 import { useOpportunityActions, useOpportunityState } from '@/providers/opportunityProvider';
 import { IOpportunityDto, ICreateOpportunityDto, IUpdateOpportunityDto } from '@/providers/opportunityProvider/context';
 import { useClientActions, useClientState } from '@/providers/clientProvider';
@@ -21,8 +20,11 @@ import {
 import { buildOpportunitiesParams, getSourceLabel, formatCurrency } from '@/utils/dashboard/opportunities';
 import OpportunitiesTable from '@/components/dashboard/opportunities/OpportunitiesTable';
 import OpportunityFormModal from '@/components/dashboard/opportunities/OpportunityFormModal';
+import StageUpdateModal from '@/components/dashboard/opportunities/StageUpdateModal';
+import AssignOpportunityModal from '@/components/dashboard/opportunities/AssignOpportunityModal';
 import { useStyles } from '@/components/dashboard/opportunities/style/style';
 import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
+import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -51,12 +53,8 @@ const OpportunitiesContent: React.FC = () => {
     const [editingOpp, setEditingOpp] = useState<IOpportunityDto | null>(null);
     const [viewingOpp, setViewingOpp] = useState<IOpportunityDto | null>(null);
     const [stageModalOpen, setStageModalOpen] = useState(false);
-    const [stageForm] = Form.useForm();
 
     const [assignModalOpen, setAssignModalOpen] = useState(false);
-    const [assignForm] = Form.useForm();
-    const [assignUsers, setAssignUsers] = useState<{ label: string; value: string }[]>([]);
-    const [assignUsersLoading, setAssignUsersLoading] = useState(false);
     const canAssign = isAdminOrManager(user?.roles);
 
     const clients = clientPagedResult?.items ?? [];
@@ -109,8 +107,6 @@ const OpportunitiesContent: React.FC = () => {
     };
 
     const handleOpenStageModal = () => {
-        stageForm.resetFields();
-        stageForm.setFieldsValue({ stage: viewingOpp?.stage });
         setStageModalOpen(true);
     };
 
@@ -126,26 +122,8 @@ const OpportunitiesContent: React.FC = () => {
         await getStageHistory(viewingOpp.id);
     };
 
-    const handleOpenAssignModal = async () => {
-        assignForm.resetFields();
-        assignForm.setFieldsValue({ userId: viewingOpp?.ownerId });
+    const handleOpenAssignModal = () => {
         setAssignModalOpen(true);
-        setAssignUsersLoading(true);
-        try {
-            const res = await axiosInstance().get(`${process.env.NEXT_PUBLIC_API_LINK}/api/users`, {
-                params: { pageSize: 200 },
-            });
-            setAssignUsers(
-                (res.data?.items ?? []).map((u: { id: string; fullName: string; roles: string[] }) => ({
-                    value: u.id,
-                    label: `${u.fullName}${u.roles?.length ? ` (${u.roles[0]})` : ''}`,
-                }))
-            );
-        } catch {
-            message.error('Failed to load users');
-        } finally {
-            setAssignUsersLoading(false);
-        }
     };
 
     const handleAssignSubmit = async (values: { userId: string }) => {
@@ -153,11 +131,8 @@ const OpportunitiesContent: React.FC = () => {
         await assignOpportunity(viewingOpp.id, values.userId);
         message.success('Opportunity reassigned');
         setAssignModalOpen(false);
+        setViewingOpp(null);
         fetchOpportunities();
-        const assignedUser = assignUsers.find((u) => u.value === values.userId);
-        if (assignedUser) {
-            setViewingOpp({ ...viewingOpp, ownerId: values.userId, ownerName: assignedUser.label.split(' (')[0] });
-        }
     };
 
 
@@ -180,7 +155,7 @@ const OpportunitiesContent: React.FC = () => {
                         <Col key={stageNum} xs={12} sm={8} md={4}>
                             <div className={styles.pipelineCard}>
                                 <div className={styles.pipelineCardLabel}>
-                                    <Tag color={OPPORTUNITY_STAGE_COLORS[stageNum]} style={{ margin: 0, fontSize: 11 }}>
+                                    <Tag color={OPPORTUNITY_STAGE_COLORS[stageNum]} className={styles.stageTagSmall}>
                                         {OPPORTUNITY_STAGE_LABELS[stageNum]}
                                     </Tag>
                                 </div>
@@ -194,7 +169,6 @@ const OpportunitiesContent: React.FC = () => {
                 })}
             </Row>
 
-            {/* Filters */}
             <div className={styles.filterBar}>
                 <Input
                     prefix={<SearchOutlined />}
@@ -246,17 +220,12 @@ const OpportunitiesContent: React.FC = () => {
                 onClose={() => { setModalOpen(false); setEditingOpp(null); }}
             />
 
-            {/* Detail Drawer */}
             <Drawer
                 open={!!viewingOpp}
                 title={viewingOpp?.title ?? 'Opportunity Details'}
                 onClose={() => setViewingOpp(null)}
                 size="large"
-                styles={{
-                    wrapper: { background: '#1e2128' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)' },
-                    body: { background: '#1e2128', padding: '24px' },
-                }}
+                styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
                     viewingOpp && (
@@ -276,25 +245,36 @@ const OpportunitiesContent: React.FC = () => {
                                     Reassign
                                 </Button>
                             )}
+                            {canDelete && viewingOpp.isActive && (
+                                <Popconfirm
+                                    title="Mark this opportunity as inactive?"
+                                    onConfirm={async () => { await handleDelete(viewingOpp.id); setViewingOpp(null); }}
+                                    okText="Mark Inactive"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<MinusCircleOutlined />} danger>Mark Inactive</Button>
+                                </Popconfirm>
+                            )}
                         </Space>
                     )
                 }
             >
                 {viewingOpp && (
                     <>
-                        <Space style={{ marginBottom: 20 }}>
-                            <Tag color={OPPORTUNITY_STAGE_COLORS[viewingOpp.stage]} style={{ fontSize: 13, padding: '2px 12px' }}>
+                        <Space className={styles.drawerTagRow}>
+                            <Tag color={OPPORTUNITY_STAGE_COLORS[viewingOpp.stage]} className={styles.stageTagKanban}>
                                 {viewingOpp.stageName}
                             </Tag>
                         </Space>
 
-                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                        <Descriptions column={2} size="small" bordered className={styles.descriptionsSection}>
                             <Descriptions.Item label="Client">{viewingOpp.clientName || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Owner">{viewingOpp.ownerName || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Contact">{viewingOpp.contactName || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Source">{getSourceLabel(viewingOpp.source) || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Value">
-                                <Text strong style={{ color: '#e2e8f0' }}>
+                                <Text strong className={styles.valueText}>
                                     {formatCurrency(viewingOpp.estimatedValue, viewingOpp.currency)}
                                 </Text>
                             </Descriptions.Item>
@@ -307,7 +287,6 @@ const OpportunitiesContent: React.FC = () => {
                             )}
                         </Descriptions>
 
-                        {/* Stage History */}
                         {stageHistory && stageHistory.length > 0 && (
                             <>
                                 <div className={styles.sectionTitle}>Stage History</div>
@@ -317,18 +296,18 @@ const OpportunitiesContent: React.FC = () => {
                                         content: (
                                             <div className={styles.stageHistoryItem}>
                                                 <div>
-                                                    <Tag color={OPPORTUNITY_STAGE_COLORS[h.fromStage] ?? 'default'} style={{ fontSize: 11 }}>
+                                                    <Tag color={OPPORTUNITY_STAGE_COLORS[h.fromStage] ?? 'default'} className={styles.kanbanTagSmall}>
                                                         {h.fromStageName}
                                                     </Tag>
                                                     {' → '}
-                                                    <Tag color={OPPORTUNITY_STAGE_COLORS[h.toStage] ?? 'default'} style={{ fontSize: 11 }}>
+                                                    <Tag color={OPPORTUNITY_STAGE_COLORS[h.toStage] ?? 'default'} className={styles.kanbanTagSmall}>
                                                         {h.toStageName}
                                                     </Tag>
                                                 </div>
                                                 <div className={styles.stageHistoryTime}>
                                                     {h.changedByName} · {new Date(h.changedAt).toLocaleDateString('en-ZA')}
                                                 </div>
-                                                {h.notes && <div style={{ color: '#a0aec0', fontSize: 12, marginTop: 2 }}>{h.notes}</div>}
+                                                {h.notes && <div className={styles.historyNoteText}>{h.notes}</div>}
                                             </div>
                                         ),
                                     }))}
@@ -339,63 +318,21 @@ const OpportunitiesContent: React.FC = () => {
                 )}
             </Drawer>
 
-            {/* Stage Change Modal */}
-            <Modal
+            <StageUpdateModal
                 open={stageModalOpen}
-                title="Change Stage"
-                onCancel={() => setStageModalOpen(false)}
-                footer={null}
-                destroyOnHidden
-                classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
-            >
-                <div className={styles.formBody}>
-                    <Form form={stageForm} layout="vertical" requiredMark={false} onFinish={handleStageSubmit}>
-                        <Form.Item label="New Stage" name="stage" rules={[{ required: true }]}>
-                            <Select size="large" options={OPPORTUNITY_STAGE_OPTIONS} />
-                        </Form.Item>
-                        <Form.Item label="Reason / Notes" name="reason">
-                            <Input.TextArea placeholder="Optional notes about this stage change..." rows={3} />
-                        </Form.Item>
-                        <Form.Item className={styles.formFooter}>
-                            <div className={styles.formFooterActions}>
-                                <Button onClick={() => setStageModalOpen(false)} size="large">Cancel</Button>
-                                <Button type="primary" htmlType="submit" loading={isPending} size="large">Update Stage</Button>
-                            </div>
-                        </Form.Item>
-                    </Form>
-                </div>
-            </Modal>
+                loading={isPending}
+                initialStage={viewingOpp?.stage}
+                onSubmit={handleStageSubmit}
+                onClose={() => setStageModalOpen(false)}
+            />
 
-            {/* Reassign Modal */}
-            <Modal
+            <AssignOpportunityModal
                 open={assignModalOpen}
-                title="Reassign Opportunity"
-                onCancel={() => setAssignModalOpen(false)}
-                footer={null}
-                destroyOnHidden
-                classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
-            >
-                <div className={styles.formBody}>
-                    <Form form={assignForm} layout="vertical" requiredMark={false} onFinish={handleAssignSubmit}>
-                        <Form.Item label="Assign To" name="userId" rules={[{ required: true, message: 'Select a user' }]}>
-                            <Select
-                                size="large"
-                                showSearch
-                                options={assignUsers}
-                                loading={assignUsersLoading}
-                                placeholder="Select a user"
-                                optionFilterProp="label"
-                            />
-                        </Form.Item>
-                        <Form.Item className={styles.formFooter}>
-                            <div className={styles.formFooterActions}>
-                                <Button onClick={() => setAssignModalOpen(false)} size="large">Cancel</Button>
-                                <Button type="primary" htmlType="submit" loading={isPending} size="large">Reassign</Button>
-                            </div>
-                        </Form.Item>
-                    </Form>
-                </div>
-            </Modal>
+                loading={isPending}
+                currentOwnerId={viewingOpp?.ownerId}
+                onSubmit={handleAssignSubmit}
+                onClose={() => setAssignModalOpen(false)}
+            />
         </>
     );
 };

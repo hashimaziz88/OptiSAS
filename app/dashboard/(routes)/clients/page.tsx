@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag, Statistic, Row, Col, Space } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined, EditOutlined } from '@ant-design/icons';
+import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag, Statistic, Row, Col, Space, Popconfirm } from 'antd';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, EditOutlined, MinusCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { useClientActions, useClientState } from '@/providers/clientProvider';
 import { IClientDto, ICreateClientDto, IUpdateClientDto } from '@/providers/clientProvider/context';
 import { CLIENT_TYPE_OPTIONS, CLIENTS_PAGE_SIZE, INDUSTRY_OPTIONS } from '@/constants/clients';
@@ -10,6 +10,7 @@ import { buildClientsParams, getClientTypeLabel } from '@/utils/dashboard/client
 import ClientsTable from '@/components/dashboard/clients/ClientsTable';
 import ClientFormModal from '@/components/dashboard/clients/ClientFormModal';
 import { useStyles } from '@/components/dashboard/clients/style/style';
+import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -172,11 +173,7 @@ const ClientsContent: React.FC = () => {
                 title={viewingClient?.name ?? 'Client Details'}
                 onClose={() => setViewingClient(null)}
                 size="large"
-                styles={{
-                    wrapper: { background: '#1e2128' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
-                    body: { background: '#1e2128', padding: '24px' },
-                }}
+                styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
                     viewingClient && (
@@ -188,13 +185,34 @@ const ClientsContent: React.FC = () => {
                             >
                                 Edit
                             </Button>
+                            {canDelete && viewingClient.isActive && (
+                                <Popconfirm
+                                    title="Mark this client as inactive?"
+                                    onConfirm={async () => { await handleDelete(viewingClient.id); setViewingClient(null); }}
+                                    okText="Mark Inactive"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<MinusCircleOutlined />} danger>Mark Inactive</Button>
+                                </Popconfirm>
+                            )}
+                            {canDelete && !viewingClient.isActive && (
+                                <Popconfirm
+                                    title="Reactivate this client?"
+                                    onConfirm={async () => { await handleActivate(viewingClient); setViewingClient(null); }}
+                                    okText="Activate"
+                                    cancelText="Cancel"
+                                >
+                                    <Button icon={<CheckCircleOutlined />} type="primary">Activate</Button>
+                                </Popconfirm>
+                            )}
                         </Space>
                     )
                 }
             >
                 {viewingClient && (
                     <>
-                        <Space style={{ marginBottom: 20 }}>
+                        <Space className={styles.drawerTagRow}>
                             <Tag color={viewingClient.isActive ? 'green' : 'red'}>
                                 {viewingClient.isActive ? 'Active' : 'Inactive'}
                             </Tag>
@@ -207,7 +225,7 @@ const ClientsContent: React.FC = () => {
                                 <Statistic title={<span className={styles.statLabel}>Opportunities</span>} value={viewingClient.opportunitiesCount} className={styles.statOpportunities} />
                             </Col>
                         </Row>
-                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                        <Descriptions column={2} size="small" bordered className={styles.descriptionsSection}>
                             <Descriptions.Item label="Type">{getClientTypeLabel(viewingClient.clientType)}</Descriptions.Item>
                             <Descriptions.Item label="Industry">{viewingClient.industry || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Company Size">{viewingClient.companySize || '—'}</Descriptions.Item>

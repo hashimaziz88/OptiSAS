@@ -3,7 +3,7 @@
 import React, { useState, useCallback } from 'react';
 import { Button, Col, DatePicker, Empty, Row, Select, Statistic, Table, Tag, Tooltip } from 'antd';
 import type { ColumnsType, TableProps } from 'antd/es/table';
-import { ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import { FilePdfOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
 import type { Dayjs } from 'dayjs';
 import { IOpportunityReportItemDto } from '@/providers/reportProvider/context';
 import { useReportState, useReportActions } from '@/providers/reportProvider';
@@ -14,6 +14,7 @@ import {
 } from '@/constants/opportunities';
 import { useStyles } from './style/style';
 import { formatCurrency } from './utils';
+import { generateOpportunitiesReportPdf } from './generatePdf';
 
 const { RangePicker } = DatePicker;
 
@@ -24,6 +25,7 @@ const OpportunitiesReportTab: React.FC = () => {
 
     const [dateRange, setDateRange] = useState<[Dayjs | null, Dayjs | null] | null>(null);
     const [stage, setStage] = useState<number | undefined>();
+    const [clientFilter, setClientFilter] = useState<string | undefined>();
 
     const load = useCallback(() => {
         getOpportunitiesReport({
@@ -34,10 +36,17 @@ const OpportunitiesReportTab: React.FC = () => {
     }, [dateRange, stage, getOpportunitiesReport]);
 
     const rows = opportunitiesReport ?? [];
-    const totalValue = rows.reduce((sum, r) => sum + (r.estimatedValue ?? 0), 0);
-    const avgDeal = rows.length ? totalValue / rows.length : 0;
-    const wonCount = rows.filter(r => r.stage === 5).length;
-    const lostCount = rows.filter(r => r.stage === 6).length;
+
+    const clientOptions = Array.from(new Set(rows.map(r => r.clientName).filter(Boolean)))
+        .sort()
+        .map(name => ({ value: name, label: name }));
+
+    const filteredRows = clientFilter ? rows.filter(r => r.clientName === clientFilter) : rows;
+
+    const totalValue = filteredRows.reduce((sum, r) => sum + (r.estimatedValue ?? 0), 0);
+    const avgDeal = filteredRows.length ? totalValue / filteredRows.length : 0;
+    const wonCount = filteredRows.filter(r => r.stage === 5).length;
+    const lostCount = filteredRows.filter(r => r.stage === 6).length;
 
     const columns: ColumnsType<IOpportunityReportItemDto> = [
         {
@@ -107,7 +116,7 @@ const OpportunitiesReportTab: React.FC = () => {
     const tableProps: TableProps<IOpportunityReportItemDto> = {
         rowKey: 'id',
         columns,
-        dataSource: rows,
+        dataSource: filteredRows,
         loading: isPending,
         pagination: { pageSize: 15, showSizeChanger: false, showTotal: (t) => `${t} records` },
         scroll: { x: 1100 },
@@ -133,6 +142,20 @@ const OpportunitiesReportTab: React.FC = () => {
                     onChange={setStage}
                     allowClear
                 />
+                <span className={styles.filterLabel}>Client:</span>
+                <Select
+                    className={styles.filterSelect}
+                    placeholder="All Clients"
+                    options={clientOptions}
+                    value={clientFilter}
+                    onChange={setClientFilter}
+                    allowClear
+                    disabled={rows.length === 0}
+                    showSearch
+                    filterOption={(input, option) =>
+                        (option?.label as string ?? '').toLowerCase().includes(input.toLowerCase())
+                    }
+                />
                 <Button type="primary" icon={<SearchOutlined />} onClick={load} loading={isPending}>
                     Run Report
                 </Button>
@@ -142,16 +165,34 @@ const OpportunitiesReportTab: React.FC = () => {
                         onClick={() => {
                             setDateRange(null);
                             setStage(undefined);
+                            setClientFilter(undefined);
                             getOpportunitiesReport({});
                         }}
                     />
+                </Tooltip>
+                <Tooltip title={rows.length === 0 ? 'Run a report first' : 'Export as PDF'}>
+                    <Button
+                        icon={<FilePdfOutlined />}
+                        disabled={rows.length === 0}
+                        onClick={() =>
+                            generateOpportunitiesReportPdf(filteredRows, {
+                                dateRange: dateRange
+                                    ? `${dateRange[0]?.format('DD/MM/YYYY')} – ${dateRange[1]?.format('DD/MM/YYYY')}`
+                                    : undefined,
+                                stage: stage !== undefined ? OPPORTUNITY_STAGE_LABELS[stage] : undefined,
+                                client: clientFilter,
+                            })
+                        }
+                    >
+                        Export PDF
+                    </Button>
                 </Tooltip>
             </div>
 
             <Row gutter={16} className={styles.statsRow}>
                 <Col xs={12} sm={6}>
                     <div className={styles.statCard}>
-                        <Statistic title="Total Opportunities" value={rows.length} />
+                        <Statistic title="Total Opportunities" value={filteredRows.length} />
                     </div>
                 </Col>
                 <Col xs={12} sm={6}>

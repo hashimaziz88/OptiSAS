@@ -1,22 +1,18 @@
 import { createStyles, css } from "antd-style";
+import { SHARED_STYLES } from '@/components/dashboard/shared/commonStyles';
 
 export const useStyles = createStyles(({ token }) => ({
   modalContainer: css`
-    background: #1e2128;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
     padding: 0;
   `,
 
   modalHeader: css`
-    background: transparent;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding: 20px 24px;
     margin-bottom: 0;
   `,
 
   modalBody: css`
-    background: #1e2128;
     padding: 24px;
   `,
 
@@ -50,27 +46,6 @@ export const useStyles = createStyles(({ token }) => ({
     border-color: rgba(255, 255, 255, 0.12);
     color: white;
 
-    .ant-input {
-      background: transparent !important;
-      color: white !important;
-      &::placeholder {
-        color: #666;
-      }
-      &:focus,
-      &:active {
-        background: transparent !important;
-        color: white !important;
-      }
-    }
-
-    .ant-input-affix-wrapper {
-      background: transparent !important;
-    }
-
-    .anticon {
-      color: #666;
-    }
-
     &:hover,
     &:focus-within {
       border-color: ${token.colorPrimary};
@@ -80,94 +55,11 @@ export const useStyles = createStyles(({ token }) => ({
 
   filterSelect: css`
     min-width: 160px;
-
-    .ant-select-selector {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-      color: white !important;
-    }
-
-    .ant-select-arrow {
-      color: #666;
-    }
   `,
 
-  table: css`
-    .ant-table {
-      background: transparent;
-    }
+  table: css``,
 
-    .ant-table-thead > tr > th {
-      background: rgba(255, 255, 255, 0.04);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      color: rgba(255, 255, 255, 0.65);
-      font-weight: 600;
-      font-size: 13px;
-    }
-
-    .ant-table-tbody > tr > td {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      color: rgba(255, 255, 255, 0.85);
-    }
-
-    .ant-table-tbody > tr:hover > td {
-      background: rgba(255, 255, 255, 0.03) !important;
-    }
-
-    .ant-pagination {
-      margin-top: 16px;
-    }
-  `,
-
-  modal: css`
-    .ant-modal-content {
-      background: #1e2128 !important;
-      border: 1px solid rgba(255, 255, 255, 0.1) !important;
-      border-radius: 16px !important;
-    }
-
-    .ant-modal-title {
-      color: white;
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .ant-modal-close {
-      color: rgba(255, 255, 255, 0.45);
-      &:hover {
-        color: white;
-      }
-    }
-
-    .ant-form-item-label > label {
-      color: rgba(255, 255, 255, 0.75);
-    }
-
-    .ant-input,
-    .ant-input-number,
-    .ant-input-number-input,
-    .ant-picker,
-    .ant-select-selector,
-    .ant-input-affix-wrapper {
-      background: rgba(255, 255, 255, 0.06) !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-      color: white !important;
-
-      &::placeholder {
-        color: #555 !important;
-      }
-    }
-
-    .ant-picker-input > input,
-    .ant-input-number-input {
-      color: white !important;
-    }
-
-    .ant-select-arrow,
-    .ant-picker-suffix {
-      color: #666;
-    }
-  `,
+  modal: css``,
 
   formBody: css`
     display: flex;
@@ -209,54 +101,15 @@ export const useStyles = createStyles(({ token }) => ({
     font-weight: 600;
   `,
 
-  drawerHeader: css`
-    .ant-drawer-title {
-      color: white !important;
-    }
-    .ant-drawer-close {
-      color: #8c8c8c;
-      &:hover {
-        color: white;
-      }
-    }
-  `,
+  drawerHeader: css``,
 
-  drawerBody: css`
-    .ant-descriptions-item-label {
-      color: #94a3b8 !important;
-      background: rgba(255, 255, 255, 0.04) !important;
-    }
+  drawerBody: css``,
 
-    .ant-descriptions-item-content {
-      color: #e2e8f0 !important;
-      background: transparent !important;
-    }
+  viewAction: css`${SHARED_STYLES.viewAction}`,
 
-    .ant-descriptions-view {
-      border-color: rgba(255, 255, 255, 0.1) !important;
-    }
+  editAction: css`${SHARED_STYLES.editAction}`,
 
-    .ant-descriptions-row > th,
-    .ant-descriptions-row > td {
-      border-color: rgba(255, 255, 255, 0.1) !important;
-    }
-
-    .ant-tag {
-      border-color: rgba(255, 255, 255, 0.15);
-    }
-  `,
-
-  viewAction: css`
-    color: #60a5fa;
-  `,
-
-  editAction: css`
-    color: #facc15;
-  `,
-
-  deleteAction: css`
-    color: #f87171;
-  `,
+  deleteAction: css`${SHARED_STYLES.deleteAction}`,
 
   activateAction: css`
     color: #22c55e;
@@ -278,17 +131,13 @@ export const useStyles = createStyles(({ token }) => ({
     padding: 0;
   `,
 
-  fullWidth: css`
-    width: 100%;
-  `,
+  fullWidth: css`${SHARED_STYLES.fullWidth}`,
 
   spaceBlock: css`
     margin-bottom: 20px;
   `,
 
-  descriptionsBlock: css`
-    margin-bottom: 24px;
-  `,
+  descriptionsSection: css`${SHARED_STYLES.descriptionsSection}`,
 
   renewBtnYellow: css`
     color: #facc15;

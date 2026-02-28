@@ -2,19 +2,9 @@
 
 import React, { useEffect } from 'react';
 import { Form, Input, Select, Switch, Modal, Button } from 'antd';
-import { IContactDto, ICreateContactDto, IUpdateContactDto } from '@/providers/contactProvider/context';
-import { IClientDto } from '@/providers/clientProvider/context';
+import { ICreateContactDto } from '@/providers/contactProvider/context';
+import { ContactFormModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface ContactFormModalProps {
-    open: boolean;
-    editing?: IContactDto | null;
-    loading: boolean;
-    clients: IClientDto[];
-    defaultClientId?: string;
-    onSubmit: (values: ICreateContactDto | IUpdateContactDto) => void;
-    onClose: () => void;
-}
 
 const ContactFormModal: React.FC<ContactFormModalProps> = ({
     open, editing, loading, clients, defaultClientId, onSubmit, onClose,

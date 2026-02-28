@@ -4,22 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal, Select, message } from 'antd';
 import { axiosInstance } from '@/utils/axiosInstance';
 import { IPricingRequestDto } from '@/providers/pricingRequestProvider/context';
+import { AssignPricingRequestModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
-
-interface UserOption {
-    value: string;
-    label: string;
-}
-
-interface AssignPricingRequestModalProps {
-    open: boolean;
-    request: IPricingRequestDto | null;
-    loading: boolean;
-    onAssign: (id: string, userId: string) => Promise<void>;
-    onClose: () => void;
-}
 
 const AssignPricingRequestModal: React.FC<AssignPricingRequestModalProps> = ({
     open,
@@ -30,7 +18,7 @@ const AssignPricingRequestModal: React.FC<AssignPricingRequestModalProps> = ({
 }) => {
     const { styles } = useStyles();
     const [form] = Form.useForm();
-    const [users, setUsers] = useState<UserOption[]>([]);
+    const [users, setUsers] = useState<{ value: string; label: string }[]>([]);
     const [usersLoading, setUsersLoading] = useState(false);
 
     useEffect(() => {
@@ -41,19 +29,16 @@ const AssignPricingRequestModal: React.FC<AssignPricingRequestModalProps> = ({
         const fetchUsers = async () => {
             setUsersLoading(true);
             try {
-                const res = await axiosInstance().get(`${BASE_URL}/api/Opportunities`, {
-                    params: { pageNumber: 1, pageSize: 100 },
+                const res = await axiosInstance().get(`${BASE_URL}/api/users`, {
+                    params: { pageSize: 200 },
                 });
                 const items = res.data?.items ?? [];
-                const seen = new Set<string>();
-                const opts: UserOption[] = [];
-                for (const item of items) {
-                    if (item.ownerId && !seen.has(item.ownerId)) {
-                        seen.add(item.ownerId);
-                        opts.push({ value: item.ownerId, label: item.ownerName ?? item.ownerId });
-                    }
-                }
-                setUsers(opts);
+                setUsers(
+                    items.map((u: { id: string; fullName: string; roles: string[] }) => ({
+                        value: u.id,
+                        label: `${u.fullName}${u.roles?.length ? ` (${u.roles[0]})` : ''}`,
+                    }))
+                );
             } catch {
                 message.error('Failed to load users');
             } finally {

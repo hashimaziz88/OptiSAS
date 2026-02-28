@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import {
     Button, Input, Select, Typography, message, Drawer,
-    Descriptions, Tag, Space, Tabs, Badge,
+    Descriptions, Tag, Space, Tabs, Badge, Popconfirm,
 } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined, EditOutlined } from '@ant-design/icons';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, EditOutlined, StopOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useActivityActions, useActivityState } from '@/providers/activityProvider';
 import {
     IActivityDto,
@@ -28,6 +28,7 @@ import ActivityFormModal from '@/components/dashboard/activities/ActivityFormMod
 import CompleteActivityModal from '@/components/dashboard/activities/CompleteActivityModal';
 import { useStyles } from '@/components/dashboard/activities/style/style';
 import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
+import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -37,6 +38,7 @@ const ActivitiesContent: React.FC = () => {
     const { styles } = useStyles();
     const { user } = useAuthState();
     const canDelete = isAdminOrManager(user?.roles);
+    const canAssign = isAdminOrManager(user?.roles);
     const {
         getActivities,
         getMyActivities,
@@ -187,7 +189,7 @@ const ActivitiesContent: React.FC = () => {
                 <span>
                     Upcoming
                     {upcomingActivities && upcomingActivities.length > 0 && (
-                        <Badge count={upcomingActivities.length} size="small" style={{ marginLeft: 6 }} />
+                        <Badge count={upcomingActivities.length} size="small" className={styles.badgeMargin} />
                     )}
                 </span>
             ),
@@ -198,7 +200,7 @@ const ActivitiesContent: React.FC = () => {
                 <span>
                     Overdue
                     {overdueActivities && overdueActivities.length > 0 && (
-                        <Badge count={overdueActivities.length} color="red" size="small" style={{ marginLeft: 6 }} />
+                        <Badge count={overdueActivities.length} color="red" size="small" className={styles.badgeMargin} />
                     )}
                 </span>
             ),
@@ -297,6 +299,7 @@ const ActivitiesContent: React.FC = () => {
                 open={modalOpen}
                 editing={editingActivity}
                 loading={isPending}
+                canAssign={canAssign}
                 onSubmit={handleSubmit}
                 onClose={() => { setModalOpen(false); setEditingActivity(null); }}
             />
@@ -313,35 +316,54 @@ const ActivitiesContent: React.FC = () => {
                 title={viewingActivity?.subject ?? 'Activity Details'}
                 onClose={() => setViewingActivity(null)}
                 size="large"
-                styles={{
-                    wrapper: { background: '#1e2128' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
-                    body: { background: '#1e2128', padding: '24px' },
-                }}
+                styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
-                    viewingActivity && viewingActivity.status === 1 && (
+                    viewingActivity && (
                         <Space>
-                            <Button
-                                type="primary"
-                                icon={<EditOutlined />}
-                                onClick={() => { setViewingActivity(null); handleEdit(viewingActivity); }}
-                            >
-                                Edit
-                            </Button>
-                            <Button
-                                type="primary"
-                                onClick={() => { setViewingActivity(null); setCompletingActivity(viewingActivity); }}
-                            >
-                                Complete
-                            </Button>
+                            {viewingActivity.status === 1 && (
+                                <>
+                                    <Button
+                                        type="primary"
+                                        icon={<EditOutlined />}
+                                        onClick={() => { setViewingActivity(null); handleEdit(viewingActivity); }}
+                                    >
+                                        Edit
+                                    </Button>
+                                    <Button
+                                        type="primary"
+                                        onClick={() => { setViewingActivity(null); setCompletingActivity(viewingActivity); }}
+                                    >
+                                        Complete
+                                    </Button>
+                                    <Popconfirm
+                                        title="Cancel this activity?"
+                                        onConfirm={async () => { await handleCancel(viewingActivity.id); setViewingActivity(null); }}
+                                        okText="Cancel Activity"
+                                        cancelText="No"
+                                    >
+                                        <Button icon={<StopOutlined />} danger>Cancel</Button>
+                                    </Popconfirm>
+                                </>
+                            )}
+                            {canDelete && (
+                                <Popconfirm
+                                    title="Delete this activity?"
+                                    onConfirm={async () => { await handleDelete(viewingActivity.id); setViewingActivity(null); }}
+                                    okText="Delete"
+                                    okButtonProps={{ danger: true }}
+                                    cancelText="No"
+                                >
+                                    <Button icon={<DeleteOutlined />} danger>Delete</Button>
+                                </Popconfirm>
+                            )}
                         </Space>
                     )
                 }
             >
                 {viewingActivity && (
                     <>
-                        <Space wrap style={{ marginBottom: 20 }}>
+                        <Space wrap className={styles.drawerTagRow}>
                             <Tag color={ACTIVITY_TYPE_COLORS[viewingActivity.type]}>
                                 {ACTIVITY_TYPE_LABELS[viewingActivity.type]}
                             </Tag>
@@ -354,7 +376,7 @@ const ActivitiesContent: React.FC = () => {
                             {viewingActivity.isOverdue && <Tag color="red">Overdue</Tag>}
                         </Space>
 
-                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                        <Descriptions column={2} size="small" bordered className={styles.descriptionsSection}>
                             <Descriptions.Item label="Assigned To">
                                 {viewingActivity.assignedToName || '—'}
                             </Descriptions.Item>

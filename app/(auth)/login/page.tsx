@@ -4,19 +4,14 @@ import React, { useEffect } from 'react';
 import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useStyles } from '@/app/(auth)/style/style';
-import AuthLayout from '@/components/auth/components/AuthLayout';
-import AuthHeader from '@/components/auth/components/AuthHeader';
+import AuthLayout from '@/components/auth/AuthLayout';
+import AuthHeader from '@/components/auth/AuthHeader';
 
-import AuthFooterLink from '@/components/auth/components/AuthFooterLink';
+import AuthFooterLink from '@/components/auth/AuthFooterLink';
 import { useAuthState, useAuthActions } from '@/providers/authProvider';
 import { IUserLoginRequest } from '@/providers/authProvider/context';
 import Spinner from '@/components/spinner/Spinner';
-
-type FieldType = {
-    email?: string;
-    password?: string;
-    remember?: boolean;
-};
+import { LoginFieldType } from '@/types/auth';
 
 const Login: React.FC = () => {
     const { styles } = useStyles();
@@ -55,7 +50,7 @@ const Login: React.FC = () => {
                 onFinish={onFinish}
                 onFinishFailed={onFinishFailed}
             >
-                <Form.Item<FieldType>
+                <Form.Item<LoginFieldType>
                     label="Email"
                     name="email"
                     rules={[{ required: true, message: 'Please enter your email' }]}
@@ -63,7 +58,7 @@ const Login: React.FC = () => {
                     <Input prefix={<MailOutlined />} placeholder="Enter your email" size="large" />
                 </Form.Item>
 
-                <Form.Item<FieldType>
+                <Form.Item<LoginFieldType>
                     label="Password"
                     name="password"
                     rules={[{ required: true, message: 'Please enter your password' }]}

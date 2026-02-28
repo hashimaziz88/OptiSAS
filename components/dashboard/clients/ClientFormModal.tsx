@@ -4,15 +4,8 @@ import React, { useEffect } from 'react';
 import { Form, Input, Select, Switch, Modal, Button } from 'antd';
 import { IClientDto, ICreateClientDto, IUpdateClientDto } from '@/providers/clientProvider/context';
 import { CLIENT_TYPE_OPTIONS, INDUSTRY_OPTIONS, COMPANY_SIZE_OPTIONS } from '@/constants/clients';
+import { ClientFormModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface ClientFormModalProps {
-    open: boolean;
-    editing?: IClientDto | null;
-    loading: boolean;
-    onSubmit: (values: ICreateClientDto | IUpdateClientDto) => void;
-    onClose: () => void;
-}
 
 const ClientFormModal: React.FC<ClientFormModalProps> = ({ open, editing, loading, onSubmit, onClose }) => {
     const { styles } = useStyles();

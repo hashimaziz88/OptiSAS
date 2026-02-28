@@ -15,16 +15,12 @@ import { Bar } from 'react-chartjs-2';
 import { IPipelineStageSummaryDto } from '@/providers/dashboardProvider/context';
 import { formatCurrency } from '@/utils/dashboard/opportunities';
 import { PIPELINE_STAGE_COLORS } from '@/constants/opportunities';
+import { PipelineBarChartProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-interface Props {
-    stages: IPipelineStageSummaryDto[];
-    loading: boolean;
-}
-
-const PipelineBarChart: React.FC<Props> = ({ stages, loading }) => {
+const PipelineBarChart: React.FC<PipelineBarChartProps> = ({ stages, loading }) => {
     const { styles } = useStyles();
 
     const data = {

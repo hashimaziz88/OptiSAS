@@ -11,7 +11,7 @@ export const useStyles = createStyles(({ token }) => ({
 
   spinnerText: css`
     margin-top: 16px;
-    color: #8c8c8c;
+    color: ${token.colorTextTertiary};
     font-size: 14px;
     letter-spacing: 1px;
     font-weight: 500;

@@ -1,9 +1,6 @@
 "use client";
 import React from "react";
-
-interface FormLabelProps {
-    text: string;
-}
+import { FormLabelProps } from '@/types/componentProps';
 
 /**
  * Consistently styled form field label with the glass-grey design token colour.

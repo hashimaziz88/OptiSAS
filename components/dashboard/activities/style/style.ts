@@ -1,15 +1,12 @@
 import { createStyles, css } from "antd-style";
+import { SHARED_STYLES } from "@/components/dashboard/shared/commonStyles";
 
 export const useStyles = createStyles(({ token }) => ({
   modalContainer: css`
-    background: #1e2128;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
     padding: 0;
   `,
 
   modalHeader: css`
-    background: transparent;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding: 20px 24px;
     margin-bottom: 0;
@@ -49,27 +46,6 @@ export const useStyles = createStyles(({ token }) => ({
     border-color: rgba(255, 255, 255, 0.12);
     color: white;
 
-    .ant-input {
-      background: transparent !important;
-      color: white !important;
-      &::placeholder {
-        color: #666;
-      }
-      &:focus,
-      &:active {
-        background: transparent !important;
-        color: white !important;
-      }
-    }
-
-    .ant-input-affix-wrapper {
-      background: transparent !important;
-    }
-
-    .anticon {
-      color: #666;
-    }
-
     &:hover,
     &:focus-within {
       border-color: ${token.colorPrimary};
@@ -79,21 +55,6 @@ export const useStyles = createStyles(({ token }) => ({
 
   filterSelect: css`
     min-width: 160px;
-
-    .ant-select-selector {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-      color: white !important;
-    }
-
-    .ant-select-selection-placeholder,
-    .ant-select-selection-item {
-      color: #cbd5e0 !important;
-    }
-
-    .ant-select-arrow {
-      color: #666;
-    }
 
     &:hover .ant-select-selector,
     &.ant-select-focused .ant-select-selector {
@@ -112,58 +73,7 @@ export const useStyles = createStyles(({ token }) => ({
     }
   `,
 
-  table: css`
-    .ant-table {
-      background: transparent;
-      color: white;
-    }
-
-    .ant-table-thead > tr > th {
-      background: rgba(255, 255, 255, 0.04);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      color: #94a3b8;
-      font-weight: 600;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .ant-table-tbody > tr > td {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      color: #e2e8f0;
-    }
-
-    .ant-table-tbody > tr:hover > td {
-      background: rgba(255, 255, 255, 0.04) !important;
-    }
-
-    .ant-table-tbody > tr.ant-table-row-selected > td {
-      background: rgba(99, 102, 241, 0.1) !important;
-    }
-
-    .ant-pagination {
-      margin-top: 16px;
-    }
-
-    .ant-pagination-total-text {
-      color: rgba(255, 255, 255, 0.55);
-    }
-
-    .ant-pagination-item a,
-    .ant-pagination-prev button,
-    .ant-pagination-next button {
-      color: #cbd5e0;
-    }
-
-    .ant-pagination-item-active {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .ant-pagination-item-active a {
-      color: white;
-    }
-  `,
+  table: css``,
 
   overdueBadge: css`
     display: inline-block;
@@ -174,62 +84,10 @@ export const useStyles = createStyles(({ token }) => ({
     margin-right: 6px;
   `,
 
-  modal: css`
-    .ant-modal-content {
-      background: #1e2128;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 0;
-    }
-
-    .ant-modal-header {
-      background: transparent;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 20px 24px;
-      margin-bottom: 0;
-    }
-
-    .ant-modal-title {
-      color: white;
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .ant-modal-close-x {
-      color: #94a3b8;
-    }
-  `,
+  modal: css``,
 
   formBody: css`
     padding: 8px 0;
-
-    .ant-form-item-label > label {
-      color: #94a3b8;
-      font-size: 13px;
-    }
-
-    .ant-input,
-    .ant-input-number,
-    .ant-picker,
-    .ant-select-selector {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-      color: white !important;
-    }
-
-    .ant-input::placeholder,
-    .ant-picker input::placeholder {
-      color: #666 !important;
-    }
-
-    .ant-input-number-input {
-      color: white !important;
-    }
-
-    textarea.ant-input {
-      background: rgba(255, 255, 255, 0.05);
-      color: white;
-    }
   `,
 
   submitButton: css`
@@ -240,40 +98,9 @@ export const useStyles = createStyles(({ token }) => ({
     font-weight: 600;
   `,
 
-  drawerHeader: css`
-    color: white !important;
+  drawerHeader: css``,
 
-    .ant-drawer-title {
-      color: white !important;
-      font-weight: 600;
-    }
-
-    .ant-drawer-close {
-      color: #94a3b8;
-    }
-  `,
-
-  drawerBody: css`
-    .ant-descriptions-item-label {
-      color: #94a3b8 !important;
-      font-size: 13px;
-      background: rgba(255, 255, 255, 0.04) !important;
-    }
-
-    .ant-descriptions-item-content {
-      color: #e2e8f0 !important;
-      background: transparent !important;
-    }
-
-    .ant-descriptions-view {
-      border-color: rgba(255, 255, 255, 0.1) !important;
-    }
-
-    .ant-descriptions-row > th,
-    .ant-descriptions-row > td {
-      border-color: rgba(255, 255, 255, 0.1) !important;
-    }
-  `,
+  drawerBody: css``,
 
   drawerActions: css`
     display: flex;
@@ -301,15 +128,15 @@ export const useStyles = createStyles(({ token }) => ({
   `,
 
   viewAction: css`
-    color: #60a5fa;
+    ${SHARED_STYLES.viewAction}
   `,
 
   editAction: css`
-    color: #facc15;
+    ${SHARED_STYLES.editAction}
   `,
 
   deleteAction: css`
-    color: #f87171;
+    ${SHARED_STYLES.deleteAction}
   `,
 
   completeAction: css`
@@ -340,7 +167,7 @@ export const useStyles = createStyles(({ token }) => ({
   `,
 
   fullWidth: css`
-    width: 100%;
+    ${SHARED_STYLES.fullWidth}
   `,
 
   disabledInput: css`
@@ -365,5 +192,13 @@ export const useStyles = createStyles(({ token }) => ({
 
   spaceBlock: css`
     margin-bottom: 16px;
+  `,
+
+  drawerTagRow: css`
+    ${SHARED_STYLES.drawerTagRow}
+  `,
+
+  descriptionsSection: css`
+    ${SHARED_STYLES.descriptionsSection}
   `,
 }));

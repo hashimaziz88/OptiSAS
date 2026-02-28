@@ -2,14 +2,9 @@
 import Link from 'next/link';
 import { Typography } from 'antd';
 import { useStyles } from '@/app/(auth)/style/style';
+import { AuthFooterLinkProps } from '@/types/componentProps';
 
 const { Text } = Typography;
-
-interface AuthFooterLinkProps {
-    text: string;
-    linkHref: string;
-    linkLabel: string;
-}
 
 const AuthFooterLink: React.FC<AuthFooterLinkProps> = ({ text, linkHref, linkLabel }) => {
     const { styles } = useStyles();

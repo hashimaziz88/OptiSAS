@@ -45,6 +45,29 @@ export const ACTIVITY_STATUS_OPTIONS = [
 
 export const ACTIVITIES_PAGE_SIZE = 10;
 
+export const PRIORITY_OPTIONS = [
+  { value: 1, label: "Low" },
+  { value: 2, label: "Medium" },
+  { value: 3, label: "High" },
+  { value: 4, label: "Urgent" },
+];
+
+/** Related-to-type options for activities (excludes Activity itself). */
+export const ACTIVITY_RELATED_TO_TYPE_OPTIONS = [
+  { value: 1, label: "Client" },
+  { value: 2, label: "Opportunity" },
+  { value: 3, label: "Proposal" },
+  { value: 4, label: "Contract" },
+];
+
+/** API endpoints used to fetch related records when creating an activity. */
+export const ACTIVITY_RELATED_ENDPOINTS: Record<number, string> = {
+  1: "/api/Clients",
+  2: "/api/Opportunities",
+  3: "/api/Proposals",
+  4: "/api/Contracts",
+};
+
 export const PRIORITY_LABELS: Record<number, string> = {
   1: "Low",
   2: "Medium",

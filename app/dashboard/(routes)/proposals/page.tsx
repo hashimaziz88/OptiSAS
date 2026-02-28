@@ -6,7 +6,7 @@ import {
     Select, Space, Table, Tag, Typography,
 } from 'antd';
 import {
-    CheckOutlined, CloseOutlined, EditOutlined, PlusOutlined,
+    CheckOutlined, CloseOutlined, DeleteOutlined, EditOutlined, PlusOutlined,
     ReloadOutlined, SendOutlined,
 } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
@@ -18,6 +18,7 @@ import ProposalsTable from '@/components/dashboard/proposals/ProposalsTable';
 import RejectProposalModal from '@/components/dashboard/proposals/RejectProposalModal';
 import { useStyles } from '@/components/dashboard/proposals/style/style';
 import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
+import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 import { formatCurrency } from '@/utils/dashboard/proposals';
@@ -244,11 +245,7 @@ const ProposalsContent: React.FC = () => {
                 title={viewingProposal ? `${viewingProposal.proposalNumber} – ${viewingProposal.title}` : 'Proposal Details'}
                 onClose={() => { setDrawerOpen(false); setViewingProposal(null); }}
                 size="large"
-                styles={{
-                    wrapper: { background: '#1e2128' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
-                    body: { background: '#1e2128', padding: '24px' },
-                }}
+                styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
                     viewingProposal && (
@@ -270,6 +267,17 @@ const ProposalsContent: React.FC = () => {
                                             Submit
                                         </Button>
                                     </Popconfirm>
+                                    {canDelete && (
+                                        <Popconfirm
+                                            title="Delete this proposal?"
+                                            onConfirm={async () => { await handleDelete(viewingProposal.id); setDrawerOpen(false); setViewingProposal(null); }}
+                                            okText="Delete"
+                                            okButtonProps={{ danger: true }}
+                                            cancelText="Cancel"
+                                        >
+                                            <Button icon={<DeleteOutlined />} danger>Delete</Button>
+                                        </Popconfirm>
+                                    )}
                                 </>
                             )}
                             {canApproveReject && drawerStatus === 2 && (
@@ -299,12 +307,12 @@ const ProposalsContent: React.FC = () => {
                     <>
                         <Tag
                             color={PROPOSAL_STATUS_COLORS[viewingProposal.status]}
-                            style={{ marginBottom: 16 }}
+                            className={styles.statusTagBottom}
                         >
                             {PROPOSAL_STATUS_LABELS[viewingProposal.status]}
                         </Tag>
 
-                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                        <Descriptions column={2} size="small" bordered className={styles.descriptionsSection}>
                             <Descriptions.Item label="Proposal #">{viewingProposal.proposalNumber}</Descriptions.Item>
                             <Descriptions.Item label="Status">
                                 {PROPOSAL_STATUS_LABELS[viewingProposal.status]}
@@ -327,7 +335,7 @@ const ProposalsContent: React.FC = () => {
                             )}
                         </Descriptions>
 
-                        <div className={styles.sectionTitle} style={{ marginBottom: 12 }}>Line Items</div>
+                        <div className={styles.sectionTitle}>Line Items</div>
                         <Table<IProposalLineItemDto>
                             className={styles.lineItemsTable}
                             rowKey="id"

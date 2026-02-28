@@ -3,15 +3,8 @@
 import React from 'react';
 import { Button, Form, Input, Modal } from 'antd';
 import { IProposalDto } from '@/providers/proposalProvider/context';
+import { RejectProposalModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface RejectProposalModalProps {
-    open: boolean;
-    proposal: IProposalDto | null;
-    loading: boolean;
-    onReject: (id: string, reason: string) => Promise<void>;
-    onClose: () => void;
-}
 
 const RejectProposalModal: React.FC<RejectProposalModalProps> = ({
     open,

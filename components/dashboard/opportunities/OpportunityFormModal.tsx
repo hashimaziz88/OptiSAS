@@ -6,16 +6,8 @@ import dayjs from 'dayjs';
 import { IOpportunityDto, ICreateOpportunityDto, IUpdateOpportunityDto } from '@/providers/opportunityProvider/context';
 import { IClientDto } from '@/providers/clientProvider/context';
 import { OPPORTUNITY_STAGE_OPTIONS, OPPORTUNITY_SOURCE_OPTIONS } from '@/constants/opportunities';
+import { OpportunityFormModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
-
-interface OpportunityFormModalProps {
-    open: boolean;
-    editing?: IOpportunityDto | null;
-    loading: boolean;
-    clients: IClientDto[];
-    onSubmit: (values: ICreateOpportunityDto | IUpdateOpportunityDto) => void;
-    onClose: () => void;
-}
 
 const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
     open, editing, loading, clients, onSubmit, onClose,
@@ -109,7 +101,7 @@ const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
                                 min={0}
                                 formatter={(v) => `${v}`.replaceAll(/(?<=\d)(?=(\d{3})+$)/g, ',')}
                                 parser={(v): number => Number(v?.replaceAll(',', '') ?? '0')}
-                                style={{ width: '100%' }}
+                                className={styles.fullWidth}
                             />
                         </Form.Item>
 
@@ -132,7 +124,7 @@ const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
                                 max={100}
                                 formatter={(v) => `${v}%`}
                                 parser={(v): number => Number(v?.replaceAll('%', '') ?? '0')}
-                                style={{ width: '100%' }}
+                                className={styles.fullWidth}
                             />
                         </Form.Item>
                     </div>
@@ -147,7 +139,7 @@ const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
                             name="expectedCloseDate"
                             rules={[{ required: true, message: 'Required' }]}
                         >
-                            <DatePicker size="large" style={{ width: '100%' }} />
+                            <DatePicker size="large" className={styles.fullWidth} />
                         </Form.Item>
                     </div>
 

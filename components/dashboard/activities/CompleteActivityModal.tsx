@@ -3,13 +3,7 @@
 import React from 'react';
 import { Form, Input, Modal, Button } from 'antd';
 import { useStyles } from './style/style';
-
-interface CompleteActivityModalProps {
-    open: boolean;
-    loading: boolean;
-    onSubmit: (outcome: string) => void;
-    onClose: () => void;
-}
+import { CompleteActivityModalProps } from '@/types/componentProps';
 
 const CompleteActivityModal: React.FC<CompleteActivityModalProps> = ({ open, loading, onSubmit, onClose }) => {
     const { styles } = useStyles();

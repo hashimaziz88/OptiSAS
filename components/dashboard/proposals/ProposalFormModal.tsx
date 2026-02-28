@@ -11,29 +11,11 @@ import dayjs from 'dayjs';
 import { ICreateProposalDto, ICreateProposalLineItemDto, IProposalDto, IUpdateProposalDto } from '@/providers/proposalProvider/context';
 import { axiosInstance } from '@/utils/axiosInstance';
 import { calcLineTotal } from '@/utils/dashboard/proposals';
+import { ProposalFormModalProps, DraftLineItem, OpportunityWithClientOption } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
 const { Text } = Typography;
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
-
-interface OpportunityOption {
-    value: string;
-    label: string;
-    clientId: string;
-    clientName: string;
-}
-
-interface DraftLineItem extends ICreateProposalLineItemDto {
-    _key: number;
-}
-
-interface ProposalFormModalProps {
-    open: boolean;
-    editing: IProposalDto | null;
-    loading: boolean;
-    onSubmit: (values: ICreateProposalDto | IUpdateProposalDto) => Promise<void>;
-    onClose: () => void;
-}
 
 const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
     open,
@@ -45,7 +27,7 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
     const { styles } = useStyles();
     const [form] = Form.useForm();
 
-    const [opportunities, setOpportunities] = useState<OpportunityOption[]>([]);
+    const [opportunities, setOpportunities] = useState<OpportunityWithClientOption[]>([]);
     const [selectedClientName, setSelectedClientName] = useState<string>('');
     const [optionsLoading, setOptionsLoading] = useState(false);
     const [lineItems, setLineItems] = useState<DraftLineItem[]>([]);

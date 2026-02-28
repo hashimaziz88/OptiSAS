@@ -107,25 +107,6 @@ export const useStyles = createStyles(({ token }) => ({
 
   filterSelect: css`
     min-width: 160px;
-
-    .ant-select-selector {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-      color: white !important;
-    }
-
-    .ant-select-arrow {
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    .ant-select-clear {
-      background: transparent;
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    .ant-select-selection-placeholder {
-      color: rgba(255, 255, 255, 0.3) !important;
-    }
   `,
 
   statsRow: css`
@@ -133,6 +114,7 @@ export const useStyles = createStyles(({ token }) => ({
 
     .ant-col {
       margin-bottom: 12px;
+      display: flex;
     }
   `,
 
@@ -143,6 +125,11 @@ export const useStyles = createStyles(({ token }) => ({
     padding: 20px 24px;
     text-align: center;
     overflow: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     .ant-statistic-title {
       color: rgba(255, 255, 255, 0.5);
@@ -150,11 +137,12 @@ export const useStyles = createStyles(({ token }) => ({
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      width: 100%;
     }
 
     .ant-statistic-content {
       color: white;
-      font-size: 28px;
+      font-size: 22px;
       font-weight: 700;
       word-break: break-word;
     }
@@ -163,12 +151,12 @@ export const useStyles = createStyles(({ token }) => ({
       padding: 14px 12px;
 
       .ant-statistic-content {
-        font-size: 18px;
+        font-size: 16px;
       }
 
       .ant-statistic-content-value-int,
       .ant-statistic-content-value-decimal {
-        font-size: 18px;
+        font-size: 16px;
       }
     }
   `,
@@ -180,6 +168,11 @@ export const useStyles = createStyles(({ token }) => ({
     padding: 20px 24px;
     text-align: center;
     overflow: hidden;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 
     .ant-statistic-title {
       color: rgba(255, 255, 255, 0.5);
@@ -187,6 +180,7 @@ export const useStyles = createStyles(({ token }) => ({
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      width: 100%;
     }
 
     @media (max-width: 768px) {
@@ -196,73 +190,16 @@ export const useStyles = createStyles(({ token }) => ({
 
   statAccentValue: css`
     color: #6366f1 !important;
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 700;
     word-break: break-word;
 
     @media (max-width: 768px) {
-      font-size: 18px;
+      font-size: 16px;
     }
   `,
 
-  table: css`
-    .ant-table {
-      background: transparent;
-      color: white;
-    }
-
-    .ant-table-thead > tr > th {
-      background: rgba(255, 255, 255, 0.06) !important;
-      color: rgba(255, 255, 255, 0.65) !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .ant-table-tbody > tr > td {
-      background: transparent !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-      color: #e2e8f0;
-    }
-
-    .ant-table-tbody > tr:hover > td {
-      background: rgba(255, 255, 255, 0.04) !important;
-    }
-
-    .ant-table-column-sorter {
-      color: rgba(255, 255, 255, 0.3);
-    }
-
-    .ant-table-column-sorter-up.active,
-    .ant-table-column-sorter-down.active {
-      color: ${token.colorPrimary};
-    }
-
-    .ant-pagination-total-text {
-      color: rgba(255, 255, 255, 0.55);
-    }
-
-    .ant-pagination-item a {
-      color: rgba(255, 255, 255, 0.65);
-    }
-
-    .ant-pagination-item-active {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-      a {
-        color: white;
-      }
-    }
-
-    .ant-pagination-prev button,
-    .ant-pagination-next button {
-      color: rgba(255, 255, 255, 0.65);
-    }
-
-    .ant-empty-description {
-      color: rgba(255, 255, 255, 0.3);
-    }
-  `,
+  table: css``,
 
   chartCard: css`
     background: rgba(255, 255, 255, 0.03);
@@ -292,5 +229,67 @@ export const useStyles = createStyles(({ token }) => ({
 
   exportButton: css`
     margin-left: auto;
+  `,
+
+  /* OpportunitiesReportTab */
+  lostSuffix: css`
+    color: #f87171;
+    font-size: 20px;
+  `,
+
+  /* SalesByPeriodTab */
+  periodLabel: css`
+    width: 110px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    flex-shrink: 0;
+  `,
+
+  barTrack: css`
+    flex: 1;
+    position: relative;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    height: 22px;
+  `,
+
+  barRow: css`
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  `,
+
+  barValues: css`
+    width: 210px;
+    color: #e2e8f0;
+    font-size: 11px;
+    text-align: right;
+    flex-shrink: 0;
+  `,
+
+  legendContainer: css`
+    display: flex;
+    gap: 20px;
+    margin-top: 14px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.35);
+  `,
+
+  legendSwatch: css`
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+  `,
+
+  emptyChartText: css`
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 16px;
+  `,
+
+  filterSelectMin: css`
+    min-width: 120px;
   `,
 }));
