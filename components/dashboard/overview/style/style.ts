@@ -111,4 +111,139 @@ export const useStyles = createStyles(({ token }) => ({
       color: white !important;
     }
   `,
+
+  /* KpiCards */
+  kpiRow: css`
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  `,
+
+  kpiContent: css`
+    flex: 1;
+    min-width: 0;
+  `,
+
+  /* TopPerformersTable */
+  performerName: css`
+    color: #e2e8f0;
+    font-weight: 500;
+  `,
+
+  wonCount: css`
+    color: #34d399;
+    font-weight: 700;
+    font-size: 15px;
+  `,
+
+  valueBlue: css`
+    color: #60a5fa;
+  `,
+
+  progressPercent: css`
+    color: #cbd5e0;
+    font-size: 11px;
+  `,
+
+  lostValue: css`
+    color: #94a3b8;
+  `,
+
+  cardTitle: css`
+    color: white;
+    font-weight: 600;
+  `,
+
+  transparentBg: css`
+    background: transparent;
+  `,
+
+  emptyDataText: css`
+    color: #64748b;
+  `,
+
+  /* PipelineBarChart */
+  legendRow: css`
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+  `,
+
+  legendCount: css`
+    color: #60a5fa;
+    font-weight: 600;
+  `,
+
+  /* RevenueTrendChart */
+  chartSummaryRow: css`
+    display: flex;
+    gap: 20px;
+    font-size: 12px;
+  `,
+
+  summaryLabel: css`
+    color: #64748b;
+  `,
+
+  summaryValueGreen: css`
+    color: #34d399;
+    font-weight: 600;
+  `,
+
+  summaryValueBlue: css`
+    color: #60a5fa;
+    font-weight: 600;
+  `,
+
+  summaryValuePurple: css`
+    color: #a78bfa;
+    font-weight: 600;
+  `,
+
+  /* ContractsExpiringTable */
+  contractNumber: css`
+    color: #fb923c;
+    font-family: monospace;
+    font-size: 12px;
+  `,
+
+  contractTitle: css`
+    color: #e2e8f0;
+  `,
+
+  daysUrgent: css`
+    color: #f87171;
+    font-weight: 700;
+  `,
+
+  daysWarning: css`
+    color: #fb923c;
+    font-weight: 700;
+  `,
+
+  contractValue: css`
+    color: #34d399;
+  `,
+
+  warningTitle: css`
+    color: #fb923c;
+    font-weight: 600;
+  `,
+
+  /* ActivitiesSummaryCards */
+  activityIcon: css`
+    font-size: 24px;
+  `,
+
+  activityIconWrap: css`
+    margin-bottom: 12px;
+  `,
+
+  activityLabelText: css`
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    margin-top: 6px;
+  `,
 }));

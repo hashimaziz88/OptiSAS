@@ -11,6 +11,7 @@ import { buildContactsParams } from '@/utils/dashboard/contacts';
 import ContactsTable from '@/components/dashboard/contacts/ContactsTable';
 import ContactFormModal from '@/components/dashboard/contacts/ContactFormModal';
 import { useStyles } from '@/components/dashboard/contacts/style/style';
+import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManagerOrBDM } from '@/utils/roles';
@@ -172,11 +173,7 @@ const ContactsContent: React.FC = () => {
                 title={viewingContact?.fullName ?? 'Contact Details'}
                 onClose={() => setViewingContact(null)}
                 size="large"
-                styles={{
-                    wrapper: { background: '#1e2128' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
-                    body: { background: '#1e2128', padding: '24px' },
-                }}
+                styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
                     viewingContact && (
@@ -224,7 +221,7 @@ const ContactsContent: React.FC = () => {
             >
                 {viewingContact && (
                     <>
-                        <Space style={{ marginBottom: 16 }}>
+                        <Space className={styles.drawerTagRow}>
                             {viewingContact.isPrimaryContact && (
                                 <Tag icon={<StarFilled />} color="gold">Primary Contact</Tag>
                             )}
@@ -232,7 +229,7 @@ const ContactsContent: React.FC = () => {
                                 {viewingContact.isActive ? 'Active' : 'Inactive'}
                             </Tag>
                         </Space>
-                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                        <Descriptions column={2} size="small" bordered className={styles.descriptionsSection}>
                             <Descriptions.Item label="Client" span={2}>{viewingContact.clientName || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Position" span={2}>{viewingContact.position || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Email">

@@ -29,6 +29,7 @@ import PricingRequestFormModal from '@/components/dashboard/pricing-requests/Pri
 import AssignPricingRequestModal from '@/components/dashboard/pricing-requests/AssignPricingRequestModal';
 import { useStyles } from '@/components/dashboard/pricing-requests/style/style';
 import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
+import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -189,7 +190,7 @@ const PricingRequestsContent: React.FC = () => {
             label: (
                 <span>
                     All Requests
-                    <Badge count={pagedResult?.totalCount ?? 0} showZero={false} style={{ marginLeft: 8 }} />
+                    <Badge count={pagedResult?.totalCount ?? 0} showZero={false} className={styles.badgeLeftMargin} />
                 </span>
             ),
         },
@@ -198,7 +199,7 @@ const PricingRequestsContent: React.FC = () => {
             label: (
                 <span>
                     My Requests
-                    <Badge count={myRequests?.totalCount ?? 0} showZero={false} style={{ marginLeft: 8 }} />
+                    <Badge count={myRequests?.totalCount ?? 0} showZero={false} className={styles.badgeLeftMargin} />
                 </span>
             ),
         },
@@ -314,11 +315,7 @@ const PricingRequestsContent: React.FC = () => {
                 title={viewingRequest?.title ?? 'Pricing Request Details'}
                 onClose={() => setViewingRequest(null)}
                 size="large"
-                styles={{
-                    wrapper: { background: '#1e2128' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
-                    body: { background: '#1e2128', padding: '24px' },
-                }}
+                styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
                     viewingRequest && (
@@ -364,7 +361,7 @@ const PricingRequestsContent: React.FC = () => {
             >
                 {viewingRequest && (
                     <>
-                        <Space style={{ marginBottom: 20 }}>
+                        <Space className={styles.drawerTagRow}>
                             <Tag color={PRICING_REQUEST_STATUS_COLORS[viewingRequest.status] ?? 'default'}>
                                 {PRICING_REQUEST_STATUS_LABELS[viewingRequest.status] ?? '—'}
                             </Tag>
@@ -373,7 +370,7 @@ const PricingRequestsContent: React.FC = () => {
                             </Tag>
                         </Space>
 
-                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                        <Descriptions column={2} size="small" bordered className={styles.descriptionsSection}>
                             <Descriptions.Item label="Request #">{viewingRequest.requestNumber || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Required By">
                                 {viewingRequest.requiredByDate ? new Date(viewingRequest.requiredByDate).toLocaleDateString() : '—'}

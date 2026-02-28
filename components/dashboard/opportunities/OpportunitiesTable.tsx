@@ -36,7 +36,7 @@ const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
             render: (title: string, record) => (
                 <Button
                     type="link"
-                    style={{ padding: 0, color: '#60a5fa', fontWeight: 600, textAlign: 'left', height: 'auto', whiteSpace: 'normal' }}
+                    className={styles.opportunityNameLink}
                     onClick={() => onView(record)}
                 >
                     {title}
@@ -123,7 +123,7 @@ const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                             type="text"
                             size="small"
                             icon={<EyeOutlined />}
-                            style={{ color: '#60a5fa' }}
+                            className={styles.viewAction}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
@@ -132,7 +132,7 @@ const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                             type="text"
                             size="small"
                             icon={<EditOutlined />}
-                            style={{ color: '#facc15' }}
+                            className={styles.editAction}
                             onClick={() => onEdit(record)}
                         />
                     </Tooltip>

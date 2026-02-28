@@ -1,4 +1,5 @@
 import { createStyles, css } from "antd-style";
+import { SHARED_STYLES } from '@/components/dashboard/shared/commonStyles';
 
 export const useStyles = createStyles(({ token }) => ({
   modalContainer: css`
@@ -121,4 +122,38 @@ export const useStyles = createStyles(({ token }) => ({
     color: #f87171;
     font-size: 12px;
   `,
+
+  drawerTagRow: css`${SHARED_STYLES.drawerTagRow}`,
+
+  descriptionsSection: css`${SHARED_STYLES.descriptionsSection}`,
+
+  badgeLeftMargin: css`
+    margin-left: 8px;
+  `,
+
+  unassignedText: css`
+    color: #94a3b8;
+  `,
+
+  viewAction: css`${SHARED_STYLES.viewAction}`,
+
+  editAction: css`${SHARED_STYLES.editAction}`,
+
+  deleteAction: css`${SHARED_STYLES.deleteAction}`,
+
+  completeAction: css`
+    color: #22c55e;
+  `,
+
+  assignAction: css`
+    color: #a78bfa;
+  `,
+
+  titleLink: css`
+    padding: 0;
+    color: #60a5fa;
+    font-weight: 600;
+  `,
+
+  fullWidth: css`${SHARED_STYLES.fullWidth}`,
 }));

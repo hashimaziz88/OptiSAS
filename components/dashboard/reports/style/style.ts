@@ -230,4 +230,66 @@ export const useStyles = createStyles(({ token }) => ({
   exportButton: css`
     margin-left: auto;
   `,
+
+  /* OpportunitiesReportTab */
+  lostSuffix: css`
+    color: #f87171;
+    font-size: 20px;
+  `,
+
+  /* SalesByPeriodTab */
+  periodLabel: css`
+    width: 110px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 12px;
+    flex-shrink: 0;
+  `,
+
+  barTrack: css`
+    flex: 1;
+    position: relative;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+    height: 22px;
+  `,
+
+  barRow: css`
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  `,
+
+  barValues: css`
+    width: 210px;
+    color: #e2e8f0;
+    font-size: 11px;
+    text-align: right;
+    flex-shrink: 0;
+  `,
+
+  legendContainer: css`
+    display: flex;
+    gap: 20px;
+    margin-top: 14px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.35);
+  `,
+
+  legendSwatch: css`
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 6px;
+  `,
+
+  emptyChartText: css`
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 16px;
+  `,
+
+  filterSelectMin: css`
+    min-width: 120px;
+  `,
 }));

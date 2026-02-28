@@ -28,15 +28,7 @@ const columns: ColumnsType<IContractDto> = [
         key: 'clientName',
         render: (v: string) => <span style={{ color: '#e2e8f0' }}>{v}</span>,
     },
-    {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
-        width: 100,
-        render: (s: number, record) => (
-            <Tag color={CONTRACT_STATUS_COLORS[s]}>{record.statusName || s}</Tag>
-        ),
-    },
+
     {
         title: 'Days Left',
         dataIndex: 'daysUntilExpiry',

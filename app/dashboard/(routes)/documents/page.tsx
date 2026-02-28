@@ -18,6 +18,7 @@ import DocumentsTable from '@/components/dashboard/documents/DocumentsTable';
 import DocumentUploadModal from '@/components/dashboard/documents/DocumentUploadModal';
 import { useStyles } from '@/components/dashboard/documents/style/style';
 import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
+import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -167,11 +168,7 @@ const DocumentsContent: React.FC = () => {
                 title={viewingDoc?.fileName ?? 'Document Details'}
                 onClose={() => setViewingDoc(null)}
                 size="large"
-                styles={{
-                    wrapper: { background: '#1e2128' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
-                    body: { background: '#1e2128', padding: '24px' },
-                }}
+                styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
                     viewingDoc && (
@@ -201,13 +198,13 @@ const DocumentsContent: React.FC = () => {
             >
                 {viewingDoc && (
                     <>
-                        <Space style={{ marginBottom: 20 }}>
+                        <Space className={styles.drawerTagRow}>
                             <Tag color={DOCUMENT_CATEGORY_COLORS[viewingDoc.category] ?? 'default'}>
                                 {DOCUMENT_CATEGORY_LABELS[viewingDoc.category] ?? '—'}
                             </Tag>
                         </Space>
 
-                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                        <Descriptions column={2} size="small" bordered className={styles.descriptionsSection}>
                             <Descriptions.Item label="File Name">{viewingDoc.fileName}</Descriptions.Item>
                             <Descriptions.Item label="File Size">{formatFileSize(viewingDoc.fileSize)}</Descriptions.Item>
                             <Descriptions.Item label="Category">

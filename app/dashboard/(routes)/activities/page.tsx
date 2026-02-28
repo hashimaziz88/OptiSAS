@@ -28,6 +28,7 @@ import ActivityFormModal from '@/components/dashboard/activities/ActivityFormMod
 import CompleteActivityModal from '@/components/dashboard/activities/CompleteActivityModal';
 import { useStyles } from '@/components/dashboard/activities/style/style';
 import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
+import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -188,7 +189,7 @@ const ActivitiesContent: React.FC = () => {
                 <span>
                     Upcoming
                     {upcomingActivities && upcomingActivities.length > 0 && (
-                        <Badge count={upcomingActivities.length} size="small" style={{ marginLeft: 6 }} />
+                        <Badge count={upcomingActivities.length} size="small" className={styles.badgeMargin} />
                     )}
                 </span>
             ),
@@ -199,7 +200,7 @@ const ActivitiesContent: React.FC = () => {
                 <span>
                     Overdue
                     {overdueActivities && overdueActivities.length > 0 && (
-                        <Badge count={overdueActivities.length} color="red" size="small" style={{ marginLeft: 6 }} />
+                        <Badge count={overdueActivities.length} color="red" size="small" className={styles.badgeMargin} />
                     )}
                 </span>
             ),
@@ -315,11 +316,7 @@ const ActivitiesContent: React.FC = () => {
                 title={viewingActivity?.subject ?? 'Activity Details'}
                 onClose={() => setViewingActivity(null)}
                 size="large"
-                styles={{
-                    wrapper: { background: '#1e2128' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
-                    body: { background: '#1e2128', padding: '24px' },
-                }}
+                styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
                     viewingActivity && (
@@ -366,7 +363,7 @@ const ActivitiesContent: React.FC = () => {
             >
                 {viewingActivity && (
                     <>
-                        <Space wrap style={{ marginBottom: 20 }}>
+                        <Space wrap className={styles.drawerTagRow}>
                             <Tag color={ACTIVITY_TYPE_COLORS[viewingActivity.type]}>
                                 {ACTIVITY_TYPE_LABELS[viewingActivity.type]}
                             </Tag>
@@ -379,7 +376,7 @@ const ActivitiesContent: React.FC = () => {
                             {viewingActivity.isOverdue && <Tag color="red">Overdue</Tag>}
                         </Space>
 
-                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                        <Descriptions column={2} size="small" bordered className={styles.descriptionsSection}>
                             <Descriptions.Item label="Assigned To">
                                 {viewingActivity.assignedToName || '—'}
                             </Descriptions.Item>

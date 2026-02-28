@@ -157,4 +157,69 @@ export const useStyles = createStyles(({ token }) => ({
       display: block;
     }
   `,
+
+  iconBlue: css`
+    margin-right: 6px;
+    color: #60a5fa;
+  `,
+
+  iconBlueWide: css`
+    margin-right: 8px;
+    color: #60a5fa;
+  `,
+
+  iconGold: css`
+    margin-right: 8px;
+    color: #fbbf24;
+  `,
+
+  accountDetailsColumn: css`
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  `,
+
+  inviteHelpText: css`
+    &.ant-typography {
+      color: #94a3b8;
+      font-size: 13px;
+      display: block;
+      margin-bottom: 16px;
+    }
+  `,
+
+  flexOne: css`
+    flex: 1;
+  `,
+
+  clickableIcon: css`
+    cursor: pointer;
+    flex-shrink: 0;
+  `,
+
+  clickableIconBlue: css`
+    cursor: pointer;
+    color: #60a5fa;
+    flex-shrink: 0;
+  `,
+
+  infoRow: css`
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  `,
+
+  infoRowLabel: css`
+    &.ant-typography {
+      color: #94a3b8;
+      min-width: 140px;
+      flex-shrink: 0;
+      font-size: 13px;
+      padding-top: 2px;
+    }
+  `,
+
+  infoRowValue: css`
+    flex: 1;
+  `,
 }));

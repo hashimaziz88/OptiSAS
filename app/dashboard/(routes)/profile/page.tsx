@@ -1,20 +1,19 @@
 'use client';
 
 import React from 'react';
-import { Divider, Tag, Tooltip, Typography, message } from 'antd';
+import { Tag, Tooltip, Typography, message } from 'antd';
 import {
-    CheckCircleFilled,
     CopyOutlined,
     KeyOutlined,
     MailOutlined,
     SafetyCertificateOutlined,
-    TeamOutlined,
     UserOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { useAuthState } from '@/providers/authProvider';
 import { generateInvitationCode } from '@/utils/auth/invitationCode';
 import { useStyles } from '@/components/profile/style/style';
+import InfoRow from '@/components/profile/InfoRow';
 
 const { Title, Text } = Typography;
 
@@ -68,7 +67,7 @@ const ProfilePage: React.FC = () => {
                     <div>
                         <Title level={4} className={styles.userName}>{fullName}</Title>
                         <Text className={styles.userEmail}>
-                            <MailOutlined style={{ marginRight: 6, color: '#60a5fa' }} />
+                            <MailOutlined className={styles.iconBlue} />
                             {user?.email ?? '—'}
                         </Text>
                         {roles.length > 0 && (
@@ -99,16 +98,16 @@ const ProfilePage: React.FC = () => {
             {/* Account details */}
             <div className={styles.card}>
                 <Text strong className={styles.sectionLabel}>
-                    <UserOutlined style={{ marginRight: 8, color: '#60a5fa' }} />
+                    <UserOutlined className={styles.iconBlueWide} />
                     Account Details
                 </Text>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div className={styles.accountDetailsColumn}>
                     <InfoRow
                         label="Email Address"
                         value={user?.email ?? '—'}
                         copyable
-                        styles={styles}
+                        onCopy={handleCopy}
                     />
                 </div>
             </div>
@@ -118,20 +117,20 @@ const ProfilePage: React.FC = () => {
             {inviteCode && (
                 <div className={styles.card}>
                     <Text strong className={styles.sectionLabel}>
-                        <KeyOutlined style={{ marginRight: 8, color: '#fbbf24' }} />
+                        <KeyOutlined className={styles.iconGold} />
                         Invite Team Members
                     </Text>
 
-                    <Text style={{ color: '#94a3b8', fontSize: 13, display: 'block', marginBottom: 16 }}>
+                    <Text className={styles.inviteHelpText}>
                         Share this code with colleagues so they can join your organisation when registering.
                         The code refreshes every day at UTC midnight.
                     </Text>
 
                     <span className={styles.inviteCode}>
-                        <span style={{ flex: 1 }}>{inviteCode}</span>
+                        <span className={styles.flexOne}>{inviteCode}</span>
                         <Tooltip title="Copy invitation code">
                             <CopyOutlined
-                                style={{ cursor: 'pointer', flexShrink: 0 }}
+                                className={styles.clickableIcon}
                                 onClick={() => handleCopy(inviteCode, 'Invitation code')}
                             />
                         </Tooltip>
@@ -148,35 +147,5 @@ const ProfilePage: React.FC = () => {
         </div>
     );
 };
-
-interface InfoRowProps {
-    label: string;
-    value: React.ReactNode;
-    copyable?: boolean;
-    styles: Record<string, string>;
-}
-
-const InfoRow: React.FC<InfoRowProps> = ({ label, value, copyable, styles }) => (
-    <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
-        <Text style={{ color: '#94a3b8', minWidth: 140, flexShrink: 0, fontSize: 13, paddingTop: 2 }}>
-            {label}
-        </Text>
-        <div style={{ flex: 1 }}>
-            {copyable && typeof value === 'string' ? (
-                <span className={styles.copyableValue}>
-                    <span style={{ flex: 1 }}>{value}</span>
-                    <Tooltip title="Copy">
-                        <CopyOutlined
-                            style={{ cursor: 'pointer', color: '#60a5fa', flexShrink: 0 }}
-                            onClick={() => handleCopy(value, label)}
-                        />
-                    </Tooltip>
-                </span>
-            ) : (
-                value
-            )}
-        </div>
-    </div>
-);
 
 export default ProfilePage;

@@ -10,6 +10,7 @@ import { buildClientsParams, getClientTypeLabel } from '@/utils/dashboard/client
 import ClientsTable from '@/components/dashboard/clients/ClientsTable';
 import ClientFormModal from '@/components/dashboard/clients/ClientFormModal';
 import { useStyles } from '@/components/dashboard/clients/style/style';
+import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -172,11 +173,7 @@ const ClientsContent: React.FC = () => {
                 title={viewingClient?.name ?? 'Client Details'}
                 onClose={() => setViewingClient(null)}
                 size="large"
-                styles={{
-                    wrapper: { background: '#1e2128' },
-                    header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'white' },
-                    body: { background: '#1e2128', padding: '24px' },
-                }}
+                styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
                 extra={
                     viewingClient && (
@@ -215,7 +212,7 @@ const ClientsContent: React.FC = () => {
             >
                 {viewingClient && (
                     <>
-                        <Space style={{ marginBottom: 20 }}>
+                        <Space className={styles.drawerTagRow}>
                             <Tag color={viewingClient.isActive ? 'green' : 'red'}>
                                 {viewingClient.isActive ? 'Active' : 'Inactive'}
                             </Tag>
@@ -228,7 +225,7 @@ const ClientsContent: React.FC = () => {
                                 <Statistic title={<span className={styles.statLabel}>Opportunities</span>} value={viewingClient.opportunitiesCount} className={styles.statOpportunities} />
                             </Col>
                         </Row>
-                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                        <Descriptions column={2} size="small" bordered className={styles.descriptionsSection}>
                             <Descriptions.Item label="Type">{getClientTypeLabel(viewingClient.clientType)}</Descriptions.Item>
                             <Descriptions.Item label="Industry">{viewingClient.industry || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Company Size">{viewingClient.companySize || '—'}</Descriptions.Item>
