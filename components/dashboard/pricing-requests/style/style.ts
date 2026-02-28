@@ -1,5 +1,5 @@
 import { createStyles, css } from "antd-style";
-import { SHARED_STYLES } from '@/components/dashboard/shared/commonStyles';
+import { SHARED_STYLES } from "@/components/dashboard/shared/commonStyles";
 
 export const useStyles = createStyles(({ token }) => ({
   modalContainer: css`
@@ -123,9 +123,13 @@ export const useStyles = createStyles(({ token }) => ({
     font-size: 12px;
   `,
 
-  drawerTagRow: css`${SHARED_STYLES.drawerTagRow}`,
+  drawerTagRow: css`
+    ${SHARED_STYLES.drawerTagRow}
+  `,
 
-  descriptionsSection: css`${SHARED_STYLES.descriptionsSection}`,
+  descriptionsSection: css`
+    ${SHARED_STYLES.descriptionsSection}
+  `,
 
   badgeLeftMargin: css`
     margin-left: 8px;
@@ -135,11 +139,17 @@ export const useStyles = createStyles(({ token }) => ({
     color: #94a3b8;
   `,
 
-  viewAction: css`${SHARED_STYLES.viewAction}`,
+  viewAction: css`
+    ${SHARED_STYLES.viewAction}
+  `,
 
-  editAction: css`${SHARED_STYLES.editAction}`,
+  editAction: css`
+    ${SHARED_STYLES.editAction}
+  `,
 
-  deleteAction: css`${SHARED_STYLES.deleteAction}`,
+  deleteAction: css`
+    ${SHARED_STYLES.deleteAction}
+  `,
 
   completeAction: css`
     color: #22c55e;
@@ -155,5 +165,17 @@ export const useStyles = createStyles(({ token }) => ({
     font-weight: 600;
   `,
 
-  fullWidth: css`${SHARED_STYLES.fullWidth}`,
+  fullWidth: css`
+    ${SHARED_STYLES.fullWidth}
+  `,
+
+  disabledInput: css`
+    color: #e2e8f0;
+    cursor: default;
+  `,
+
+  inputSuffix: css`
+    color: #64748b;
+    font-size: 12px;
+  `,
 }));

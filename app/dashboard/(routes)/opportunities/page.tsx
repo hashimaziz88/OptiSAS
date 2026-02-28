@@ -115,12 +115,15 @@ const OpportunitiesContent: React.FC = () => {
         getPipelineMetrics();
     };
 
-    const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDto) => {
+    const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDto, assignToUserId?: string) => {
         if (editingOpp) {
             await updateOpportunity(editingOpp.id, values as IUpdateOpportunityDto);
             message.success('Opportunity updated');
         } else {
-            await createOpportunity(values as ICreateOpportunityDto);
+            const created = await createOpportunity(values as ICreateOpportunityDto);
+            if (assignToUserId && created?.id) {
+                await assignOpportunity(created.id, assignToUserId);
+            }
             message.success('Opportunity created');
         }
         setModalOpen(false);
@@ -319,6 +322,7 @@ const OpportunitiesContent: React.FC = () => {
                 editing={editingOpp}
                 loading={isPending}
                 clients={clients}
+                canAssign={canAssign}
                 onSubmit={handleSubmit}
                 onClose={() => { setModalOpen(false); setEditingOpp(null); }}
             />
@@ -429,25 +433,21 @@ const OpportunitiesContent: React.FC = () => {
                                     type="default"
                                     icon={<BulbOutlined />}
                                     onClick={handleGetAiSuggestion}
-                                    style={{
-                                        color: '#a78bfa',
-                                        borderColor: 'rgba(167, 139, 250, 0.4)',
-                                        background: 'transparent',
-                                    }}
+                                    className={styles.aiSuggestButton}
                                 >
                                     Get Suggestion
                                 </Button>
                             )}
 
                             {aiSuggestionLoading && (
-                                <Space style={{ color: '#a0aec0' }}>
+                                <Space className={styles.aiLoadingSpace}>
                                     <Spin size="small" />
-                                    <Text style={{ color: '#a0aec0' }}>Analysing opportunity...</Text>
+                                    <Text className={styles.aiLoadingText}>Analysing opportunity...</Text>
                                 </Space>
                             )}
 
                             {aiSuggestion && !aiSuggestionLoading && (
-                                <Space orientation="vertical" style={{ width: '100%' }} size={10}>
+                                <Space orientation="vertical" className={styles.aiSuggestionWrap} size={10}>
                                     <Space>
                                         <Tag color={ACTIVITY_TYPE_COLORS[aiSuggestion.activityType]}>
                                             {ACTIVITY_TYPE_LABELS[aiSuggestion.activityType]}
@@ -456,16 +456,16 @@ const OpportunitiesContent: React.FC = () => {
                                             {PRIORITY_LABELS[aiSuggestion.priority]} Priority
                                         </Tag>
                                     </Space>
-                                    <Text strong style={{ color: '#e2e8f0', fontSize: 14 }}>
+                                    <Text strong className={styles.aiSubjectText}>
                                         {aiSuggestion.subject}
                                     </Text>
-                                    <Text style={{ color: '#94a3b8', fontSize: 13 }}>
+                                    <Text className={styles.aiDescriptionText}>
                                         {aiSuggestion.description}
                                     </Text>
                                     <Text className={styles.aiReasoningText}>
                                         Why now: {aiSuggestion.reasoning}
                                     </Text>
-                                    <Space style={{ marginTop: 4 }}>
+                                    <Space className={styles.aiActionsSpace}>
                                         <Button
                                             type="primary"
                                             size="small"
@@ -476,7 +476,7 @@ const OpportunitiesContent: React.FC = () => {
                                         <Button
                                             size="small"
                                             onClick={() => setAiSuggestion(null)}
-                                            style={{ color: '#8c8c8c' }}
+                                            className={styles.dismissButton}
                                         >
                                             Dismiss
                                         </Button>

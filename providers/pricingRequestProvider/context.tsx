@@ -63,7 +63,7 @@ export interface IPricingRequestActionContext {
     getPendingPricingRequests: () => Promise<void>;
     getMyPricingRequests: () => Promise<void>;
     getPricingRequest: (id: string) => Promise<void>;
-    createPricingRequest: (payload: ICreatePricingRequestDto) => Promise<void>;
+    createPricingRequest: (payload: ICreatePricingRequestDto) => Promise<IPricingRequestDto | undefined>;
     updatePricingRequest: (id: string, payload: IUpdatePricingRequestDto) => Promise<void>;
     deletePricingRequest: (id: string) => Promise<void>;
     assignPricingRequest: (id: string, userId: string) => Promise<void>;

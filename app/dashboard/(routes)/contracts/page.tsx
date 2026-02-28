@@ -133,8 +133,16 @@ const ContractsContent: React.FC = () => {
     };
 
     const handleCompleteRenewal = async (renewalId: string) => {
+        if (viewingContract) {
+            const newEndDate = new Date();
+            newEndDate.setFullYear(newEndDate.getFullYear() + 1);
+            await updateContract(viewingContract.id, {
+                endDate: newEndDate.toISOString(),
+                ownerId: viewingContract.ownerId,
+            });
+        }
         await completeRenewal(renewalId);
-        message.success('Renewal completed — contract marked as Renewed');
+        message.success('Renewal completed — contract end date extended by 1 year');
         setDrawerOpen(false);
         setViewingContract(null);
         load();

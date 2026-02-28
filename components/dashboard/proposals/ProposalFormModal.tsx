@@ -163,7 +163,7 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
                     type="text"
                     size="small"
                     icon={<DeleteOutlined />}
-                    style={{ color: '#f87171' }}
+                    className={styles.deleteAction}
                     onClick={() => removeLineItem(record._key)}
                 />
             ),
@@ -239,7 +239,7 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
                     )}
 
                     {!editing && (
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 8 }}>
+                        <div className={styles.aiDraftRow}>
                             <Button
                                 type="default"
                                 size="small"
@@ -247,11 +247,7 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
                                 loading={aiDraftLoading}
                                 disabled={!selectedOppId || aiDraftLoading}
                                 onClick={handleDraftWithAI}
-                                style={{
-                                    color: '#a78bfa',
-                                    borderColor: 'rgba(167, 139, 250, 0.4)',
-                                    background: 'rgba(167, 139, 250, 0.08)',
-                                }}
+                                className={styles.aiDraftBtn}
                             >
                                 Draft with AI
                             </Button>
@@ -272,7 +268,7 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
 
                     <Form.Item name="validUntil" label="Valid Until">
                         <DatePicker
-                            style={{ width: '100%' }}
+                            className={styles.fullWidth}
                             size="large"
                             disabledDate={(d) => d?.isBefore(dayjs(), 'day')}
                         />
@@ -288,14 +284,14 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
                                         name="productServiceName"
                                         label="Product / Service"
                                         rules={[{ required: true, message: 'Required' }]}
-                                        style={{ marginBottom: 0 }}
+                                        className={styles.lineItemField}
                                     >
                                         <Input placeholder="e.g. Software Licence" />
                                     </Form.Item>
                                     <Form.Item
                                         name="description"
                                         label="Description"
-                                        style={{ marginBottom: 0 }}
+                                        className={styles.lineItemField}
                                     >
                                         <Input placeholder="Optional details" />
                                     </Form.Item>
@@ -305,25 +301,25 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
                                         name="quantity"
                                         label="Qty"
                                         rules={[{ required: true, message: 'Required' }]}
-                                        style={{ marginBottom: 0 }}
+                                        className={styles.lineItemField}
                                     >
-                                        <InputNumber placeholder="1" min={1} style={{ width: '100%' }} />
+                                        <InputNumber placeholder="1" min={1} className={styles.fullWidth} />
                                     </Form.Item>
                                     <Form.Item
                                         name="unitPrice"
                                         label="Unit Price"
                                         rules={[{ required: true, message: 'Required' }]}
-                                        style={{ marginBottom: 0 }}
+                                        className={styles.lineItemField}
                                     >
-                                        <InputNumber placeholder="0.00" min={0} style={{ width: '100%' }} />
+                                        <InputNumber placeholder="0.00" min={0} className={styles.fullWidth} />
                                     </Form.Item>
-                                    <Form.Item name="discount" label="Disc %" style={{ marginBottom: 0 }}>
-                                        <InputNumber placeholder="0" min={0} max={100} style={{ width: '100%' }} />
+                                    <Form.Item name="discount" label="Disc %" className={styles.lineItemField}>
+                                        <InputNumber placeholder="0" min={0} max={100} className={styles.fullWidth} />
                                     </Form.Item>
-                                    <Form.Item name="taxRate" label="Tax %" style={{ marginBottom: 0 }}>
-                                        <InputNumber placeholder="0" min={0} style={{ width: '100%' }} />
+                                    <Form.Item name="taxRate" label="Tax %" className={styles.lineItemField}>
+                                        <InputNumber placeholder="0" min={0} className={styles.fullWidth} />
                                     </Form.Item>
-                                    <Form.Item label=" " style={{ marginBottom: 0 }}>
+                                    <Form.Item label=" " className={styles.lineItemField}>
                                         <Button icon={<PlusOutlined />} type="dashed" onClick={addLineItem} block>
                                             Add
                                         </Button>

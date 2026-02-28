@@ -41,7 +41,7 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
             key: 'proposalNumber',
             width: 150,
             render: (v: string, record) => (
-                <Button type="link" style={{ padding: 0 }} onClick={() => onView(record)}>
+                <Button type="link" className={styles.titleLink} onClick={() => onView(record)}>
                     {v || '—'}
                 </Button>
             ),
@@ -106,7 +106,7 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
                             type="text"
                             size="small"
                             icon={<EyeOutlined />}
-                            style={{ color: '#60a5fa' }}
+                            className={styles.viewAction}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
@@ -117,7 +117,7 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<EditOutlined />}
-                                    style={{ color: '#facc15' }}
+                                    className={styles.editAction}
                                     onClick={() => onEdit(record)}
                                 />
                             </Tooltip>
@@ -126,7 +126,7 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<SendOutlined />}
-                                    style={{ color: '#a78bfa' }}
+                                    className={styles.submitAction}
                                     onClick={() => onSubmit(record)}
                                 />
                             </Tooltip>
@@ -144,7 +144,7 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
                                             type="text"
                                             size="small"
                                             icon={<DeleteOutlined />}
-                                            style={{ color: '#f87171' }}
+                                            className={styles.deleteAction}
                                         />
                                     </Tooltip>
                                 </Popconfirm>
@@ -158,7 +158,7 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<CheckOutlined />}
-                                    style={{ color: '#22c55e' }}
+                                    className={styles.approveAction}
                                     onClick={() => onApprove(record)}
                                 />
                             </Tooltip>
@@ -167,7 +167,7 @@ const ProposalsTable: React.FC<ProposalsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<CloseOutlined />}
-                                    style={{ color: '#f87171' }}
+                                    className={styles.rejectAction}
                                     onClick={() => onReject(record)}
                                 />
                             </Tooltip>

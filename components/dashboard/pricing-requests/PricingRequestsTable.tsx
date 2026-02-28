@@ -48,7 +48,7 @@ const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
             key: 'requestNumber',
             width: 140,
             render: (v: string, record) => (
-                <Button type="link" style={{ padding: 0 }} onClick={() => onView(record)}>
+                <Button type="link" className={styles.titleLink} onClick={() => onView(record)}>
                     {v || '—'}
                 </Button>
             ),
@@ -57,6 +57,7 @@ const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
             title: 'Title',
             dataIndex: 'title',
             key: 'title',
+            width: 200,
             ellipsis: true,
             render: (title: string, record) => (
                 <>
@@ -103,7 +104,7 @@ const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
             key: 'assignedToName',
             width: 160,
             ellipsis: true,
-            render: (v: string) => v || <span style={{ color: '#94a3b8' }}>Unassigned</span>,
+            render: (v: string) => v || <span className={styles.unassignedText}>Unassigned</span>,
         },
         {
             title: 'Required By',
@@ -124,7 +125,7 @@ const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
                             type="text"
                             size="small"
                             icon={<EyeOutlined />}
-                            style={{ color: '#60a5fa' }}
+                            className={styles.viewAction}
                             onClick={() => onView(record)}
                         />
                     </Tooltip>
@@ -135,7 +136,7 @@ const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<EditOutlined />}
-                                    style={{ color: '#facc15' }}
+                                    className={styles.editAction}
                                     onClick={() => onEdit(record)}
                                 />
                             </Tooltip>
@@ -145,7 +146,7 @@ const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
                                         type="text"
                                         size="small"
                                         icon={<UserAddOutlined />}
-                                        style={{ color: '#a78bfa' }}
+                                        className={styles.assignAction}
                                         onClick={() => onAssign(record)}
                                     />
                                 </Tooltip>
@@ -155,7 +156,7 @@ const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<CheckCircleOutlined />}
-                                    style={{ color: '#22c55e' }}
+                                    className={styles.completeAction}
                                     onClick={() => onComplete(record)}
                                 />
                             </Tooltip>
@@ -175,7 +176,7 @@ const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<DeleteOutlined />}
-                                    style={{ color: '#f87171' }}
+                                    className={styles.deleteAction}
                                 />
                             </Tooltip>
                         </Popconfirm>

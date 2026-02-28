@@ -34,3 +34,41 @@ a {
     color-scheme: dark;
   }
 }
+
+
+.ant-btn-default.ant-btn-dangerous {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.5);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.ant-btn-default.ant-btn-dangerous:not(:disabled):not(.ant-btn-disabled):hover {
+  color: #fca5a5;
+  border-color: #f87171;
+  background: rgba(248, 113, 113, 0.10);
+}
+
+.ant-btn-default.ant-btn-dangerous:not(:disabled):not(.ant-btn-disabled):active {
+  color: #ef4444;
+  border-color: #ef4444;
+  background: rgba(248, 113, 113, 0.16);
+}
+
+/* Primary type + danger (Reject button) */
+.ant-btn-primary.ant-btn-dangerous {
+  background: rgba(239, 68, 68, 0.75);
+  border-color: rgba(248, 113, 113, 0.6);
+  color: #fff;
+}
+
+.ant-btn-primary.ant-btn-dangerous:not(:disabled):not(.ant-btn-disabled):hover {
+  background: rgba(239, 68, 68, 0.90);
+  border-color: #f87171;
+  color: #fff;
+}
+
+.ant-btn-primary.ant-btn-dangerous:not(:disabled):not(.ant-btn-disabled):active {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: #fff;
+}

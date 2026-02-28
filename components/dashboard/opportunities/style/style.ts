@@ -1,5 +1,5 @@
 import { createStyles, css } from "antd-style";
-import { SHARED_STYLES } from '@/components/dashboard/shared/commonStyles';
+import { SHARED_STYLES } from "@/components/dashboard/shared/commonStyles";
 
 export const useStyles = createStyles(({ token }) => ({
   modalContainer: css`
@@ -213,11 +213,17 @@ export const useStyles = createStyles(({ token }) => ({
     color: #e2e8f0;
   `,
 
-  viewAction: css`${SHARED_STYLES.viewAction}`,
+  viewAction: css`
+    ${SHARED_STYLES.viewAction}
+  `,
 
-  editAction: css`${SHARED_STYLES.editAction}`,
+  editAction: css`
+    ${SHARED_STYLES.editAction}
+  `,
 
-  deleteAction: css`${SHARED_STYLES.deleteAction}`,
+  deleteAction: css`
+    ${SHARED_STYLES.deleteAction}
+  `,
 
   opportunityNameLink: css`
     padding: 0;
@@ -228,7 +234,9 @@ export const useStyles = createStyles(({ token }) => ({
     white-space: normal;
   `,
 
-  fullWidth: css`${SHARED_STYLES.fullWidth}`,
+  fullWidth: css`
+    ${SHARED_STYLES.fullWidth}
+  `,
 
   stageTagSmall: css`
     margin: 0;
@@ -279,9 +287,13 @@ export const useStyles = createStyles(({ token }) => ({
     color: #34d399;
   `,
 
-  drawerTagRow: css`${SHARED_STYLES.drawerTagRow}`,
+  drawerTagRow: css`
+    ${SHARED_STYLES.drawerTagRow}
+  `,
 
-  descriptionsSection: css`${SHARED_STYLES.descriptionsSection}`,
+  descriptionsSection: css`
+    ${SHARED_STYLES.descriptionsSection}
+  `,
 
   aiSectionTitle: css`
     color: #a78bfa;
@@ -309,5 +321,61 @@ export const useStyles = createStyles(({ token }) => ({
     color: #64748b;
     font-size: 12px;
     font-style: italic;
+  `,
+
+  aiSuggestButton: css`
+    color: #a78bfa;
+    border-color: rgba(167, 139, 250, 0.4);
+    background: transparent;
+  `,
+
+  aiLoadingSpace: css`
+    color: #a0aec0;
+  `,
+
+  aiLoadingText: css`
+    &.ant-typography {
+      color: #a0aec0;
+    }
+  `,
+
+  aiSuggestionWrap: css`
+    width: 100%;
+  `,
+
+  aiSubjectText: css`
+    &.ant-typography {
+      color: #e2e8f0;
+      font-size: 14px;
+    }
+  `,
+
+  aiDescriptionText: css`
+    &.ant-typography {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+  `,
+
+  aiActionsSpace: css`
+    margin-top: 4px;
+  `,
+
+  dismissButton: css`
+    color: #8c8c8c;
+  `,
+
+  inactiveButton: css`
+    color: #f87171;
+  `,
+
+  disabledInput: css`
+    color: #e2e8f0;
+    cursor: default;
+  `,
+
+  inputSuffix: css`
+    color: #64748b;
+    font-size: 12px;
   `,
 }));

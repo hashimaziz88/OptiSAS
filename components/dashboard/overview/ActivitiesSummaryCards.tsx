@@ -15,21 +15,21 @@ const ActivitiesSummaryCards: React.FC<ActivitiesSummaryCardsProps> = ({ activit
             label: 'Upcoming',
             value: activities?.upcomingCount ?? 0,
             color: '#38bdf8',
-            icon: <CalendarOutlined style={{ fontSize: 24 }} />,
+            icon: <CalendarOutlined className={styles.activityIcon} />,
             description: 'Scheduled & not started',
         },
         {
             label: 'Overdue',
             value: activities?.overdueCount ?? 0,
             color: '#f87171',
-            icon: <WarningOutlined style={{ fontSize: 24 }} />,
+            icon: <WarningOutlined className={styles.activityIcon} />,
             description: 'Past due date',
         },
         {
             label: 'Completed Today',
             value: activities?.completedTodayCount ?? 0,
             color: '#34d399',
-            icon: <CheckCircleOutlined style={{ fontSize: 24 }} />,
+            icon: <CheckCircleOutlined className={styles.activityIcon} />,
             description: 'Finished today',
         },
     ];
@@ -40,14 +40,13 @@ const ActivitiesSummaryCards: React.FC<ActivitiesSummaryCardsProps> = ({ activit
                 <Col xs={24} sm={8} key={item.label}>
                     <Card
                         className={styles.activityCard}
-                        styles={{ body: { padding: '24px 16px' } }}
                         loading={loading}
                     >
-                        <div style={{ color: item.color, marginBottom: 12 }}>{item.icon}</div>
+                        <div className={styles.activityIconWrap} style={{ color: item.color }}>{item.icon}</div>
                         <div className={styles.activityValue} style={{ color: item.color }}>
                             {item.value}
                         </div>
-                        <div style={{ color: 'white', fontWeight: 600, fontSize: 14, marginTop: 6 }}>{item.label}</div>
+                        <div className={styles.activityLabelText}>{item.label}</div>
                         <div className={styles.activityLabel}>{item.description}</div>
                     </Card>
                 </Col>

@@ -30,6 +30,16 @@ export const useStyles = createStyles(({ token }) => ({
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     height: 100%;
+
+    .ant-card-body {
+      padding: 20px 24px;
+    }
+
+    .ant-statistic-content {
+      font-size: 22px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
   `,
   kpiIconBox: css`
     width: 48px;
@@ -57,6 +67,10 @@ export const useStyles = createStyles(({ token }) => ({
     border-radius: 16px;
     height: 100%;
     text-align: center;
+
+    .ant-card-body {
+      padding: 24px 16px;
+    }
   `,
   activityValue: css`
     font-size: 36px;
@@ -73,6 +87,15 @@ export const useStyles = createStyles(({ token }) => ({
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     height: 100%;
+
+    .ant-card-body {
+      padding: 16px 20px;
+    }
+
+    .ant-card-head {
+      background: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
   `,
   chartContainer: css`
     position: relative;
@@ -83,6 +106,15 @@ export const useStyles = createStyles(({ token }) => ({
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     overflow: hidden;
+
+    .ant-card-body {
+      padding: 0;
+    }
+
+    .ant-card-head {
+      background: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
   `,
   warningCard: css`
     background: rgba(255, 255, 255, 0.05);
@@ -93,6 +125,10 @@ export const useStyles = createStyles(({ token }) => ({
     .ant-card-head {
       background: rgba(251, 146, 60, 0.05) !important;
       border-bottom: 1px solid rgba(251, 146, 60, 0.2) !important;
+    }
+
+    .ant-card-body {
+      padding: 0;
     }
   `,
   emptyText: css`
@@ -170,6 +206,21 @@ export const useStyles = createStyles(({ token }) => ({
     margin-top: 14px;
   `,
 
+  legendItem: css`
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #94a3b8;
+  `,
+
+  legendDot: css`
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+  `,
+
   legendCount: css`
     color: #60a5fa;
     font-weight: 600;
@@ -245,5 +296,29 @@ export const useStyles = createStyles(({ token }) => ({
     font-weight: 600;
     font-size: 14px;
     margin-top: 6px;
+  `,
+
+  /* Dashboard page */
+  pageWrapper: css`
+    padding-bottom: 32px;
+  `,
+
+  sectionDivider: css`
+    &.ant-divider {
+      border-color: rgba(255, 255, 255, 0.06);
+      margin: 24px 0;
+    }
+  `,
+
+  activitiesHeader: css`
+    margin-bottom: 8px;
+  `,
+
+  sectionSubtitle: css`
+    &.ant-typography {
+      color: #94a3b8;
+      margin-bottom: 14px;
+      font-weight: 500;
+    }
   `,
 }));

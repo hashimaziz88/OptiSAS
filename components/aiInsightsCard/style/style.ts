@@ -76,4 +76,20 @@ export const useStyles = createStyles(({ token }) => ({
       background: rgba(255, 255, 255, 0.06) !important;
     }
   `,
+
+  disabledNote: css`
+    &.ant-typography {
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 12px;
+    }
+  `,
+
+  errorAlert: css`
+    &.ant-alert {
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+  `,
 }));

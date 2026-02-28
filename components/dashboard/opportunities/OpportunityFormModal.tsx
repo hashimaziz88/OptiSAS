@@ -1,19 +1,29 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Input, InputNumber, Select, Modal, Button, DatePicker } from 'antd';
 import dayjs from 'dayjs';
 import { IOpportunityDto, ICreateOpportunityDto, IUpdateOpportunityDto } from '@/providers/opportunityProvider/context';
 import { IClientDto } from '@/providers/clientProvider/context';
 import { OPPORTUNITY_STAGE_OPTIONS, OPPORTUNITY_SOURCE_OPTIONS } from '@/constants/opportunities';
 import { OpportunityFormModalProps } from '@/types/componentProps';
+import { useAuthState } from '@/providers/authProvider';
+import { axiosInstance } from '@/utils/axiosInstance';
 import { useStyles } from './style/style';
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
+
 const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
-    open, editing, loading, clients, onSubmit, onClose,
+    open, editing, loading, clients, canAssign, onSubmit, onClose,
 }) => {
     const { styles } = useStyles();
     const [form] = Form.useForm();
+    const { user } = useAuthState();
+    const currentUserName = [user?.firstName, user?.lastName].filter(Boolean).join(' ') || user?.email || 'You';
+
+    const [userOptions, setUserOptions] = useState<{ value: string; label: string }[]>([]);
+    const [usersLoading, setUsersLoading] = useState(false);
+    const [assignToUserId, setAssignToUserId] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         if (open) {
@@ -32,11 +42,28 @@ const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
             } else {
                 form.resetFields();
                 form.setFieldsValue({ currency: 'ZAR', stage: 1, probability: 10 });
+                setAssignToUserId(undefined);
+            }
+
+            if (canAssign && !editing && userOptions.length === 0) {
+                setUsersLoading(true);
+                axiosInstance()
+                    .get(`${BASE_URL}/api/users`, { params: { pageSize: 200 } })
+                    .then((res) => {
+                        setUserOptions(
+                            (res.data?.items ?? []).map((u: { id: string; fullName: string; roles: string[] }) => ({
+                                value: u.id,
+                                label: `${u.fullName}${u.roles?.length ? ` (${u.roles[0]})` : ''}`,
+                            }))
+                        );
+                    })
+                    .catch(() => { })
+                    .finally(() => setUsersLoading(false));
             }
         }
-    }, [open, editing, form]);
+    }, [open, editing, form, canAssign, userOptions.length]);
 
-    const clientOptions = clients.map((c) => ({ label: c.name, value: c.id }));
+    const clientOptions = clients.map((c: IClientDto) => ({ label: c.name, value: c.id }));
 
     const handleFinish = (values: Record<string, unknown>) => {
         const payload = {
@@ -45,7 +72,7 @@ const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
                 ? (values.expectedCloseDate as dayjs.Dayjs).toISOString()
                 : undefined,
         };
-        onSubmit(payload as ICreateOpportunityDto | IUpdateOpportunityDto);
+        onSubmit(payload as ICreateOpportunityDto | IUpdateOpportunityDto, !editing ? assignToUserId : undefined);
     };
 
     return (
@@ -146,6 +173,34 @@ const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
                     <Form.Item label="Description" name="description">
                         <Input.TextArea placeholder="Brief summary of the opportunity..." rows={3} />
                     </Form.Item>
+
+                    {!editing && (
+                        canAssign ? (
+                            <Form.Item label="Assign To">
+                                <Select
+                                    size="large"
+                                    showSearch
+                                    optionFilterProp="label"
+                                    options={userOptions}
+                                    loading={usersLoading}
+                                    placeholder="Select a team member (optional)"
+                                    allowClear
+                                    value={assignToUserId}
+                                    onChange={(val) => setAssignToUserId(val)}
+                                />
+                            </Form.Item>
+                        ) : (
+                            <Form.Item label="Owner">
+                                <Input
+                                    size="large"
+                                    value={currentUserName}
+                                    disabled
+                                    className={styles.disabledInput}
+                                    suffix={<span className={styles.inputSuffix}>you</span>}
+                                />
+                            </Form.Item>
+                        )
+                    )}
 
                     <Form.Item className={styles.formFooter}>
                         <div className={styles.formFooterActions}>

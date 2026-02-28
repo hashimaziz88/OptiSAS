@@ -4,6 +4,7 @@ import {
     INITIAL_STATE,
     OpportunityStateContext,
     OpportunityActionContext,
+    IOpportunityDto,
     ICreateOpportunityDto,
     IUpdateOpportunityDto,
     IGetOpportunitiesParams,
@@ -54,12 +55,14 @@ export const OpportunityProvider: React.FC<{ children: React.ReactNode }> = ({ c
             .catch(() => { dispatch(getOpportunityError()); });
     };
 
-    const createOpportunity = async (payload: ICreateOpportunityDto) => {
+    const createOpportunity = async (payload: ICreateOpportunityDto): Promise<IOpportunityDto | undefined> => {
         const instance = axiosInstance();
         dispatch(createOpportunityPending());
+        let result: IOpportunityDto | undefined;
         await instance.post(`${BASE_URL}/api/Opportunities`, payload)
-            .then((response) => { dispatch(createOpportunitySuccess(response.data)); })
+            .then((response) => { dispatch(createOpportunitySuccess(response.data)); result = response.data; })
             .catch(() => { dispatch(createOpportunityError()); });
+        return result;
     };
 
     const updateOpportunity = async (id: string, payload: IUpdateOpportunityDto) => {

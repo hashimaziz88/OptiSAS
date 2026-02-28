@@ -76,12 +76,8 @@ const PipelineBarChart: React.FC<PipelineBarChartProps> = ({ stages, loading }) 
 
     return (
         <Card
-            title={<span style={{ color: 'white', fontWeight: 600 }}>Pipeline by Stage</span>}
+            title={<span className={styles.cardTitle}>Pipeline by Stage</span>}
             className={styles.chartCard}
-            styles={{
-                body: { padding: '16px 20px' },
-                header: { background: 'transparent', borderBottom: '1px solid rgba(255,255,255,0.08)' },
-            }}
             loading={loading}
         >
             {stages.length > 0 ? (
@@ -94,29 +90,15 @@ const PipelineBarChart: React.FC<PipelineBarChartProps> = ({ stages, loading }) 
 
             {/* Count summary below chart */}
             {stages.length > 0 && (
-                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 14 }}>
+                <div className={styles.legendRow}>
                     {stages.map((s, i) => (
-                        <div
-                            key={s.stageName}
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: 6,
-                                fontSize: 12,
-                                color: '#94a3b8',
-                            }}
-                        >
+                        <div key={s.stageName} className={styles.legendItem}>
                             <span
-                                style={{
-                                    display: 'inline-block',
-                                    width: 8,
-                                    height: 8,
-                                    borderRadius: 2,
-                                    background: PIPELINE_STAGE_COLORS[i % PIPELINE_STAGE_COLORS.length],
-                                }}
+                                className={styles.legendDot}
+                                style={{ background: PIPELINE_STAGE_COLORS[i % PIPELINE_STAGE_COLORS.length] }}
                             />
                             {s.stageName}
-                            <span style={{ color: '#60a5fa', fontWeight: 600 }}>{s.count}</span>
+                            <span className={styles.legendCount}>{s.count}</span>
                         </div>
                     ))}
                 </div>

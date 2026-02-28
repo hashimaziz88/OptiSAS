@@ -91,7 +91,7 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
                     items={menuItems}
                 />
             </Sider>
-            <Layout style={{ background: 'transparent' }}>
+            <Layout className={styles.innerLayout}>
                 <Header className={styles.header}>
                     {!isMobile && (
                         <Button

@@ -91,14 +91,14 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
             title: 'Start Date',
             dataIndex: 'startDate',
             key: 'startDate',
-            width: 110,
+            width: 120,
             render: (v: string) => v ? new Date(v).toLocaleDateString('en-ZA') : '—',
         },
         {
             title: 'End Date',
             dataIndex: 'endDate',
             key: 'endDate',
-            width: 110,
+            width: 120,
             render: (v: string) => v ? new Date(v).toLocaleDateString('en-ZA') : '—',
         },
         {

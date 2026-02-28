@@ -99,4 +99,10 @@ export const useStyles = createStyles(({ token }) => ({
       }
     }
   `,
+
+  innerLayout: css`
+    &.ant-layout {
+      background: transparent;
+    }
+  `,
 }));

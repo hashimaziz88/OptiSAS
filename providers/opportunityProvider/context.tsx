@@ -117,7 +117,7 @@ export interface IOpportunityActionContext {
     getOpportunities: (params?: IGetOpportunitiesParams) => Promise<void>;
     getMyOpportunities: (params?: IGetMyOpportunitiesParams) => Promise<void>;
     getOpportunity: (id: string) => Promise<void>;
-    createOpportunity: (payload: ICreateOpportunityDto) => Promise<void>;
+    createOpportunity: (payload: ICreateOpportunityDto) => Promise<IOpportunityDto | undefined>;
     updateOpportunity: (id: string, payload: IUpdateOpportunityDto) => Promise<void>;
     deleteOpportunity: (id: string) => Promise<void>;
     getPipelineMetrics: (ownerId?: string) => Promise<void>;

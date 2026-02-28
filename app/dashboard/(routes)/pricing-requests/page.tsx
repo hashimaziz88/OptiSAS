@@ -170,12 +170,15 @@ const PricingRequestsContent: React.FC = () => {
         fetchData();
     };
 
-    const handleSubmit = async (values: ICreatePricingRequestDto | IUpdatePricingRequestDto) => {
+    const handleSubmit = async (values: ICreatePricingRequestDto | IUpdatePricingRequestDto, assignToUserId?: string) => {
         if (editingRequest) {
             await updatePricingRequest(editingRequest.id, values as IUpdatePricingRequestDto);
             message.success('Pricing request updated');
         } else {
-            await createPricingRequest(values as ICreatePricingRequestDto);
+            const created = await createPricingRequest(values as ICreatePricingRequestDto);
+            if (assignToUserId && created?.id) {
+                await assignPricingRequest(created.id, assignToUserId);
+            }
             message.success('Pricing request created');
         }
         setModalOpen(false);
@@ -207,7 +210,7 @@ const PricingRequestsContent: React.FC = () => {
             label: (
                 <span>
                     Unassigned
-                    <Badge count={pendingRequests?.totalCount ?? 0} showZero={false} color="orange" style={{ marginLeft: 8 }} />
+                    <Badge count={pendingRequests?.totalCount ?? 0} showZero={false} color="orange" className={styles.badgeLeftMargin} />
                 </span>
             ),
         }] : []),
@@ -294,6 +297,7 @@ const PricingRequestsContent: React.FC = () => {
                 open={modalOpen}
                 editing={editingRequest}
                 loading={isPending}
+                canAssign={canAssign}
                 onSubmit={handleSubmit}
                 onClose={() => {
                     setModalOpen(false);

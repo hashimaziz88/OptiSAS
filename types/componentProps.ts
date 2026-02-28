@@ -262,7 +262,11 @@ export interface OpportunityFormModalProps {
   editing?: IOpportunityDto | null;
   loading: boolean;
   clients: IClientDto[];
-  onSubmit: (values: ICreateOpportunityDto | IUpdateOpportunityDto) => void;
+  canAssign?: boolean;
+  onSubmit: (
+    values: ICreateOpportunityDto | IUpdateOpportunityDto,
+    assignToUserId?: string,
+  ) => void;
   onClose: () => void;
 }
 
@@ -316,8 +320,10 @@ export interface PricingRequestFormModalProps {
   open: boolean;
   editing: IPricingRequestDto | null;
   loading: boolean;
+  canAssign?: boolean;
   onSubmit: (
     values: ICreatePricingRequestDto | IUpdatePricingRequestDto,
+    assignToUserId?: string,
   ) => Promise<void>;
   onClose: () => void;
 }

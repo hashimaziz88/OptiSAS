@@ -101,10 +101,7 @@ const SalesByPeriodTab: React.FC = () => {
             align: 'center',
             width: 100,
             render: (v: number) => (
-                <span style={{
-                    fontWeight: 600,
-                    color: v >= 50 ? '#22c55e' : v >= 30 ? '#f59e0b' : '#f87171',
-                }}>
+                <span className={v >= 50 ? styles.winRateHigh : v >= 30 ? styles.winRateMedium : styles.winRateLow}>
                     {v.toFixed(1)}%
                 </span>
             ),
@@ -135,22 +132,9 @@ const SalesByPeriodTab: React.FC = () => {
                 const totalPct = maxTotalValue > 0 ? ((record.totalValue ?? 0) / maxTotalValue) * 100 : 0;
                 const wonPct = record.totalValue > 0 ? ((record.wonValue ?? 0) / record.totalValue) * totalPct : 0;
                 return (
-                    <div style={{ position: 'relative', background: 'rgba(255,255,255,0.08)', borderRadius: 4, height: 10, minWidth: 100 }}>
-                        <div style={{
-                            width: `${totalPct}%`,
-                            height: '100%',
-                            background: 'rgba(99,102,241,0.4)',
-                            borderRadius: 4,
-                        }} />
-                        <div style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: `${wonPct}%`,
-                            height: '100%',
-                            background: 'linear-gradient(90deg, #22c55e, #4ade80)',
-                            borderRadius: 4,
-                        }} />
+                    <div className={styles.barTrackSmall}>
+                        <div className={styles.barPipeline} style={{ width: `${totalPct}%` }} />
+                        <div className={styles.barWon} style={{ width: `${wonPct}%` }} />
                     </div>
                 );
             },
@@ -168,11 +152,10 @@ const SalesByPeriodTab: React.FC = () => {
                 />
                 <span className={styles.filterLabel}>Group By:</span>
                 <Select
-                    className={styles.filterSelect}
+                    className={styles.filterSelectMin}
                     value={groupBy}
                     onChange={(v) => setGroupBy(v)}
                     options={SALES_GROUP_BY_OPTIONS}
-                    style={{ minWidth: 120 }}
                 />
                 <Button type="primary" icon={<SearchOutlined />} onClick={load} loading={isPending}>
                     Run Report
@@ -237,7 +220,7 @@ const SalesByPeriodTab: React.FC = () => {
                             title="Total Won Deals"
                             value={totalWonDeals}
                             suffix={
-                                <span style={{ color: 'rgba(255,255,255,0.4)', fontSize: 16 }}>
+                                <span className={styles.winRateSuffix}>
                                     &nbsp;avg {avgWinRate.toFixed(1)}% win
                                 </span>
                             }
@@ -247,7 +230,7 @@ const SalesByPeriodTab: React.FC = () => {
                 </Col>
             </Row>
 
-            <div style={{ marginBottom: 24 }}>
+            <div className={styles.sectionSpacing}>
                 <AiInsightsCard
                     data={salesContext}
                     type="report"
@@ -265,41 +248,27 @@ const SalesByPeriodTab: React.FC = () => {
                         const totalPct = maxTotalValue > 0 ? ((r.totalValue ?? 0) / maxTotalValue) * 100 : 0;
                         const wonPct = r.totalValue > 0 ? ((r.wonValue ?? 0) / r.totalValue) * totalPct : 0;
                         return (
-                            <div key={r.periodName ?? i} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
-                                <span style={{ width: 110, color: 'rgba(255,255,255,0.6)', fontSize: 12, flexShrink: 0 }}>
+                            <div key={r.periodName ?? i} className={styles.barRow}>
+                                <span className={styles.periodLabel}>
                                     {r.periodName}
                                 </span>
-                                <div style={{ flex: 1, position: 'relative', background: 'rgba(255,255,255,0.06)', borderRadius: 6, height: 22 }}>
-                                    <div style={{
-                                        width: `${totalPct}%`,
-                                        height: '100%',
-                                        background: 'rgba(99,102,241,0.35)',
-                                        borderRadius: 6,
-                                    }} />
-                                    <div style={{
-                                        position: 'absolute',
-                                        top: 0,
-                                        left: 0,
-                                        width: `${wonPct}%`,
-                                        height: '100%',
-                                        background: 'linear-gradient(90deg, #22c55e, #4ade80)',
-                                        borderRadius: 6,
-                                        transition: 'width 0.5s ease',
-                                    }} />
+                                <div className={styles.barTrack}>
+                                    <div className={styles.barPipelineChart} style={{ width: `${totalPct}%` }} />
+                                    <div className={styles.barWonChart} style={{ width: `${wonPct}%` }} />
                                 </div>
-                                <span style={{ width: 210, color: '#e2e8f0', fontSize: 11, textAlign: 'right', flexShrink: 0 }}>
+                                <span className={styles.barValues}>
                                     {formatCurrency(r.wonValue)} won · {r.winRate.toFixed(1)}% rate
                                 </span>
                             </div>
                         );
                     })}
-                    <div style={{ display: 'flex', gap: 20, marginTop: 14, fontSize: 12, color: 'rgba(255,255,255,0.35)' }}>
+                    <div className={styles.legendContainer}>
                         <span>
-                            <span style={{ display: 'inline-block', width: 10, height: 10, background: 'rgba(99,102,241,0.5)', borderRadius: 2, marginRight: 6 }} />
+                            <span className={styles.legendSwatchPipeline} />
                             Pipeline Value
                         </span>
                         <span>
-                            <span style={{ display: 'inline-block', width: 10, height: 10, background: '#22c55e', borderRadius: 2, marginRight: 6 }} />
+                            <span className={styles.legendSwatchWon} />
                             Won Revenue
                         </span>
                     </div>

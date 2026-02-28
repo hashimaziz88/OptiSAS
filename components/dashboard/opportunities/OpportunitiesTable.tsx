@@ -138,7 +138,7 @@ const OpportunitiesTable: React.FC<OpportunitiesTableProps> = ({
                                     type="text"
                                     size="small"
                                     icon={<MinusCircleOutlined />}
-                                    style={{ color: '#f87171' }}
+                                    className={styles.inactiveButton}
                                 />
                             </Tooltip>
                         </Popconfirm>
