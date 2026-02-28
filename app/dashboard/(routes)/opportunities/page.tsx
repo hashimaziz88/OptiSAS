@@ -115,12 +115,15 @@ const OpportunitiesContent: React.FC = () => {
         getPipelineMetrics();
     };
 
-    const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDto) => {
+    const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDto, assignToUserId?: string) => {
         if (editingOpp) {
             await updateOpportunity(editingOpp.id, values as IUpdateOpportunityDto);
             message.success('Opportunity updated');
         } else {
-            await createOpportunity(values as ICreateOpportunityDto);
+            const created = await createOpportunity(values as ICreateOpportunityDto);
+            if (assignToUserId && created?.id) {
+                await assignOpportunity(created.id, assignToUserId);
+            }
             message.success('Opportunity created');
         }
         setModalOpen(false);
@@ -319,6 +322,7 @@ const OpportunitiesContent: React.FC = () => {
                 editing={editingOpp}
                 loading={isPending}
                 clients={clients}
+                canAssign={canAssign}
                 onSubmit={handleSubmit}
                 onClose={() => { setModalOpen(false); setEditingOpp(null); }}
             />

@@ -4,6 +4,7 @@ import {
     INITIAL_STATE,
     PricingRequestStateContext,
     PricingRequestActionContext,
+    IPricingRequestDto,
     ICreatePricingRequestDto,
     IUpdatePricingRequestDto,
     IGetPricingRequestsParams,
@@ -59,12 +60,14 @@ export const PricingRequestProvider: React.FC<{ children: React.ReactNode }> = (
             .catch(() => { dispatch(getPricingRequestError()); });
     };
 
-    const createPricingRequest = async (payload: ICreatePricingRequestDto) => {
+    const createPricingRequest = async (payload: ICreatePricingRequestDto): Promise<IPricingRequestDto | undefined> => {
         const instance = axiosInstance();
         dispatch(createPricingRequestPending());
+        let result: IPricingRequestDto | undefined;
         await instance.post(`${BASE_URL}/api/PricingRequests`, payload)
-            .then((response) => { dispatch(createPricingRequestSuccess(response.data)); })
+            .then((response) => { dispatch(createPricingRequestSuccess(response.data)); result = response.data; })
             .catch(() => { dispatch(createPricingRequestError()); });
+        return result;
     };
 
     const updatePricingRequest = async (id: string, payload: IUpdatePricingRequestDto) => {

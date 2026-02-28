@@ -16,19 +16,25 @@ const PricingRequestFormModal: React.FC<PricingRequestFormModalProps> = ({
     open,
     editing,
     loading,
+    canAssign,
     onSubmit,
     onClose,
 }) => {
     const { styles } = useStyles();
     const [form] = Form.useForm();
     const { user } = useAuthState();
+    const currentUserName = [user?.firstName, user?.lastName].filter(Boolean).join(' ') || user?.email || 'You';
 
     const [opportunities, setOpportunities] = useState<{ value: string; label: string }[]>([]);
     const [opportunitiesLoading, setOpportunitiesLoading] = useState(false);
+    const [userOptions, setUserOptions] = useState<{ value: string; label: string }[]>([]);
+    const [usersLoading, setUsersLoading] = useState(false);
+    const [assignToUserId, setAssignToUserId] = useState<string | undefined>(undefined);
 
     useEffect(() => {
         if (!open) {
             form.resetFields();
+            setAssignToUserId(undefined);
             return;
         }
         if (editing) {
@@ -41,6 +47,7 @@ const PricingRequestFormModal: React.FC<PricingRequestFormModalProps> = ({
             });
         } else {
             form.resetFields();
+            setAssignToUserId(undefined);
         }
 
         const fetchOpportunities = async () => {
@@ -64,7 +71,23 @@ const PricingRequestFormModal: React.FC<PricingRequestFormModalProps> = ({
         };
 
         fetchOpportunities();
-    }, [open, editing, form]);
+
+        if (canAssign && !editing && userOptions.length === 0) {
+            setUsersLoading(true);
+            axiosInstance()
+                .get(`${BASE_URL}/api/users`, { params: { pageSize: 200 } })
+                .then((res) => {
+                    setUserOptions(
+                        (res.data?.items ?? []).map((u: { id: string; fullName: string; roles: string[] }) => ({
+                            value: u.id,
+                            label: `${u.fullName}${u.roles?.length ? ` (${u.roles[0]})` : ''}`,
+                        }))
+                    );
+                })
+                .catch(() => { })
+                .finally(() => setUsersLoading(false));
+        }
+    }, [open, editing, form, canAssign, userOptions.length]);
 
     const handleSubmit = async () => {
         try {
@@ -76,7 +99,7 @@ const PricingRequestFormModal: React.FC<PricingRequestFormModalProps> = ({
                     : undefined,
                 ...(!editing && { requestedById: user?.userId }),
             };
-            await onSubmit(payload);
+            await onSubmit(payload, !editing ? assignToUserId : undefined);
         } catch { }
     };
 
@@ -139,6 +162,34 @@ const PricingRequestFormModal: React.FC<PricingRequestFormModalProps> = ({
                             disabledDate={(d) => d?.isBefore(dayjs(), 'day')}
                         />
                     </Form.Item>
+
+                    {!editing && (
+                        canAssign ? (
+                            <Form.Item label="Assign To">
+                                <Select
+                                    size="large"
+                                    showSearch
+                                    optionFilterProp="label"
+                                    options={userOptions}
+                                    loading={usersLoading}
+                                    placeholder="Select a team member (optional)"
+                                    allowClear
+                                    value={assignToUserId}
+                                    onChange={(val) => setAssignToUserId(val)}
+                                />
+                            </Form.Item>
+                        ) : (
+                            <Form.Item label="Requested By">
+                                <Input
+                                    size="large"
+                                    value={currentUserName}
+                                    disabled
+                                    className={styles.disabledInput}
+                                    suffix={<span className={styles.inputSuffix}>you</span>}
+                                />
+                            </Form.Item>
+                        )
+                    )}
 
                     <Button
                         type="primary"

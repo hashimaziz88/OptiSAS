@@ -3,6 +3,7 @@ export const themeSetup = {
     colorPrimary: "#494c51",
     colorLink: "#60a5fa",
     colorLinkHover: "#93c5fd",
+    colorText: "rgba(255, 255, 255, 0.88)",
     colorTextSecondary: "#cbd5e0",
     colorTextTertiary: "#8c8c8c",
     colorTextQuaternary: "#666666",
