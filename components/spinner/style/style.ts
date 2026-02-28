@@ -16,4 +16,8 @@ export const useStyles = createStyles(({ token }) => ({
     letter-spacing: 1px;
     font-weight: 500;
   `,
+
+  loadingIcon: css`
+    color: #1890ff;
+  `,
 }));

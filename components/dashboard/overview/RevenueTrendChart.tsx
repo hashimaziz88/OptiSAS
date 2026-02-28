@@ -110,23 +110,19 @@ const RevenueTrendChart: React.FC<RevenueTrendChartProps> = ({ revenue, loading 
 
     return (
         <Card
-            title={<span style={{ color: 'white', fontWeight: 600 }}>Revenue Trend</span>}
+            title={<span className={styles.cardTitle}>Revenue Trend</span>}
             className={styles.chartCard}
-            styles={{
-                body: { padding: '16px 20px' },
-                header: { background: 'transparent', borderBottom: '1px solid rgba(255,255,255,0.08)' },
-            }}
             extra={
                 revenue && (
-                    <div style={{ display: 'flex', gap: 20, fontSize: 12 }}>
-                        <span style={{ color: '#64748b' }}>
-                            Month: <span style={{ color: '#34d399', fontWeight: 600 }}>{formatCurrency(revenue.thisMonth)}</span>
+                    <div className={styles.chartSummaryRow}>
+                        <span className={styles.summaryLabel}>
+                            Month: <span className={styles.summaryValueGreen}>{formatCurrency(revenue.thisMonth)}</span>
                         </span>
-                        <span style={{ color: '#64748b' }}>
-                            Quarter: <span style={{ color: '#60a5fa', fontWeight: 600 }}>{formatCurrency(revenue.thisQuarter)}</span>
+                        <span className={styles.summaryLabel}>
+                            Quarter: <span className={styles.summaryValueBlue}>{formatCurrency(revenue.thisQuarter)}</span>
                         </span>
-                        <span style={{ color: '#64748b' }}>
-                            Year: <span style={{ color: '#a78bfa', fontWeight: 600 }}>{formatCurrency(revenue.thisYear)}</span>
+                        <span className={styles.summaryLabel}>
+                            Year: <span className={styles.summaryValuePurple}>{formatCurrency(revenue.thisYear)}</span>
                         </span>
                     </div>
                 )

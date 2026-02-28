@@ -268,4 +268,16 @@ export const useStyles = createStyles(({ token }) => ({
   titleLink: css`
     padding: 0;
   `,
+
+  aiDraftRow: css`
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+  `,
+
+  aiDraftBtn: css`
+    color: #a78bfa;
+    border-color: rgba(167, 139, 250, 0.4);
+    background: rgba(167, 139, 250, 0.08);
+  `,
 }));

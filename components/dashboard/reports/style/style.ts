@@ -292,4 +292,85 @@ export const useStyles = createStyles(({ token }) => ({
   filterSelectMin: css`
     min-width: 120px;
   `,
+
+  sectionSpacing: css`
+    margin-bottom: 24px;
+  `,
+
+  winRateHigh: css`
+    font-weight: 600;
+    color: #22c55e;
+  `,
+
+  winRateMedium: css`
+    font-weight: 600;
+    color: #f59e0b;
+  `,
+
+  winRateLow: css`
+    font-weight: 600;
+    color: #f87171;
+  `,
+
+  winRateSuffix: css`
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 16px;
+  `,
+
+  barPipeline: css`
+    height: 100%;
+    background: rgba(99, 102, 241, 0.4);
+    border-radius: 4px;
+  `,
+
+  barWon: css`
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+    border-radius: 4px;
+  `,
+
+  barTrackSmall: css`
+    position: relative;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    height: 10px;
+    min-width: 100px;
+  `,
+
+  barPipelineChart: css`
+    height: 100%;
+    background: rgba(99, 102, 241, 0.35);
+    border-radius: 6px;
+  `,
+
+  barWonChart: css`
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e, #4ade80);
+    border-radius: 6px;
+    transition: width 0.5s ease;
+  `,
+
+  legendSwatchPipeline: css`
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: rgba(99, 102, 241, 0.5);
+    border-radius: 2px;
+    margin-right: 6px;
+  `,
+
+  legendSwatchWon: css`
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #22c55e;
+    border-radius: 2px;
+    margin-right: 6px;
+  `,
 }));

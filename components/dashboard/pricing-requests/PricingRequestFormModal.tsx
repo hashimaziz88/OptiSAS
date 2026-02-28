@@ -134,7 +134,7 @@ const PricingRequestFormModal: React.FC<PricingRequestFormModalProps> = ({
 
                     <Form.Item name="requiredByDate" label="Required By">
                         <DatePicker
-                            style={{ width: '100%' }}
+                            className={styles.fullWidth}
                             size="large"
                             disabledDate={(d) => d?.isBefore(dayjs(), 'day')}
                         />

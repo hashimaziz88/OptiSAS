@@ -215,4 +215,18 @@ export const useStyles = createStyles(({ token }) => ({
     color: #94a3b8;
     font-size: 12px;
   `,
+
+  disabledClientInput: css`
+    &.ant-input {
+      background-color: rgba(255, 255, 255, 0.06) !important;
+      border-color: rgba(255, 255, 255, 0.12) !important;
+      cursor: not-allowed;
+    }
+  `,
+
+  whiteCheckboxLabel: css`
+    &.ant-checkbox-wrapper {
+      color: white;
+    }
+  `,
 }));

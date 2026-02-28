@@ -310,4 +310,50 @@ export const useStyles = createStyles(({ token }) => ({
     font-size: 12px;
     font-style: italic;
   `,
+
+  aiSuggestButton: css`
+    color: #a78bfa;
+    border-color: rgba(167, 139, 250, 0.4);
+    background: transparent;
+  `,
+
+  aiLoadingSpace: css`
+    color: #a0aec0;
+  `,
+
+  aiLoadingText: css`
+    &.ant-typography {
+      color: #a0aec0;
+    }
+  `,
+
+  aiSuggestionWrap: css`
+    width: 100%;
+  `,
+
+  aiSubjectText: css`
+    &.ant-typography {
+      color: #e2e8f0;
+      font-size: 14px;
+    }
+  `,
+
+  aiDescriptionText: css`
+    &.ant-typography {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+  `,
+
+  aiActionsSpace: css`
+    margin-top: 4px;
+  `,
+
+  dismissButton: css`
+    color: #8c8c8c;
+  `,
+
+  inactiveButton: css`
+    color: #f87171;
+  `,
 }));

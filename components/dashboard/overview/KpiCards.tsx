@@ -75,10 +75,9 @@ const KpiCards: React.FC<KpiCardsProps> = ({ overview, loading }) => {
                 <Col xs={24} sm={12} lg={8} key={kpi.title}>
                     <Card
                         className={styles.kpiCard}
-                        styles={{ body: { padding: '20px 24px' } }}
                         loading={loading}
                     >
-                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16 }}>
+                        <div className={styles.kpiRow}>
                             <div
                                 className={styles.kpiIconBox}
                                 style={{
@@ -88,12 +87,12 @@ const KpiCards: React.FC<KpiCardsProps> = ({ overview, loading }) => {
                             >
                                 {kpi.icon}
                             </div>
-                            <div style={{ flex: 1, minWidth: 0 }}>
+                            <div className={styles.kpiContent}>
                                 <div className={styles.kpiLabel}>{kpi.title}</div>
                                 <Statistic
                                     value={kpi.value}
                                     formatter={kpi.formatter as (v: number | string) => React.ReactNode}
-                                    styles={{ content: { color: kpi.color, fontSize: 22, fontWeight: 700, lineHeight: '1.2' } }}
+                                    styles={{ content: { color: kpi.color } }}
                                 />
                                 <div className={styles.kpiDescription}>{kpi.description}</div>
                             </div>

@@ -60,14 +60,14 @@ const RenewalModal: React.FC<RenewalModalProps> = ({
                             label="Proposed Start Date"
                             rules={[{ required: true, message: 'Required' }]}
                         >
-                            <DatePicker style={{ width: '100%' }} size="large" />
+                            <DatePicker className={styles.fullWidth} size="large" />
                         </Form.Item>
                         <Form.Item
                             name="proposedEndDate"
                             label="Proposed End Date"
                             rules={[{ required: true, message: 'Required' }]}
                         >
-                            <DatePicker style={{ width: '100%' }} size="large" />
+                            <DatePicker className={styles.fullWidth} size="large" />
                         </Form.Item>
                     </div>
 
@@ -80,7 +80,7 @@ const RenewalModal: React.FC<RenewalModalProps> = ({
                             placeholder="0"
                             min={0}
                             size="large"
-                            style={{ width: '100%' }}
+                            className={styles.fullWidth}
                             formatter={(v) => `${v}`.replaceAll(/(?<=\d)(?=(\d{3})+$)/g, ',')}
                             parser={(v): number => Number(v?.replaceAll(',', '') ?? '0')}
                         />

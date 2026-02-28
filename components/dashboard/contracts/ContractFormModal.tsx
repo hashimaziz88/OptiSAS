@@ -152,11 +152,9 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
                                     readOnly
                                     placeholder="Auto-filled from opportunity"
                                     size="large"
+                                    className={styles.disabledClientInput}
                                     style={{
                                         color: selectedClientName ? 'rgba(255,255,255,0.85)' : '#666',
-                                        backgroundColor: 'rgba(255,255,255,0.06)',
-                                        borderColor: 'rgba(255,255,255,0.12)',
-                                        cursor: 'not-allowed',
                                         WebkitTextFillColor: selectedClientName ? 'rgba(255,255,255,0.85)' : '#666',
                                     }}
                                 />
@@ -181,7 +179,7 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
                             placeholder="0"
                             min={0}
                             size="large"
-                            style={{ width: '100%' }}
+                            className={styles.fullWidth}
                             formatter={(v) => `${v}`.replaceAll(/(?<=\d)(?=(\d{3})+$)/g, ',')}
                             parser={(v): number => Number(v?.replaceAll(',', '') ?? '0')}
                         />
@@ -194,25 +192,25 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
                                 label="Start Date"
                                 rules={[{ required: true, message: 'Select start date' }]}
                             >
-                                <DatePicker style={{ width: '100%' }} size="large" />
+                                <DatePicker className={styles.fullWidth} size="large" />
                             </Form.Item>
                         )}
                         <Form.Item
                             name="endDate"
                             label="End Date"
                             rules={[{ required: true, message: 'Select end date' }]}
-                            style={editing ? { gridColumn: '1 / -1' } : undefined}
+                            className={editing ? styles.gridSpanFull : undefined}
                         >
-                            <DatePicker style={{ width: '100%' }} size="large" />
+                            <DatePicker className={styles.fullWidth} size="large" />
                         </Form.Item>
                     </div>
 
                     <div className={styles.formRow}>
                         <Form.Item name="renewalNoticePeriod" label="Renewal Notice (days)">
-                            <InputNumber placeholder="30" min={0} size="large" style={{ width: '100%' }} />
+                            <InputNumber placeholder="30" min={0} size="large" className={styles.fullWidth} />
                         </Form.Item>
                         <Form.Item name="autoRenew" valuePropName="checked" >
-                            <Checkbox style={{ color: 'white' }}>Enable auto-renewal</Checkbox>
+                            <Checkbox className={styles.whiteCheckboxLabel}>Enable auto-renewal</Checkbox>
                         </Form.Item>
                     </div>
 

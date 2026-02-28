@@ -69,7 +69,7 @@ const DashboardContent: React.FC = () => {
     };
 
     return (
-        <div style={{ paddingBottom: 32 }}>
+        <div className={styles.pageWrapper}>
             {/* Page Header */}
             <div className={styles.pageHeader}>
                 <Title level={2} className={styles.pageTitle}>Dashboard Overview</Title>
@@ -86,17 +86,17 @@ const DashboardContent: React.FC = () => {
             {/* KPI Cards */}
             <KpiCards overview={overview} loading={isPending} />
 
-            <Divider style={{ borderColor: 'rgba(255,255,255,0.06)', margin: '24px 0' }} />
+            <Divider className={styles.sectionDivider} />
 
             {/* Activities Summary */}
-            <div style={{ marginBottom: 8 }}>
-                <Title level={5} style={{ color: '#94a3b8', marginBottom: 14, fontWeight: 500 }}>
+            <div className={styles.activitiesHeader}>
+                <Title level={5} className={styles.sectionSubtitle}>
                     Activities Overview
                 </Title>
                 <ActivitiesSummaryCards activities={overview?.activities} loading={isPending} />
             </div>
 
-            <Divider style={{ borderColor: 'rgba(255,255,255,0.06)', margin: '24px 0' }} />
+            <Divider className={styles.sectionDivider} />
 
             {/* Charts Row */}
             <Row gutter={[16, 16]}>
@@ -108,7 +108,7 @@ const DashboardContent: React.FC = () => {
                 </Col>
             </Row>
 
-            <Divider style={{ borderColor: 'rgba(255,255,255,0.06)', margin: '24px 0' }} />
+            <Divider className={styles.sectionDivider} />
 
             {/* AI Business Insights */}
             <AiInsightsCard
@@ -117,7 +117,7 @@ const DashboardContent: React.FC = () => {
                 disabled={!overview}
             />
 
-            <Divider style={{ borderColor: 'rgba(255,255,255,0.06)', margin: '24px 0' }} />
+            <Divider className={styles.sectionDivider} />
 
             {/* Bottom Row: Top Performers + Expiring Contracts */}
             <Row gutter={[16, 16]}>

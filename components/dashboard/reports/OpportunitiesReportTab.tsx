@@ -244,14 +244,14 @@ const OpportunitiesReportTab: React.FC = () => {
                         <Statistic
                             title="Won / Lost"
                             value={wonCount}
-                            suffix={<span style={{ color: '#f87171', fontSize: 20 }}>/ {lostCount}</span>}
+                            suffix={<span className={styles.lostSuffix}>/ {lostCount}</span>}
                             styles={{ content: { color: '#22c55e' } }}
                         />
                     </div>
                 </Col>
             </Row>
 
-            <div style={{ marginBottom: 24 }}>
+            <div className={styles.sectionSpacing}>
                 <AiInsightsCard
                     data={reportsContext}
                     type="report"

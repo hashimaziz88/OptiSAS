@@ -86,7 +86,7 @@ const AiInsightsCard: React.FC<AiInsightsCardProps> = ({
                     {hasGenerated ? 'Regenerate Insights' : 'Generate Insights'}
                 </Button>
                 {disabled && !loading && (
-                    <Typography.Text style={{ color: 'rgba(255,255,255,0.35)', fontSize: 12 }}>
+                    <Typography.Text className={styles.disabledNote}>
                         Load data first to enable AI analysis.
                     </Typography.Text>
                 )}
@@ -104,12 +104,7 @@ const AiInsightsCard: React.FC<AiInsightsCardProps> = ({
                     message="Could not generate insights"
                     description={error}
                     showIcon
-                    style={{
-                        background: 'rgba(239,68,68,0.08)',
-                        border: '1px solid rgba(239,68,68,0.25)',
-                        borderRadius: 10,
-                        marginBottom: 12,
-                    }}
+                    className={styles.errorAlert}
                 />
             )}
 

@@ -207,7 +207,7 @@ const PricingRequestsContent: React.FC = () => {
             label: (
                 <span>
                     Unassigned
-                    <Badge count={pendingRequests?.totalCount ?? 0} showZero={false} color="orange" style={{ marginLeft: 8 }} />
+                    <Badge count={pendingRequests?.totalCount ?? 0} showZero={false} color="orange" className={styles.badgeLeftMargin} />
                 </span>
             ),
         }] : []),

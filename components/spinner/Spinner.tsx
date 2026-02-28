@@ -10,7 +10,8 @@ const Spinner: React.FC<SpinnerProps> = ({ tip = "LOADING...", size = 48 }) => {
 
     const antIcon = (
         <LoadingOutlined
-            style={{ fontSize: size, color: '#1890ff' }}
+            className={styles.loadingIcon}
+            style={{ fontSize: size }}
             spin
         />
     );
