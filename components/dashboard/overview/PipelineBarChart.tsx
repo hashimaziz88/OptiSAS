@@ -6,6 +6,7 @@ import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
+    LogarithmicScale,
     BarElement,
     Title,
     Tooltip,
@@ -18,7 +19,7 @@ import { PIPELINE_STAGE_COLORS } from '@/constants/opportunities';
 import { PipelineBarChartProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, LogarithmicScale, BarElement, Title, Tooltip, Legend);
 
 const PipelineBarChart: React.FC<PipelineBarChartProps> = ({ stages, loading }) => {
     const { styles } = useStyles();
@@ -61,6 +62,7 @@ const PipelineBarChart: React.FC<PipelineBarChartProps> = ({ stages, loading }) 
                 border: { color: 'rgba(255,255,255,0.08)' },
             },
             y: {
+                type: 'logarithmic' as const,
                 ticks: {
                     color: '#94a3b8',
                     font: { size: 11 },

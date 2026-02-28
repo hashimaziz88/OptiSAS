@@ -80,6 +80,7 @@ const TopPerformersTable: React.FC<TopPerformersTableProps> = ({ performers, loa
                 rowKey="userId"
                 pagination={false}
                 size="small"
+                scroll={{ x: 'max-content' }}
                 style={{ background: 'transparent' }}
                 locale={{ emptyText: <span style={{ color: '#64748b' }}>No performance data</span> }}
             />

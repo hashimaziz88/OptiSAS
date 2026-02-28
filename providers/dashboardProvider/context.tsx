@@ -34,11 +34,11 @@ export interface IContractsDashboardSummaryDto {
 }
 
 export interface IRevenueMonthDto {
-    month: string;
-    value?: number;
-    totalRevenue?: number;
-    revenue?: number;
-    amount?: number;
+    year: number;
+    month: number;
+    monthName: string;
+    actual: number;
+    projected: number;
 }
 
 export interface IRevenueSummaryDto {
