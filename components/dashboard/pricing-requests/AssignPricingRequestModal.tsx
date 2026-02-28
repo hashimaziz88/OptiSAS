@@ -41,19 +41,16 @@ const AssignPricingRequestModal: React.FC<AssignPricingRequestModalProps> = ({
         const fetchUsers = async () => {
             setUsersLoading(true);
             try {
-                const res = await axiosInstance().get(`${BASE_URL}/api/Opportunities`, {
-                    params: { pageNumber: 1, pageSize: 100 },
+                const res = await axiosInstance().get(`${BASE_URL}/api/users`, {
+                    params: { pageSize: 200 },
                 });
                 const items = res.data?.items ?? [];
-                const seen = new Set<string>();
-                const opts: UserOption[] = [];
-                for (const item of items) {
-                    if (item.ownerId && !seen.has(item.ownerId)) {
-                        seen.add(item.ownerId);
-                        opts.push({ value: item.ownerId, label: item.ownerName ?? item.ownerId });
-                    }
-                }
-                setUsers(opts);
+                setUsers(
+                    items.map((u: { id: string; fullName: string; roles: string[] }) => ({
+                        value: u.id,
+                        label: `${u.fullName}${u.roles?.length ? ` (${u.roles[0]})` : ''}`,
+                    }))
+                );
             } catch {
                 message.error('Failed to load users');
             } finally {

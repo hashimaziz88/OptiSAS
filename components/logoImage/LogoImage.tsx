@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useStyles } from "./style/style";
-import logo from "@/assets/icons/logo.svg";
+import logo from "@/public/logo.svg";
 
 const LogoImage: React.FC<{ height: number; width: number }> = ({ height, width }) => {
     const { styles } = useStyles();

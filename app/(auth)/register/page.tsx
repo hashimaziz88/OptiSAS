@@ -4,10 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { Button, Form, Input, Select, Segmented, message } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined, PhoneOutlined, BankOutlined, KeyOutlined } from '@ant-design/icons';
 import { useStyles } from '@/app/(auth)/style/style';
-import AuthLayout from '@/components/auth/components/AuthLayout';
-import AuthHeader from '@/components/auth/components/AuthHeader';
+import AuthLayout from '@/components/auth/AuthLayout';
+import AuthHeader from '@/components/auth/AuthHeader';
 
-import AuthFooterLink from '@/components/auth/components/AuthFooterLink';
+import AuthFooterLink from '@/components/auth/AuthFooterLink';
 import Spinner from '@/components/spinner/Spinner';
 import { useAuthActions, useAuthState } from '@/providers/authProvider';
 import { IUserRegisterRequest } from '@/providers/authProvider/context';

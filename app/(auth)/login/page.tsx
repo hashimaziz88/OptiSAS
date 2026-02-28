@@ -4,10 +4,10 @@ import React, { useEffect } from 'react';
 import { Button, Checkbox, Form, FormProps, Input, message } from 'antd';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useStyles } from '@/app/(auth)/style/style';
-import AuthLayout from '@/components/auth/components/AuthLayout';
-import AuthHeader from '@/components/auth/components/AuthHeader';
+import AuthLayout from '@/components/auth/AuthLayout';
+import AuthHeader from '@/components/auth/AuthHeader';
 
-import AuthFooterLink from '@/components/auth/components/AuthFooterLink';
+import AuthFooterLink from '@/components/auth/AuthFooterLink';
 import { useAuthState, useAuthActions } from '@/providers/authProvider';
 import { IUserLoginRequest } from '@/providers/authProvider/context';
 import Spinner from '@/components/spinner/Spinner';
