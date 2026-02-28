@@ -5,6 +5,7 @@ import { Divider, Tag, Tooltip, Typography, message } from 'antd';
 import {
     CheckCircleFilled,
     CopyOutlined,
+    KeyOutlined,
     MailOutlined,
     SafetyCertificateOutlined,
     TeamOutlined,
@@ -12,6 +13,7 @@ import {
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { useAuthState } from '@/providers/authProvider';
+import { generateInvitationCode } from '@/utils/auth/invitationCode';
 import { useStyles } from './style/style';
 
 const { Title, Text } = Typography;
@@ -46,6 +48,14 @@ const ProfilePage: React.FC = () => {
 
     const sessionExpiry = user?.expiresAt ? dayjs(user.expiresAt) : null;
     const isSessionValid = sessionExpiry ? sessionExpiry.isAfter(dayjs()) : false;
+
+    const canInvite = roles.some((r) => r === 'Admin' || r === 'SalesManager' || r === 'BusinessDevelopmentManager');
+    const inviteCode = canInvite && user?.tenantId ? generateInvitationCode(user.tenantId) : null;
+    // Next UTC midnight expressed in local time
+    const nowUtc = new Date();
+    const nextUtcMidnight = dayjs(
+        new Date(Date.UTC(nowUtc.getUTCFullYear(), nowUtc.getUTCMonth(), nowUtc.getUTCDate() + 1))
+    );
 
     return (
         <div className={styles.page}>
@@ -124,6 +134,35 @@ const ProfilePage: React.FC = () => {
                     styles={styles}
                 />
             </div>
+
+            {/* Invite team members — Admin / SalesManager only */}
+            {inviteCode && (
+                <div className={styles.card}>
+                    <Text strong className={styles.sectionLabel}>
+                        <KeyOutlined style={{ marginRight: 8, color: '#fbbf24' }} />
+                        Invite Team Members
+                    </Text>
+
+                    <Text style={{ color: '#94a3b8', fontSize: 13, display: 'block', marginBottom: 16 }}>
+                        Share this code with colleagues so they can join your organisation when registering.
+                        The code refreshes every day at UTC midnight.
+                    </Text>
+
+                    <span className={styles.inviteCode}>
+                        <span style={{ flex: 1 }}>{inviteCode}</span>
+                        <Tooltip title="Copy invitation code">
+                            <CopyOutlined
+                                style={{ cursor: 'pointer', flexShrink: 0 }}
+                                onClick={() => handleCopy(inviteCode, 'Invitation code')}
+                            />
+                        </Tooltip>
+                    </span>
+
+                    <Text className={styles.inviteExpiry}>
+                        Expires {nextUtcMidnight.format('DD MMM YYYY [at] HH:mm')} (local time)
+                    </Text>
+                </div>
+            )}
 
             {/* Session */}
             <div className={styles.card}>

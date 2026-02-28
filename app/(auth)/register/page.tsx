@@ -11,6 +11,7 @@ import AuthFooterLink from '@/components/auth/components/AuthFooterLink';
 import Spinner from '@/components/spinner/Spinner';
 import { useAuthActions, useAuthState } from '@/providers/authProvider';
 import { IUserRegisterRequest } from '@/providers/authProvider/context';
+import { decodeInvitationCode } from '@/utils/auth/invitationCode';
 
 type ScenarioType = 'shared' | 'new-org' | 'join-org';
 
@@ -21,7 +22,7 @@ type FieldType = {
     lastName: string;
     phoneNumber?: string;
     tenantName?: string;
-    tenantId?: string;
+    invitationCode?: string;
     role?: string;
 };
 
@@ -40,7 +41,7 @@ const SCENARIO_OPTIONS = [
 const SCENARIO_HINTS: Record<ScenarioType, string> = {
     shared: 'Access the default shared workspace. Defaults to Sales Representative.',
     'new-org': 'Create a new isolated organisation. You will become its Admin.',
-    'join-org': 'Join an existing organisation using a Tenant ID provided by your Admin.',
+    'join-org': 'Join an existing organisation using an invitation code from your Admin.',
 };
 
 const Register: React.FC = () => {
@@ -58,7 +59,7 @@ const Register: React.FC = () => {
 
     const handleScenarioChange = (val: string | number) => {
         setScenario(val as ScenarioType);
-        form.resetFields(['tenantName', 'tenantId', 'role']);
+        form.resetFields(['tenantName', 'invitationCode', 'role']);
     };
 
     const onFinish = (values: FieldType) => {
@@ -73,7 +74,12 @@ const Register: React.FC = () => {
         if (scenario === 'new-org') {
             payload.tenantName = values.tenantName;
         } else if (scenario === 'join-org') {
-            payload.tenantId = values.tenantId;
+            const tenantId = decodeInvitationCode(values.invitationCode ?? '');
+            if (!tenantId) {
+                message.error('Invitation code is invalid or has expired. Please request a new one from your Admin.');
+                return;
+            }
+            payload.tenantId = tenantId;
             payload.role = values.role;
         } else if (values.role) {
             payload.role = values.role;
@@ -128,13 +134,21 @@ const Register: React.FC = () => {
                 {scenario === 'join-org' && (
                     <>
                         <Form.Item
-                            label="Tenant ID"
-                            name="tenantId"
-                            rules={[{ required: true, message: 'Please enter the Tenant ID from your Admin' }]}
+                            label="Invitation Code"
+                            name="invitationCode"
+                            rules={[
+                                { required: true, message: 'Please enter the invitation code from your Admin' },
+                                {
+                                    validator: (_, value) => {
+                                        if (!value || decodeInvitationCode(value) !== null) return Promise.resolve();
+                                        return Promise.reject('Invitation code is invalid or has expired');
+                                    },
+                                },
+                            ]}
                         >
                             <Input
                                 prefix={<KeyOutlined />}
-                                placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+                                placeholder="Paste invitation code here"
                                 size="large"
                             />
                         </Form.Item>
