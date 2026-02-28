@@ -17,6 +17,7 @@ import {
 import DocumentsTable from '@/components/dashboard/documents/DocumentsTable';
 import DocumentUploadModal from '@/components/dashboard/documents/DocumentUploadModal';
 import { useStyles } from '@/components/dashboard/documents/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -33,6 +34,7 @@ const DocumentsContent: React.FC = () => {
     const [pageSize, setPageSize] = useState(DOCUMENTS_PAGE_SIZE);
     const [categoryFilter, setCategoryFilter] = useState<number | undefined>(undefined);
     const [relatedTypeFilter, setRelatedTypeFilter] = useState<number | undefined>(undefined);
+    const [clientFilter, setClientFilter] = useState<string | undefined>(undefined);
 
     const [uploadOpen, setUploadOpen] = useState(false);
     const [viewingDoc, setViewingDoc] = useState<IDocumentDto | null>(null);
@@ -43,7 +45,9 @@ const DocumentsContent: React.FC = () => {
             pageNumber: newPage,
             pageSize: newPageSize,
             category: categoryFilter,
-            relatedToType: relatedTypeFilter,
+            ...(clientFilter
+                ? { relatedToType: 1, relatedToId: clientFilter }
+                : { relatedToType: relatedTypeFilter }),
         });
     };
 
@@ -52,9 +56,11 @@ const DocumentsContent: React.FC = () => {
             pageNumber: page,
             pageSize: pageSize,
             category: categoryFilter,
-            relatedToType: relatedTypeFilter,
+            ...(clientFilter
+                ? { relatedToType: 1, relatedToId: clientFilter }
+                : { relatedToType: relatedTypeFilter }),
         });
-    }, [page, pageSize, categoryFilter, relatedTypeFilter, getDocuments]);
+    }, [page, pageSize, categoryFilter, relatedTypeFilter, clientFilter, getDocuments]);
 
     useEffect(() => {
         if (downloadBlob && downloadingId) {
@@ -104,6 +110,12 @@ const DocumentsContent: React.FC = () => {
             </div>
 
             <div className={styles.filterBar}>
+                <ClientSelectFilter
+                    className={styles.filterSelect}
+                    value={clientFilter}
+                    onChange={(value) => { setClientFilter(value); setPage(1); }}
+                />
+
                 <Select
                     className={styles.filterSelect}
                     placeholder="All Categories"
@@ -119,8 +131,9 @@ const DocumentsContent: React.FC = () => {
                     placeholder="All Related Types"
                     allowClear
                     options={RELATED_TO_TYPE_OPTIONS}
-                    value={relatedTypeFilter}
+                    value={clientFilter ? undefined : relatedTypeFilter}
                     onChange={(value) => { setRelatedTypeFilter(value); setPage(1); }}
+                    disabled={!!clientFilter}
                     size="large"
                 />
 

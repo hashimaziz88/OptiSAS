@@ -27,6 +27,7 @@ import ActivitiesTable from '@/components/dashboard/activities/ActivitiesTable';
 import ActivityFormModal from '@/components/dashboard/activities/ActivityFormModal';
 import CompleteActivityModal from '@/components/dashboard/activities/CompleteActivityModal';
 import { useStyles } from '@/components/dashboard/activities/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -56,6 +57,7 @@ const ActivitiesContent: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [typeFilter, setTypeFilter] = useState<number | undefined>(undefined);
     const [statusFilter, setStatusFilter] = useState<number | undefined>(undefined);
+    const [clientFilter, setClientFilter] = useState<string | undefined>(undefined);
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingActivity, setEditingActivity] = useState<IActivityDto | null>(null);
@@ -68,6 +70,7 @@ const ActivitiesContent: React.FC = () => {
             pageSize: ps,
             type: typeFilter,
             status: statusFilter,
+            ...(clientFilter ? { relatedToType: 1, relatedToId: clientFilter } : {}),
         });
     };
 
@@ -77,7 +80,13 @@ const ActivitiesContent: React.FC = () => {
 
     useEffect(() => {
         if (activeTab === 'all') {
-            getActivities({ pageNumber: page, pageSize, type: typeFilter, status: statusFilter });
+            getActivities({
+                pageNumber: page,
+                pageSize,
+                type: typeFilter,
+                status: statusFilter,
+                ...(clientFilter ? { relatedToType: 1, relatedToId: clientFilter } : {}),
+            });
         } else if (activeTab === 'mine') {
             getMyActivities({ pageNumber: page, pageSize, status: statusFilter });
         } else if (activeTab === 'upcoming') {
@@ -85,7 +94,7 @@ const ActivitiesContent: React.FC = () => {
         } else if (activeTab === 'overdue') {
             getOverdueActivities();
         }
-    }, [activeTab, page, pageSize, typeFilter, statusFilter, getActivities, getMyActivities, getUpcomingActivities, getOverdueActivities]);
+    }, [activeTab, page, pageSize, typeFilter, statusFilter, clientFilter, getActivities, getMyActivities, getUpcomingActivities, getOverdueActivities]);
 
     const handleTabChange = (key: string) => {
         setActiveTab(key as typeof activeTab);
@@ -149,9 +158,14 @@ const ActivitiesContent: React.FC = () => {
     };
 
     const getTableData = (): IActivityDto[] => {
-        if (activeTab === 'upcoming') return upcomingActivities ?? [];
-        if (activeTab === 'overdue') return overdueActivities ?? [];
-        const items = pagedResult?.items ?? [];
+        let items: IActivityDto[];
+        if (activeTab === 'upcoming') items = upcomingActivities ?? [];
+        else if (activeTab === 'overdue') items = overdueActivities ?? [];
+        else items = pagedResult?.items ?? [];
+
+        if (clientFilter && activeTab !== 'all') {
+            items = items.filter((a) => a.relatedToType === 1 && a.relatedToId === clientFilter);
+        }
         if (!searchTerm) return items;
         return items.filter((a) =>
             a.subject.toLowerCase().includes(searchTerm.toLowerCase())
@@ -221,6 +235,11 @@ const ActivitiesContent: React.FC = () => {
                     onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
                     allowClear
                     size="large"
+                />
+                <ClientSelectFilter
+                    className={styles.filterSelect}
+                    value={clientFilter}
+                    onChange={(value) => { setClientFilter(value); setPage(1); }}
                 />
                 {activeTab !== 'upcoming' && activeTab !== 'overdue' && (
                     <>

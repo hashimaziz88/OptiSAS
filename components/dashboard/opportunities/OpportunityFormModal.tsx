@@ -92,6 +92,7 @@ const OpportunityFormModal: React.FC<OpportunityFormModalProps> = ({
                                 placeholder="Select a client"
                                 options={clientOptions}
                                 showSearch
+                                optionFilterProp="label"
                             />
                         </Form.Item>
                     )}

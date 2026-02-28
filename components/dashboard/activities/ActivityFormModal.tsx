@@ -213,6 +213,7 @@ const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, lo
                                     <Select
                                         size="large"
                                         showSearch
+                                        optionFilterProp="label"
                                         placeholder={relatedToType ? 'Search & select a record' : 'Select a type first'}
                                         disabled={!relatedToType}
                                         loading={relatedLoading}

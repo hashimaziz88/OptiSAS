@@ -22,6 +22,7 @@ import { buildOpportunitiesParams, getSourceLabel, formatCurrency } from '@/util
 import OpportunitiesTable from '@/components/dashboard/opportunities/OpportunitiesTable';
 import OpportunityFormModal from '@/components/dashboard/opportunities/OpportunityFormModal';
 import { useStyles } from '@/components/dashboard/opportunities/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -88,7 +89,7 @@ const OpportunitiesContent: React.FC = () => {
         getPipelineMetrics();
     };
 
-const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDto) => {
+    const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDto) => {
         if (editingOpp) {
             await updateOpportunity(editingOpp.id, values as IUpdateOpportunityDto);
             message.success('Opportunity updated');
@@ -159,7 +160,6 @@ const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDt
         }
     };
 
-    const clientOptions = clients.map((c) => ({ label: c.name, value: c.id }));
 
     const stageMetrics = pipelineMetrics?.stageMetrics ?? {};
 
@@ -214,15 +214,10 @@ const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDt
                     onChange={(v) => { setStageFilter(v); setPage(1); }}
                     size="large"
                 />
-                <Select
+                <ClientSelectFilter
                     className={styles.filterSelect}
-                    placeholder="All Clients"
-                    allowClear
-                    showSearch
-                    options={clientOptions}
                     value={clientFilter}
                     onChange={(v) => { setClientFilter(v); setPage(1); }}
-                    size="large"
                 />
                 <Button icon={<ReloadOutlined />} size="large" className={styles.refreshButton} onClick={() => fetchOpportunities()}>
                     Refresh

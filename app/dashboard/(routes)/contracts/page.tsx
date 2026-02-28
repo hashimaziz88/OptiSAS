@@ -17,6 +17,7 @@ import ContractFormModal from '@/components/dashboard/contracts/ContractFormModa
 import RenewalModal from '@/components/dashboard/contracts/RenewalModal';
 import ContractRenewalsTable from '@/components/dashboard/contracts/ContractRenewalsTable';
 import { useStyles } from '@/components/dashboard/contracts/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdmin, isAdminOrManager } from '@/utils/roles';
 
@@ -43,6 +44,7 @@ const ContractsContent: React.FC = () => {
 
     const [page, setPage] = useState(1);
     const [statusFilter, setStatusFilter] = useState<number | undefined>(undefined);
+    const [clientFilter, setClientFilter] = useState<string | undefined>(undefined);
     const [searchTerm, setSearchTerm] = useState('');
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -55,12 +57,17 @@ const ContractsContent: React.FC = () => {
     const [renewingContract, setRenewingContract] = useState<IContractDto | null>(null);
 
     const load = (p = page, status = statusFilter) => {
-        getContracts({ pageNumber: p, pageSize: CONTRACTS_PAGE_SIZE, status });
+        getContracts({ pageNumber: p, pageSize: CONTRACTS_PAGE_SIZE, status, clientId: clientFilter });
     };
 
     useEffect(() => {
         getContracts({ pageNumber: 1, pageSize: CONTRACTS_PAGE_SIZE, status: undefined });
     }, [getContracts]);
+
+    useEffect(() => {
+        setPage(1);
+        getContracts({ pageNumber: 1, pageSize: CONTRACTS_PAGE_SIZE, status: statusFilter, clientId: clientFilter });
+    }, [clientFilter]);
 
     const handleStatusFilter = (value: number | undefined) => {
         setStatusFilter(value);
@@ -174,6 +181,11 @@ const ContractsContent: React.FC = () => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onSearch={(value) => setSearchTerm(value)}
                     allowClear
+                />
+                <ClientSelectFilter
+                    className={styles.filterSelect}
+                    value={clientFilter}
+                    onChange={(value) => { setClientFilter(value); }}
                 />
                 <Select
                     className={styles.filterSelect}

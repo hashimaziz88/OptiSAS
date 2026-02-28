@@ -10,6 +10,7 @@ import { resolveRecordName } from '@/utils/dashboard/notes';
 import NoteFormModal from '@/components/dashboard/notes/NoteFormModal';
 import NotesTable from '@/components/dashboard/notes/NotesTable';
 import { useStyles } from '@/components/dashboard/notes/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 
 const { Title } = Typography;
 
@@ -22,6 +23,7 @@ const NotesContent: React.FC = () => {
     const [pageSize, setPageSize] = useState(NOTES_PAGE_SIZE);
     const [searchTerm, setSearchTerm] = useState('');
     const [relatedToType, setRelatedToType] = useState<number | undefined>(undefined);
+    const [clientFilter, setClientFilter] = useState<string | undefined>(undefined);
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingNote, setEditingNote] = useState<INoteDto | null>(null);
@@ -41,13 +43,21 @@ const NotesContent: React.FC = () => {
         getNotes({
             pageNumber: newPage,
             pageSize: newPageSize,
-            relatedToType,
+            ...(clientFilter
+                ? { relatedToType: 1, relatedToId: clientFilter }
+                : { relatedToType }),
         });
     };
 
     useEffect(() => {
-        getNotes({ pageNumber: page, pageSize: pageSize, relatedToType });
-    }, [page, pageSize, relatedToType, getNotes]);
+        getNotes({
+            pageNumber: page,
+            pageSize: pageSize,
+            ...(clientFilter
+                ? { relatedToType: 1, relatedToId: clientFilter }
+                : { relatedToType }),
+        });
+    }, [page, pageSize, relatedToType, clientFilter, getNotes]);
 
     const notes = pagedResult?.items ?? [];
     const filteredItems = searchTerm
@@ -109,13 +119,20 @@ const NotesContent: React.FC = () => {
                     size="large"
                 />
 
+                <ClientSelectFilter
+                    className={styles.filterSelect}
+                    value={clientFilter}
+                    onChange={(value) => { setClientFilter(value); setPage(1); }}
+                />
+
                 <Select
                     className={styles.filterSelect}
                     placeholder="All Related Types"
                     allowClear
                     options={RELATED_TO_TYPE_OPTIONS}
-                    value={relatedToType}
+                    value={clientFilter ? undefined : relatedToType}
                     onChange={(value) => { setRelatedToType(value); setPage(1); }}
+                    disabled={!!clientFilter}
                     size="large"
                 />
 

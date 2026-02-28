@@ -177,6 +177,7 @@ const DocumentUploadModal: React.FC<DocumentUploadModalProps> = ({
                             loading={relatedLoading}
                             disabled={!relatedType}
                             showSearch
+                            optionFilterProp="label"
                             size="large"
                         />
                     </Form.Item>

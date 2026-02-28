@@ -5,8 +5,8 @@ import {
     Badge, Button, Descriptions, Drawer, Input, Popconfirm, Select, Space, Tag, Tabs, Typography, message,
 } from 'antd';
 import { PlusOutlined, ReloadOutlined, SearchOutlined, EditOutlined } from '@ant-design/icons';
+import { axiosInstance } from '@/utils/axiosInstance';
 import {
-
     usePricingRequestActions,
     usePricingRequestState,
 } from '@/providers/pricingRequestProvider';
@@ -28,6 +28,7 @@ import PricingRequestsTable from '@/components/dashboard/pricing-requests/Pricin
 import PricingRequestFormModal from '@/components/dashboard/pricing-requests/PricingRequestFormModal';
 import AssignPricingRequestModal from '@/components/dashboard/pricing-requests/AssignPricingRequestModal';
 import { useStyles } from '@/components/dashboard/pricing-requests/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -58,11 +59,29 @@ const PricingRequestsContent: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState<number | undefined>(undefined);
     const [priorityFilter, setPriorityFilter] = useState<number | undefined>(undefined);
+    const [clientFilter, setClientFilter] = useState<string | undefined>(undefined);
+    const [clientOpportunityIds, setClientOpportunityIds] = useState<Set<string> | null>(null);
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingRequest, setEditingRequest] = useState<IPricingRequestDto | null>(null);
     const [viewingRequest, setViewingRequest] = useState<IPricingRequestDto | null>(null);
     const [assigningRequest, setAssigningRequest] = useState<IPricingRequestDto | null>(null);
+
+    useEffect(() => {
+        if (!clientFilter) {
+            setClientOpportunityIds(null);
+            return;
+        }
+        axiosInstance()
+            .get(`${process.env.NEXT_PUBLIC_API_LINK}/api/Opportunities`, {
+                params: { clientId: clientFilter, pageSize: 500 },
+            })
+            .then((res) => {
+                const ids = new Set<string>((res.data?.items ?? []).map((o: { id: string }) => o.id));
+                setClientOpportunityIds(ids);
+            })
+            .catch(() => setClientOpportunityIds(null));
+    }, [clientFilter]);
 
     const fetchData = (newPage = page, newPageSize = pageSize) => {
         if (activeTab === 'all') {
@@ -94,6 +113,10 @@ const PricingRequestsContent: React.FC = () => {
         if (activeTab === 'mine') items = myRequests?.items ?? [];
         else if (activeTab === 'pending') items = pendingRequests?.items ?? [];
         else items = pagedResult?.items ?? [];
+
+        if (clientOpportunityIds !== null) {
+            items = items.filter((r) => clientOpportunityIds.has(r.opportunityId));
+        }
 
         if (searchTerm) {
             const lower = searchTerm.toLowerCase();
@@ -215,6 +238,12 @@ const PricingRequestsContent: React.FC = () => {
                     onChange={(e) => { setSearchTerm(e.target.value); }}
                     allowClear
                     size="large"
+                />
+
+                <ClientSelectFilter
+                    className={styles.filterSelect}
+                    value={clientFilter}
+                    onChange={(value) => { setClientFilter(value); setPage(1); }}
                 />
 
                 {activeTab === 'all' && (

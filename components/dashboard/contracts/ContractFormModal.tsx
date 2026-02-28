@@ -142,6 +142,7 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
                                     options={opportunities}
                                     loading={optionsLoading}
                                     showSearch
+                                    optionFilterProp="label"
                                     size="large"
                                     allowClear
                                     onChange={handleOpportunityChange}
