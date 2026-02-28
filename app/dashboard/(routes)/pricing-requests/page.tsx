@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 import {
     Badge, Button, Descriptions, Drawer, Input, Popconfirm, Select, Space, Tag, Tabs, Typography, message,
 } from 'antd';
-import { PlusOutlined, ReloadOutlined, SearchOutlined } from '@ant-design/icons';
+import { PlusOutlined, ReloadOutlined, SearchOutlined, EditOutlined } from '@ant-design/icons';
+import { axiosInstance } from '@/utils/axiosInstance';
 import {
-
     usePricingRequestActions,
     usePricingRequestState,
 } from '@/providers/pricingRequestProvider';
@@ -28,6 +28,7 @@ import PricingRequestsTable from '@/components/dashboard/pricing-requests/Pricin
 import PricingRequestFormModal from '@/components/dashboard/pricing-requests/PricingRequestFormModal';
 import AssignPricingRequestModal from '@/components/dashboard/pricing-requests/AssignPricingRequestModal';
 import { useStyles } from '@/components/dashboard/pricing-requests/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -58,11 +59,29 @@ const PricingRequestsContent: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [statusFilter, setStatusFilter] = useState<number | undefined>(undefined);
     const [priorityFilter, setPriorityFilter] = useState<number | undefined>(undefined);
+    const [clientFilter, setClientFilter] = useState<string | undefined>(undefined);
+    const [clientOpportunityIds, setClientOpportunityIds] = useState<Set<string> | null>(null);
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingRequest, setEditingRequest] = useState<IPricingRequestDto | null>(null);
     const [viewingRequest, setViewingRequest] = useState<IPricingRequestDto | null>(null);
     const [assigningRequest, setAssigningRequest] = useState<IPricingRequestDto | null>(null);
+
+    useEffect(() => {
+        if (!clientFilter) {
+            setClientOpportunityIds(null);
+            return;
+        }
+        axiosInstance()
+            .get(`${process.env.NEXT_PUBLIC_API_LINK}/api/Opportunities`, {
+                params: { clientId: clientFilter, pageSize: 500 },
+            })
+            .then((res) => {
+                const ids = new Set<string>((res.data?.items ?? []).map((o: { id: string }) => o.id));
+                setClientOpportunityIds(ids);
+            })
+            .catch(() => setClientOpportunityIds(null));
+    }, [clientFilter]);
 
     const fetchData = (newPage = page, newPageSize = pageSize) => {
         if (activeTab === 'all') {
@@ -94,6 +113,10 @@ const PricingRequestsContent: React.FC = () => {
         if (activeTab === 'mine') items = myRequests?.items ?? [];
         else if (activeTab === 'pending') items = pendingRequests?.items ?? [];
         else items = pagedResult?.items ?? [];
+
+        if (clientOpportunityIds !== null) {
+            items = items.filter((r) => clientOpportunityIds.has(r.opportunityId));
+        }
 
         if (searchTerm) {
             const lower = searchTerm.toLowerCase();
@@ -217,6 +240,12 @@ const PricingRequestsContent: React.FC = () => {
                     size="large"
                 />
 
+                <ClientSelectFilter
+                    className={styles.filterSelect}
+                    value={clientFilter}
+                    onChange={(value) => { setClientFilter(value); setPage(1); }}
+                />
+
                 {activeTab === 'all' && (
                     <>
                         <Select
@@ -282,7 +311,7 @@ const PricingRequestsContent: React.FC = () => {
 
             <Drawer
                 open={!!viewingRequest}
-                title="Pricing Request Details"
+                title={viewingRequest?.title ?? 'Pricing Request Details'}
                 onClose={() => setViewingRequest(null)}
                 size="large"
                 styles={{
@@ -291,10 +320,36 @@ const PricingRequestsContent: React.FC = () => {
                     body: { background: '#1e2128', padding: '24px' },
                 }}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
+                extra={
+                    viewingRequest && viewingRequest.status !== 3 && (
+                        <Space>
+                            <Button
+                                type="primary"
+                                icon={<EditOutlined />}
+                                onClick={() => { setViewingRequest(null); handleEdit(viewingRequest); }}
+                            >
+                                Edit
+                            </Button>
+                            {canAssign && (
+                                <Button type="primary" onClick={() => { setViewingRequest(null); setAssigningRequest(viewingRequest); }}>
+                                    Assign
+                                </Button>
+                            )}
+                            <Popconfirm
+                                title="Mark as completed?"
+                                onConfirm={async () => { await handleComplete(viewingRequest); setViewingRequest(null); }}
+                                okText="Complete"
+                                cancelText="No"
+                            >
+                                <Button type="primary">Complete</Button>
+                            </Popconfirm>
+                        </Space>
+                    )
+                }
             >
                 {viewingRequest && (
                     <>
-                        <Space style={{ marginBottom: 16 }}>
+                        <Space style={{ marginBottom: 20 }}>
                             <Tag color={PRICING_REQUEST_STATUS_COLORS[viewingRequest.status] ?? 'default'}>
                                 {PRICING_REQUEST_STATUS_LABELS[viewingRequest.status] ?? '—'}
                             </Tag>
@@ -303,65 +358,22 @@ const PricingRequestsContent: React.FC = () => {
                             </Tag>
                         </Space>
 
-                        <Descriptions column={1} size="small" layout="vertical">
+                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
                             <Descriptions.Item label="Request #">{viewingRequest.requestNumber || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Title">{viewingRequest.title}</Descriptions.Item>
-                            <Descriptions.Item label="Description">{viewingRequest.description || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Opportunity">{viewingRequest.opportunityTitle || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Requested By">{viewingRequest.requestedByName || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Assigned To">{viewingRequest.assignedToName || 'Unassigned'}</Descriptions.Item>
                             <Descriptions.Item label="Required By">
                                 {viewingRequest.requiredByDate ? new Date(viewingRequest.requiredByDate).toLocaleDateString() : '—'}
                             </Descriptions.Item>
+                            <Descriptions.Item label="Requested By">{viewingRequest.requestedByName || '—'}</Descriptions.Item>
+                            <Descriptions.Item label="Assigned To">{viewingRequest.assignedToName || 'Unassigned'}</Descriptions.Item>
                             <Descriptions.Item label="Completed At">
                                 {viewingRequest.completedDate ? new Date(viewingRequest.completedDate).toLocaleString() : '—'}
                             </Descriptions.Item>
                             <Descriptions.Item label="Created At">
                                 {new Date(viewingRequest.createdAt).toLocaleString()}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Updated At">
-                                {new Date(viewingRequest.updatedAt).toLocaleString()}
-                            </Descriptions.Item>
+                            <Descriptions.Item label="Opportunity" span={2}>{viewingRequest.opportunityTitle || '—'}</Descriptions.Item>
+                            <Descriptions.Item label="Description" span={2}>{viewingRequest.description || '—'}</Descriptions.Item>
                         </Descriptions>
-
-                        <div className={styles.drawerActions}>
-                            {viewingRequest.status !== 3 && (
-                                <>
-                                    <Button
-                                        type="primary"
-                                        onClick={() => {
-                                            setViewingRequest(null);
-                                            handleEdit(viewingRequest);
-                                        }}
-                                    >
-                                        Edit
-                                    </Button>
-                                    {canAssign && (
-                                        <Button
-                                            onClick={() => {
-                                                setViewingRequest(null);
-                                                setAssigningRequest(viewingRequest);
-                                            }}
-                                        >
-                                            Assign
-                                        </Button>
-                                    )}
-                                    <Popconfirm
-                                        title="Mark as completed?"
-                                        onConfirm={async () => {
-                                            await handleComplete(viewingRequest);
-                                            setViewingRequest(null);
-                                        }}
-                                        okText="Complete"
-                                        cancelText="No"
-                                    >
-                                        <Button style={{ borderColor: '#22c55e', color: '#22c55e' }}>
-                                            Complete
-                                        </Button>
-                                    </Popconfirm>
-                                </>
-                            )}
-                        </div>
                     </>
                 )}
             </Drawer>

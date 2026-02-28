@@ -308,4 +308,62 @@ export const useStyles = createStyles(({ token }) => ({
   gridSpanFull: css`
     grid-column: 1 / -1;
   `,
+
+  renewalsSection: css`
+    margin-top: 20px;
+  `,
+
+  renewalsSectionTitle: css`
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 12px;
+  `,
+
+  renewalsTable: css`
+    .ant-table {
+      background: transparent;
+    }
+
+    .ant-table-thead > tr > th {
+      background: rgba(255, 255, 255, 0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.55);
+      font-weight: 600;
+      font-size: 12px;
+      padding: 8px 12px;
+    }
+
+    .ant-table-tbody > tr > td {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 13px;
+      padding: 10px 12px;
+    }
+
+    .ant-table-tbody > tr:hover > td {
+      background: rgba(255, 255, 255, 0.03) !important;
+    }
+
+    .ant-table-placeholder {
+      background: transparent;
+    }
+  `,
+
+  completeRenewalBtn: css`
+    background: #22c55e;
+    border-color: #22c55e;
+
+    &:hover {
+      background: #16a34a !important;
+      border-color: #16a34a !important;
+    }
+  `,
+
+  mutedText: css`
+    color: #94a3b8;
+    font-size: 12px;
+  `,
 }));

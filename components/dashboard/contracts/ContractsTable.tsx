@@ -7,6 +7,7 @@ import {
     DeleteOutlined,
     EditOutlined,
     EyeOutlined,
+    FileDoneOutlined,
     RedoOutlined,
     StopOutlined,
     WarningOutlined,
@@ -29,6 +30,7 @@ interface ContractsTableProps {
     onActivate: (record: IContractDto) => void;
     onCancel: (record: IContractDto) => void;
     onRenew: (record: IContractDto) => void;
+    onCompleteRenewal: (record: IContractDto) => void;
     canDelete?: boolean;
     canActivateCancel?: boolean;
 }
@@ -46,6 +48,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
     onActivate,
     onCancel,
     onRenew,
+    onCompleteRenewal,
     canDelete,
     canActivateCancel,
 }) => {
@@ -176,7 +179,7 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                         </>
                     )}
 
-                    {/* Active: Edit + Renew + Cancel */}
+                    {/* Active: Edit + Renew + Complete Renewal + Cancel */}
                     {record.status === 2 && (
                         <>
                             <Tooltip title="Edit">
@@ -188,15 +191,28 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                                     onClick={() => onEdit(record)}
                                 />
                             </Tooltip>
-                            <Tooltip title="Create Renewal">
-                                <Button
-                                    type="text"
-                                    size="small"
-                                    icon={<RedoOutlined />}
-                                    className={styles.renewAction}
-                                    onClick={() => onRenew(record)}
-                                />
-                            </Tooltip>
+                            {record.renewalsCount === 0 && (
+                                <Tooltip title="Create Renewal">
+                                    <Button
+                                        type="text"
+                                        size="small"
+                                        icon={<RedoOutlined />}
+                                        className={styles.renewAction}
+                                        onClick={() => onRenew(record)}
+                                    />
+                                </Tooltip>
+                            )}
+                            {canActivateCancel && record.renewalsCount > 0 && (
+                                <Tooltip title="Complete Renewal">
+                                    <Button
+                                        type="text"
+                                        size="small"
+                                        icon={<FileDoneOutlined />}
+                                        className={styles.activateAction}
+                                        onClick={() => onCompleteRenewal(record)}
+                                    />
+                                </Tooltip>
+                            )}
                             {canActivateCancel && (
                                 <Tooltip title="Cancel">
                                     <Popconfirm
@@ -215,17 +231,32 @@ const ContractsTable: React.FC<ContractsTableProps> = ({
                         </>
                     )}
 
-                    {/* Expired: Renew */}
+                    {/* Expired: Renew + Complete Renewal */}
                     {record.status === 3 && (
-                        <Tooltip title="Create Renewal">
-                            <Button
-                                type="text"
-                                size="small"
-                                icon={<RedoOutlined />}
-                                className={styles.renewAction}
-                                onClick={() => onRenew(record)}
-                            />
-                        </Tooltip>
+                        <>
+                            {record.renewalsCount === 0 && (
+                                <Tooltip title="Create Renewal">
+                                    <Button
+                                        type="text"
+                                        size="small"
+                                        icon={<RedoOutlined />}
+                                        className={styles.renewAction}
+                                        onClick={() => onRenew(record)}
+                                    />
+                                </Tooltip>
+                            )}
+                            {canActivateCancel && record.renewalsCount > 0 && (
+                                <Tooltip title="Complete Renewal">
+                                    <Button
+                                        type="text"
+                                        size="small"
+                                        icon={<FileDoneOutlined />}
+                                        className={styles.activateAction}
+                                        onClick={() => onCompleteRenewal(record)}
+                                    />
+                                </Tooltip>
+                            )}
+                        </>
                     )}
                 </Space>
             ),

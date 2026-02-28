@@ -178,6 +178,7 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
                                     options={opportunities}
                                     loading={optionsLoading}
                                     showSearch
+                                    optionFilterProp="label"
                                     size="large"
                                     onChange={(value: string) => {
                                         const opp = opportunities.find((o) => o.value === value);

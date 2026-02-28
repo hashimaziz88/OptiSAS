@@ -381,10 +381,24 @@ export const useStyles = createStyles(({ token }) => ({
   `,
 
   drawerBody: css`
-    .ant-descriptions-item-label,
+    .ant-descriptions-item-label {
+      color: #94a3b8 !important;
+      font-size: 13px;
+      background: rgba(255, 255, 255, 0.04) !important;
+    }
+
     .ant-descriptions-item-content {
-      color: #cbd5e0 !important;
+      color: #e2e8f0 !important;
       background: transparent !important;
+    }
+
+    .ant-descriptions-view {
+      border-color: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .ant-descriptions-row > th,
+    .ant-descriptions-row > td {
+      border-color: rgba(255, 255, 255, 0.1) !important;
     }
 
     .ant-timeline-item-content {

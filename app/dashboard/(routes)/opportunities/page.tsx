@@ -3,9 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import {
     Button, Input, Select, Typography, message, Drawer,
-    Descriptions, Tag, Timeline, Modal, Form, Row, Col,
+    Descriptions, Tag, Timeline, Modal, Form, Row, Col, Space,
 } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined, SwapOutlined, UserSwitchOutlined } from '@ant-design/icons';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, SwapOutlined, UserSwitchOutlined, EditOutlined } from '@ant-design/icons';
 import { axiosInstance } from '@/utils/axiosInstance';
 import { useOpportunityActions, useOpportunityState } from '@/providers/opportunityProvider';
 import { IOpportunityDto, ICreateOpportunityDto, IUpdateOpportunityDto } from '@/providers/opportunityProvider/context';
@@ -22,6 +22,7 @@ import { buildOpportunitiesParams, getSourceLabel, formatCurrency } from '@/util
 import OpportunitiesTable from '@/components/dashboard/opportunities/OpportunitiesTable';
 import OpportunityFormModal from '@/components/dashboard/opportunities/OpportunityFormModal';
 import { useStyles } from '@/components/dashboard/opportunities/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -88,7 +89,7 @@ const OpportunitiesContent: React.FC = () => {
         getPipelineMetrics();
     };
 
-const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDto) => {
+    const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDto) => {
         if (editingOpp) {
             await updateOpportunity(editingOpp.id, values as IUpdateOpportunityDto);
             message.success('Opportunity updated');
@@ -159,7 +160,6 @@ const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDt
         }
     };
 
-    const clientOptions = clients.map((c) => ({ label: c.name, value: c.id }));
 
     const stageMetrics = pipelineMetrics?.stageMetrics ?? {};
 
@@ -214,15 +214,10 @@ const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDt
                     onChange={(v) => { setStageFilter(v); setPage(1); }}
                     size="large"
                 />
-                <Select
+                <ClientSelectFilter
                     className={styles.filterSelect}
-                    placeholder="All Clients"
-                    allowClear
-                    showSearch
-                    options={clientOptions}
                     value={clientFilter}
                     onChange={(v) => { setClientFilter(v); setPage(1); }}
-                    size="large"
                 />
                 <Button icon={<ReloadOutlined />} size="large" className={styles.refreshButton} onClick={() => fetchOpportunities()}>
                     Refresh
@@ -256,35 +251,59 @@ const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDt
                 open={!!viewingOpp}
                 title={viewingOpp?.title ?? 'Opportunity Details'}
                 onClose={() => setViewingOpp(null)}
+                size="large"
                 styles={{
-                    wrapper: { background: '#1e2128', width: 480 },
+                    wrapper: { background: '#1e2128' },
                     header: { background: '#1e2128', borderBottom: '1px solid rgba(255,255,255,0.08)' },
                     body: { background: '#1e2128', padding: '24px' },
                 }}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
+                extra={
+                    viewingOpp && (
+                        <Space>
+                            <Button
+                                type="primary"
+                                icon={<EditOutlined />}
+                                onClick={() => { setViewingOpp(null); handleEdit(viewingOpp); }}
+                            >
+                                Edit
+                            </Button>
+                            <Button type="primary" icon={<SwapOutlined />} onClick={handleOpenStageModal}>
+                                Change Stage
+                            </Button>
+                            {canAssign && (
+                                <Button type="primary" icon={<UserSwitchOutlined />} onClick={handleOpenAssignModal}>
+                                    Reassign
+                                </Button>
+                            )}
+                        </Space>
+                    )
+                }
             >
                 {viewingOpp && (
                     <>
-                        <Tag color={OPPORTUNITY_STAGE_COLORS[viewingOpp.stage]} style={{ marginBottom: 16, fontSize: 13, padding: '2px 12px' }}>
-                            {viewingOpp.stageName}
-                        </Tag>
+                        <Space style={{ marginBottom: 20 }}>
+                            <Tag color={OPPORTUNITY_STAGE_COLORS[viewingOpp.stage]} style={{ fontSize: 13, padding: '2px 12px' }}>
+                                {viewingOpp.stageName}
+                            </Tag>
+                        </Space>
 
-                        <Descriptions column={1} size="small">
+                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
                             <Descriptions.Item label="Client">{viewingOpp.clientName || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Contact">{viewingOpp.contactName || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Owner">{viewingOpp.ownerName || '—'}</Descriptions.Item>
+                            <Descriptions.Item label="Contact">{viewingOpp.contactName || '—'}</Descriptions.Item>
+                            <Descriptions.Item label="Source">{getSourceLabel(viewingOpp.source) || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Value">
                                 <Text strong style={{ color: '#e2e8f0' }}>
                                     {formatCurrency(viewingOpp.estimatedValue, viewingOpp.currency)}
                                 </Text>
                             </Descriptions.Item>
                             <Descriptions.Item label="Probability">{viewingOpp.probability ?? 0}%</Descriptions.Item>
-                            <Descriptions.Item label="Source">{getSourceLabel(viewingOpp.source) || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Expected Close">
+                            <Descriptions.Item label="Expected Close" span={2}>
                                 {viewingOpp.expectedCloseDate ? new Date(viewingOpp.expectedCloseDate).toLocaleDateString('en-ZA') : '—'}
                             </Descriptions.Item>
                             {viewingOpp.description && (
-                                <Descriptions.Item label="Description">{viewingOpp.description}</Descriptions.Item>
+                                <Descriptions.Item label="Description" span={2}>{viewingOpp.description}</Descriptions.Item>
                             )}
                         </Descriptions>
 
@@ -316,20 +335,6 @@ const handleSubmit = async (values: ICreateOpportunityDto | IUpdateOpportunityDt
                                 />
                             </>
                         )}
-
-                        <div className={styles.drawerActions}>
-                            <Button type="primary" onClick={() => { setViewingOpp(null); handleEdit(viewingOpp); }}>
-                                Edit
-                            </Button>
-                            <Button icon={<SwapOutlined />} onClick={handleOpenStageModal}>
-                                Change Stage
-                            </Button>
-                            {canAssign && (
-                                <Button icon={<UserSwitchOutlined />} onClick={handleOpenAssignModal}>
-                                    Reassign
-                                </Button>
-                            )}
-                        </div>
                     </>
                 )}
             </Drawer>

@@ -79,6 +79,7 @@ const ContactFormModal: React.FC<ContactFormModalProps> = ({
                                 placeholder="Select a client"
                                 options={clientOptions}
                                 showSearch
+                                optionFilterProp="label"
                             />
                         </Form.Item>
                     )}

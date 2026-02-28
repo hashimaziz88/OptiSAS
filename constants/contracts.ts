@@ -23,3 +23,10 @@ export const CONTRACT_STATUS_OPTIONS = [
 ];
 
 export const CONTRACTS_PAGE_SIZE = 10;
+
+export const RENEWAL_STATUS_COLORS: Record<number, string> = {
+    1: 'gold',
+    2: 'blue',
+    3: 'green',
+    4: 'default',
+};

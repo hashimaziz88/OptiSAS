@@ -114,6 +114,7 @@ const PricingRequestFormModal: React.FC<PricingRequestFormModalProps> = ({
                             options={opportunities}
                             loading={opportunitiesLoading}
                             showSearch
+                            optionFilterProp="label"
                             size="large"
                         />
                     </Form.Item>

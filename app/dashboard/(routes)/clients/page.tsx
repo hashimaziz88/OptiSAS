@@ -182,8 +182,8 @@ const ClientsContent: React.FC = () => {
                     viewingClient && (
                         <Space>
                             <Button
+                                type="primary"
                                 icon={<EditOutlined />}
-                                style={{ color: '#facc15', borderColor: '#facc15' }}
                                 onClick={() => { setViewingClient(null); handleEdit(viewingClient); }}
                             >
                                 Edit

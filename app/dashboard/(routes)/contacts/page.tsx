@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag, Space } from 'antd';
+import { Button, Input, Typography, message, Drawer, Descriptions, Tag, Space } from 'antd';
 import { PlusOutlined, SearchOutlined, ReloadOutlined, StarFilled, StarOutlined, EditOutlined } from '@ant-design/icons';
 import { useContactActions, useContactState } from '@/providers/contactProvider';
 import { IContactDto, ICreateContactDto, IUpdateContactDto } from '@/providers/contactProvider/context';
@@ -11,6 +11,7 @@ import { buildContactsParams } from '@/utils/dashboard/contacts';
 import ContactsTable from '@/components/dashboard/contacts/ContactsTable';
 import ContactFormModal from '@/components/dashboard/contacts/ContactFormModal';
 import { useStyles } from '@/components/dashboard/contacts/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManagerOrBDM } from '@/utils/roles';
 
@@ -102,7 +103,6 @@ const ContactsContent: React.FC = () => {
         fetchContacts();
     };
 
-    const clientOptions = clients.map((c) => ({ label: c.name, value: c.id }));
 
     return (
         <>
@@ -128,15 +128,10 @@ const ContactsContent: React.FC = () => {
                     allowClear
                     size="large"
                 />
-                <Select
+                <ClientSelectFilter
                     className={styles.filterSelect}
-                    placeholder="All Clients"
-                    allowClear
-                    showSearch
-                    options={clientOptions}
                     value={clientFilter}
                     onChange={(value) => { setClientFilter(value); setPage(1); }}
-                    size="large"
                 />
                 <Button
                     icon={<ReloadOutlined />}
@@ -187,16 +182,16 @@ const ContactsContent: React.FC = () => {
                     viewingContact && (
                         <Space>
                             <Button
+                                type="primary"
                                 icon={<EditOutlined />}
-                                style={{ color: '#facc15', borderColor: '#facc15' }}
                                 onClick={() => { setViewingContact(null); handleEdit(viewingContact); }}
                             >
                                 Edit
                             </Button>
                             {!viewingContact.isPrimaryContact && (
                                 <Button
+                                    type="primary"
                                     icon={<StarOutlined />}
-                                    style={{ color: '#f59e0b', borderColor: '#f59e0b' }}
                                     onClick={() => { handleSetPrimary(viewingContact.id); setViewingContact(null); }}
                                 >
                                     Set as Primary

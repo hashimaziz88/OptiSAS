@@ -93,6 +93,7 @@ const AssignPricingRequestModal: React.FC<AssignPricingRequestModalProps> = ({
                             options={users}
                             loading={usersLoading}
                             showSearch
+                            optionFilterProp="label"
                             size="large"
                         />
                     </Form.Item>

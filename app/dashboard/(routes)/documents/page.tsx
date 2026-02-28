@@ -17,6 +17,7 @@ import {
 import DocumentsTable from '@/components/dashboard/documents/DocumentsTable';
 import DocumentUploadModal from '@/components/dashboard/documents/DocumentUploadModal';
 import { useStyles } from '@/components/dashboard/documents/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -33,6 +34,7 @@ const DocumentsContent: React.FC = () => {
     const [pageSize, setPageSize] = useState(DOCUMENTS_PAGE_SIZE);
     const [categoryFilter, setCategoryFilter] = useState<number | undefined>(undefined);
     const [relatedTypeFilter, setRelatedTypeFilter] = useState<number | undefined>(undefined);
+    const [clientFilter, setClientFilter] = useState<string | undefined>(undefined);
 
     const [uploadOpen, setUploadOpen] = useState(false);
     const [viewingDoc, setViewingDoc] = useState<IDocumentDto | null>(null);
@@ -43,7 +45,9 @@ const DocumentsContent: React.FC = () => {
             pageNumber: newPage,
             pageSize: newPageSize,
             category: categoryFilter,
-            relatedToType: relatedTypeFilter,
+            ...(clientFilter
+                ? { relatedToType: 1, relatedToId: clientFilter }
+                : { relatedToType: relatedTypeFilter }),
         });
     };
 
@@ -52,9 +56,11 @@ const DocumentsContent: React.FC = () => {
             pageNumber: page,
             pageSize: pageSize,
             category: categoryFilter,
-            relatedToType: relatedTypeFilter,
+            ...(clientFilter
+                ? { relatedToType: 1, relatedToId: clientFilter }
+                : { relatedToType: relatedTypeFilter }),
         });
-    }, [page, pageSize, categoryFilter, relatedTypeFilter, getDocuments]);
+    }, [page, pageSize, categoryFilter, relatedTypeFilter, clientFilter, getDocuments]);
 
     useEffect(() => {
         if (downloadBlob && downloadingId) {
@@ -104,6 +110,12 @@ const DocumentsContent: React.FC = () => {
             </div>
 
             <div className={styles.filterBar}>
+                <ClientSelectFilter
+                    className={styles.filterSelect}
+                    value={clientFilter}
+                    onChange={(value) => { setClientFilter(value); setPage(1); }}
+                />
+
                 <Select
                     className={styles.filterSelect}
                     placeholder="All Categories"
@@ -119,8 +131,9 @@ const DocumentsContent: React.FC = () => {
                     placeholder="All Related Types"
                     allowClear
                     options={RELATED_TO_TYPE_OPTIONS}
-                    value={relatedTypeFilter}
+                    value={clientFilter ? undefined : relatedTypeFilter}
                     onChange={(value) => { setRelatedTypeFilter(value); setPage(1); }}
+                    disabled={!!clientFilter}
                     size="large"
                 />
 
@@ -151,7 +164,7 @@ const DocumentsContent: React.FC = () => {
 
             <Drawer
                 open={!!viewingDoc}
-                title="Document Details"
+                title={viewingDoc?.fileName ?? 'Document Details'}
                 onClose={() => setViewingDoc(null)}
                 size="large"
                 styles={{
@@ -160,33 +173,9 @@ const DocumentsContent: React.FC = () => {
                     body: { background: '#1e2128', padding: '24px' },
                 }}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
-            >
-                {viewingDoc && (
-                    <>
-                        <Space className={styles.spaceBlock}>
-                            <Tag color={DOCUMENT_CATEGORY_COLORS[viewingDoc.category] ?? 'default'}>
-                                {DOCUMENT_CATEGORY_LABELS[viewingDoc.category] ?? '—'}
-                            </Tag>
-                        </Space>
-
-                        <Descriptions column={1} size="small" layout="vertical">
-                            <Descriptions.Item label="File Name">{viewingDoc.fileName}</Descriptions.Item>
-                            <Descriptions.Item label="File Size">{formatFileSize(viewingDoc.fileSize)}</Descriptions.Item>
-                            <Descriptions.Item label="Content Type">{viewingDoc.contentType || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Category">
-                                {DOCUMENT_CATEGORY_LABELS[viewingDoc.category] ?? '—'}
-                            </Descriptions.Item>
-                            <Descriptions.Item label="Related To">
-                                {RELATED_TO_TYPE_LABELS[viewingDoc.relatedToType] ?? '—'}
-                            </Descriptions.Item>
-                            <Descriptions.Item label="Description">{viewingDoc.description || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Uploaded By">{viewingDoc.uploadedByName || '—'}</Descriptions.Item>
-                            <Descriptions.Item label="Uploaded At">
-                                {new Date(viewingDoc.createdAt).toLocaleString()}
-                            </Descriptions.Item>
-                        </Descriptions>
-
-                        <div className={styles.drawerActions}>
+                extra={
+                    viewingDoc && (
+                        <Space>
                             <Button
                                 type="primary"
                                 icon={<UploadOutlined />}
@@ -195,7 +184,34 @@ const DocumentsContent: React.FC = () => {
                             >
                                 Download
                             </Button>
-                        </div>
+                        </Space>
+                    )
+                }
+            >
+                {viewingDoc && (
+                    <>
+                        <Space style={{ marginBottom: 20 }}>
+                            <Tag color={DOCUMENT_CATEGORY_COLORS[viewingDoc.category] ?? 'default'}>
+                                {DOCUMENT_CATEGORY_LABELS[viewingDoc.category] ?? '—'}
+                            </Tag>
+                        </Space>
+
+                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
+                            <Descriptions.Item label="File Name">{viewingDoc.fileName}</Descriptions.Item>
+                            <Descriptions.Item label="File Size">{formatFileSize(viewingDoc.fileSize)}</Descriptions.Item>
+                            <Descriptions.Item label="Category">
+                                {DOCUMENT_CATEGORY_LABELS[viewingDoc.category] ?? '—'}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Content Type">{viewingDoc.contentType || '—'}</Descriptions.Item>
+                            <Descriptions.Item label="Uploaded By">{viewingDoc.uploadedByName || '—'}</Descriptions.Item>
+                            <Descriptions.Item label="Uploaded At">
+                                {new Date(viewingDoc.createdAt).toLocaleString()}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Related To" span={2}>
+                                {RELATED_TO_TYPE_LABELS[viewingDoc.relatedToType] ?? '—'}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Description" span={2}>{viewingDoc.description || '—'}</Descriptions.Item>
+                        </Descriptions>
                     </>
                 )}
             </Drawer>

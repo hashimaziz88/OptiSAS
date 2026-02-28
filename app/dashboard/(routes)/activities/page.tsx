@@ -5,7 +5,7 @@ import {
     Button, Input, Select, Typography, message, Drawer,
     Descriptions, Tag, Space, Tabs, Badge,
 } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined } from '@ant-design/icons';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, EditOutlined } from '@ant-design/icons';
 import { useActivityActions, useActivityState } from '@/providers/activityProvider';
 import {
     IActivityDto,
@@ -27,6 +27,7 @@ import ActivitiesTable from '@/components/dashboard/activities/ActivitiesTable';
 import ActivityFormModal from '@/components/dashboard/activities/ActivityFormModal';
 import CompleteActivityModal from '@/components/dashboard/activities/CompleteActivityModal';
 import { useStyles } from '@/components/dashboard/activities/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 
@@ -56,6 +57,7 @@ const ActivitiesContent: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [typeFilter, setTypeFilter] = useState<number | undefined>(undefined);
     const [statusFilter, setStatusFilter] = useState<number | undefined>(undefined);
+    const [clientFilter, setClientFilter] = useState<string | undefined>(undefined);
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingActivity, setEditingActivity] = useState<IActivityDto | null>(null);
@@ -68,6 +70,7 @@ const ActivitiesContent: React.FC = () => {
             pageSize: ps,
             type: typeFilter,
             status: statusFilter,
+            ...(clientFilter ? { relatedToType: 1, relatedToId: clientFilter } : {}),
         });
     };
 
@@ -77,7 +80,13 @@ const ActivitiesContent: React.FC = () => {
 
     useEffect(() => {
         if (activeTab === 'all') {
-            getActivities({ pageNumber: page, pageSize, type: typeFilter, status: statusFilter });
+            getActivities({
+                pageNumber: page,
+                pageSize,
+                type: typeFilter,
+                status: statusFilter,
+                ...(clientFilter ? { relatedToType: 1, relatedToId: clientFilter } : {}),
+            });
         } else if (activeTab === 'mine') {
             getMyActivities({ pageNumber: page, pageSize, status: statusFilter });
         } else if (activeTab === 'upcoming') {
@@ -85,7 +94,7 @@ const ActivitiesContent: React.FC = () => {
         } else if (activeTab === 'overdue') {
             getOverdueActivities();
         }
-    }, [activeTab, page, pageSize, typeFilter, statusFilter, getActivities, getMyActivities, getUpcomingActivities, getOverdueActivities]);
+    }, [activeTab, page, pageSize, typeFilter, statusFilter, clientFilter, getActivities, getMyActivities, getUpcomingActivities, getOverdueActivities]);
 
     const handleTabChange = (key: string) => {
         setActiveTab(key as typeof activeTab);
@@ -149,9 +158,14 @@ const ActivitiesContent: React.FC = () => {
     };
 
     const getTableData = (): IActivityDto[] => {
-        if (activeTab === 'upcoming') return upcomingActivities ?? [];
-        if (activeTab === 'overdue') return overdueActivities ?? [];
-        const items = pagedResult?.items ?? [];
+        let items: IActivityDto[];
+        if (activeTab === 'upcoming') items = upcomingActivities ?? [];
+        else if (activeTab === 'overdue') items = overdueActivities ?? [];
+        else items = pagedResult?.items ?? [];
+
+        if (clientFilter && activeTab !== 'all') {
+            items = items.filter((a) => a.relatedToType === 1 && a.relatedToId === clientFilter);
+        }
         if (!searchTerm) return items;
         return items.filter((a) =>
             a.subject.toLowerCase().includes(searchTerm.toLowerCase())
@@ -221,6 +235,11 @@ const ActivitiesContent: React.FC = () => {
                     onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
                     allowClear
                     size="large"
+                />
+                <ClientSelectFilter
+                    className={styles.filterSelect}
+                    value={clientFilter}
+                    onChange={(value) => { setClientFilter(value); setPage(1); }}
                 />
                 {activeTab !== 'upcoming' && activeTab !== 'overdue' && (
                     <>
@@ -300,10 +319,29 @@ const ActivitiesContent: React.FC = () => {
                     body: { background: '#1e2128', padding: '24px' },
                 }}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
+                extra={
+                    viewingActivity && viewingActivity.status === 1 && (
+                        <Space>
+                            <Button
+                                type="primary"
+                                icon={<EditOutlined />}
+                                onClick={() => { setViewingActivity(null); handleEdit(viewingActivity); }}
+                            >
+                                Edit
+                            </Button>
+                            <Button
+                                type="primary"
+                                onClick={() => { setViewingActivity(null); setCompletingActivity(viewingActivity); }}
+                            >
+                                Complete
+                            </Button>
+                        </Space>
+                    )
+                }
             >
                 {viewingActivity && (
                     <>
-                        <Space wrap style={{ marginBottom: 16 }}>
+                        <Space wrap style={{ marginBottom: 20 }}>
                             <Tag color={ACTIVITY_TYPE_COLORS[viewingActivity.type]}>
                                 {ACTIVITY_TYPE_LABELS[viewingActivity.type]}
                             </Tag>
@@ -316,67 +354,42 @@ const ActivitiesContent: React.FC = () => {
                             {viewingActivity.isOverdue && <Tag color="red">Overdue</Tag>}
                         </Space>
 
-                        <Descriptions column={1} size="small" layout="vertical">
-                            <Descriptions.Item label="Description">
-                                {viewingActivity.description || '—'}
-                            </Descriptions.Item>
+                        <Descriptions column={2} size="small" bordered style={{ marginBottom: 24 }}>
                             <Descriptions.Item label="Assigned To">
                                 {viewingActivity.assignedToName || '—'}
                             </Descriptions.Item>
-                            <Descriptions.Item label="Related To">
-                                {viewingActivity.relatedToTitle
-                                    ? `${viewingActivity.relatedToTypeName}: ${viewingActivity.relatedToTitle}`
-                                    : '—'}
-                            </Descriptions.Item>
                             <Descriptions.Item label="Due Date">
-                                {viewingActivity.dueDate
-                                    ? new Date(viewingActivity.dueDate).toLocaleString()
-                                    : '—'}
+                                {viewingActivity.dueDate ? new Date(viewingActivity.dueDate).toLocaleString() : '—'}
                             </Descriptions.Item>
                             <Descriptions.Item label="Duration">
                                 {viewingActivity.duration ? `${viewingActivity.duration} min` : '—'}
                             </Descriptions.Item>
                             <Descriptions.Item label="Location">{viewingActivity.location || '—'}</Descriptions.Item>
-                            {viewingActivity.status === 2 && (
-                                <>
-                                    <Descriptions.Item label="Completed Date">
-                                        {viewingActivity.completedDate
-                                            ? new Date(viewingActivity.completedDate).toLocaleString()
-                                            : '—'}
-                                    </Descriptions.Item>
-                                    <Descriptions.Item label="Outcome">
-                                        {viewingActivity.outcome || '—'}
-                                    </Descriptions.Item>
-                                </>
-                            )}
                             <Descriptions.Item label="Created By">{viewingActivity.createdByName || '—'}</Descriptions.Item>
                             <Descriptions.Item label="Created At">
                                 {new Date(viewingActivity.createdAt).toLocaleDateString()}
                             </Descriptions.Item>
+                            <Descriptions.Item label="Related To" span={2}>
+                                {viewingActivity.relatedToTitle
+                                    ? `${viewingActivity.relatedToTypeName}: ${viewingActivity.relatedToTitle}`
+                                    : '—'}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Description" span={2}>
+                                {viewingActivity.description || '—'}
+                            </Descriptions.Item>
+                            {viewingActivity.status === 2 && (
+                                <>
+                                    <Descriptions.Item label="Completed Date" span={2}>
+                                        {viewingActivity.completedDate
+                                            ? new Date(viewingActivity.completedDate).toLocaleString()
+                                            : '—'}
+                                    </Descriptions.Item>
+                                    <Descriptions.Item label="Outcome" span={2}>
+                                        {viewingActivity.outcome || '—'}
+                                    </Descriptions.Item>
+                                </>
+                            )}
                         </Descriptions>
-
-                        {viewingActivity.status === 1 && (
-                            <div className={styles.drawerActions}>
-                                <Button
-                                    type="primary"
-                                    onClick={() => {
-                                        setViewingActivity(null);
-                                        handleEdit(viewingActivity);
-                                    }}
-                                >
-                                    Edit
-                                </Button>
-                                <Button
-                                    style={{ background: '#22c55e', borderColor: '#22c55e', color: 'white' }}
-                                    onClick={() => {
-                                        setViewingActivity(null);
-                                        setCompletingActivity(viewingActivity);
-                                    }}
-                                >
-                                    Complete
-                                </Button>
-                            </div>
-                        )}
                     </>
                 )}
             </Drawer>

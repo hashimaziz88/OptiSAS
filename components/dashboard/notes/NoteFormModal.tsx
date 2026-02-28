@@ -121,6 +121,7 @@ const NoteFormModal: React.FC<NoteFormModalProps> = ({ open, editing, loading, o
                         <Select
                             size="large"
                             showSearch
+                            optionFilterProp="label"
                             placeholder={relatedType ? 'Search and select a record' : 'Select type first'}
                             disabled={!relatedType}
                             loading={relatedLoading}

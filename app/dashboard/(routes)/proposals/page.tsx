@@ -17,6 +17,7 @@ import ProposalFormModal from '@/components/dashboard/proposals/ProposalFormModa
 import ProposalsTable from '@/components/dashboard/proposals/ProposalsTable';
 import RejectProposalModal from '@/components/dashboard/proposals/RejectProposalModal';
 import { useStyles } from '@/components/dashboard/proposals/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
 import { formatCurrency } from '@/utils/dashboard/proposals';
@@ -41,6 +42,7 @@ const ProposalsContent: React.FC = () => {
 
     const [page, setPage] = useState(1);
     const [statusFilter, setStatusFilter] = useState<number | undefined>(undefined);
+    const [clientFilter, setClientFilter] = useState<string | undefined>(undefined);
     const [searchTerm, setSearchTerm] = useState('');
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -53,12 +55,17 @@ const ProposalsContent: React.FC = () => {
     const [rejectModalOpen, setRejectModalOpen] = useState(false);
 
     const load = (p = page, status = statusFilter) => {
-        getProposals({ pageNumber: p, pageSize: PROPOSALS_PAGE_SIZE, status });
+        getProposals({ pageNumber: p, pageSize: PROPOSALS_PAGE_SIZE, status, clientId: clientFilter });
     };
 
     useEffect(() => {
         getProposals({ pageNumber: 1, pageSize: PROPOSALS_PAGE_SIZE, status: undefined });
     }, [getProposals]);
+
+    useEffect(() => {
+        setPage(1);
+        getProposals({ pageNumber: 1, pageSize: PROPOSALS_PAGE_SIZE, status: statusFilter, clientId: clientFilter });
+    }, [clientFilter]);
 
     useEffect(() => {
         if (viewingProposal) {
@@ -181,6 +188,11 @@ const ProposalsContent: React.FC = () => {
                     onSearch={(value) => setSearchTerm(value)}
                     allowClear
                 />
+                <ClientSelectFilter
+                    className={styles.filterSelect}
+                    value={clientFilter}
+                    onChange={(value) => { setClientFilter(value); }}
+                />
                 <Select
                     className={styles.filterSelect}
                     placeholder="All Statuses"
@@ -244,8 +256,8 @@ const ProposalsContent: React.FC = () => {
                             {drawerStatus === 1 && (
                                 <>
                                     <Button
+                                        type="primary"
                                         icon={<EditOutlined />}
-                                        style={{ color: '#facc15', borderColor: '#facc15' }}
                                         onClick={() => { setDrawerOpen(false); handleEdit(viewingProposal); }}
                                     >
                                         Edit
@@ -254,7 +266,7 @@ const ProposalsContent: React.FC = () => {
                                         title="Submit this proposal?"
                                         onConfirm={() => handleSubmitProposal(viewingProposal)}
                                     >
-                                        <Button icon={<SendOutlined />} style={{ color: '#a78bfa', borderColor: '#a78bfa' }}>
+                                        <Button type="primary" icon={<SendOutlined />}>
                                             Submit
                                         </Button>
                                     </Popconfirm>
@@ -266,7 +278,7 @@ const ProposalsContent: React.FC = () => {
                                         title="Approve this proposal?"
                                         onConfirm={() => handleApprove(viewingProposal)}
                                     >
-                                        <Button icon={<CheckOutlined />} style={{ color: '#22c55e', borderColor: '#22c55e' }}>
+                                        <Button type="primary" icon={<CheckOutlined />}>
                                             Approve
                                         </Button>
                                     </Popconfirm>

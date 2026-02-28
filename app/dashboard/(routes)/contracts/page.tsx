@@ -6,8 +6,8 @@ import {
     Select, Space, Tag, Tooltip, Typography,
 } from 'antd';
 import {
-    CheckCircleOutlined, EditOutlined, PlusOutlined,
-    RedoOutlined, ReloadOutlined, StopOutlined, WarningOutlined,
+    CheckCircleOutlined, EditOutlined, PlusOutlined, RedoOutlined,
+    ReloadOutlined, StopOutlined, WarningOutlined,
 } from '@ant-design/icons';
 import { useContractState, useContractActions } from '@/providers/contractProvider';
 import { IContractDto, ICreateContractDto, ICreateContractRenewalDto, IUpdateContractDto } from '@/providers/contractProvider/context';
@@ -15,18 +15,21 @@ import { CONTRACT_STATUS_COLORS, CONTRACT_STATUS_LABELS, CONTRACT_STATUS_OPTIONS
 import ContractsTable from '@/components/dashboard/contracts/ContractsTable';
 import ContractFormModal from '@/components/dashboard/contracts/ContractFormModal';
 import RenewalModal from '@/components/dashboard/contracts/RenewalModal';
+import ContractRenewalsTable from '@/components/dashboard/contracts/ContractRenewalsTable';
 import { useStyles } from '@/components/dashboard/contracts/style/style';
+import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdmin, isAdminOrManager } from '@/utils/roles';
 
 const { Title, Text } = Typography;
+
 
 const ContractsContent: React.FC = () => {
     const { styles } = useStyles();
     const { user } = useAuthState();
     const canDelete = isAdmin(user?.roles);
     const canActivateCancel = isAdminOrManager(user?.roles);
-    const { isPending, pagedResult } = useContractState();
+    const { isPending, pagedResult, contractRenewals } = useContractState();
     const {
         getContracts,
         createContract,
@@ -35,10 +38,13 @@ const ContractsContent: React.FC = () => {
         activateContract,
         cancelContract,
         createRenewal,
+        completeRenewal,
+        getContractRenewals,
     } = useContractActions();
 
     const [page, setPage] = useState(1);
     const [statusFilter, setStatusFilter] = useState<number | undefined>(undefined);
+    const [clientFilter, setClientFilter] = useState<string | undefined>(undefined);
     const [searchTerm, setSearchTerm] = useState('');
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -51,12 +57,17 @@ const ContractsContent: React.FC = () => {
     const [renewingContract, setRenewingContract] = useState<IContractDto | null>(null);
 
     const load = (p = page, status = statusFilter) => {
-        getContracts({ pageNumber: p, pageSize: CONTRACTS_PAGE_SIZE, status });
+        getContracts({ pageNumber: p, pageSize: CONTRACTS_PAGE_SIZE, status, clientId: clientFilter });
     };
 
     useEffect(() => {
         getContracts({ pageNumber: 1, pageSize: CONTRACTS_PAGE_SIZE, status: undefined });
     }, [getContracts]);
+
+    useEffect(() => {
+        setPage(1);
+        getContracts({ pageNumber: 1, pageSize: CONTRACTS_PAGE_SIZE, status: statusFilter, clientId: clientFilter });
+    }, [clientFilter]);
 
     const handleStatusFilter = (value: number | undefined) => {
         setStatusFilter(value);
@@ -82,6 +93,9 @@ const ContractsContent: React.FC = () => {
     const handleView = (record: IContractDto) => {
         setViewingContract(record);
         setDrawerOpen(true);
+        if (record.renewalsCount > 0) {
+            getContractRenewals(record.id);
+        }
     };
 
     const handleDelete = async (id: string) => {
@@ -114,6 +128,14 @@ const ContractsContent: React.FC = () => {
         message.success('Renewal created');
         setRenewalModalOpen(false);
         setRenewingContract(null);
+        load();
+    };
+
+    const handleCompleteRenewal = async (renewalId: string) => {
+        await completeRenewal(renewalId);
+        message.success('Renewal completed — contract marked as Renewed');
+        setDrawerOpen(false);
+        setViewingContract(null);
         load();
     };
 
@@ -160,6 +182,11 @@ const ContractsContent: React.FC = () => {
                     onSearch={(value) => setSearchTerm(value)}
                     allowClear
                 />
+                <ClientSelectFilter
+                    className={styles.filterSelect}
+                    value={clientFilter}
+                    onChange={(value) => { setClientFilter(value); }}
+                />
                 <Select
                     className={styles.filterSelect}
                     placeholder="All Statuses"
@@ -186,6 +213,7 @@ const ContractsContent: React.FC = () => {
                 onActivate={handleActivate}
                 onCancel={handleCancel}
                 onRenew={handleOpenRenewal}
+                onCompleteRenewal={handleView}
                 canDelete={canDelete}
                 canActivateCancel={canActivateCancel}
             />
@@ -223,8 +251,8 @@ const ContractsContent: React.FC = () => {
                             {(drawerStatus === 1 || drawerStatus === 2) && (
                                 <Tooltip title="Edit">
                                     <Button
+                                        type="primary"
                                         icon={<EditOutlined />}
-                                        style={{ color: '#facc15', borderColor: '#facc15' }}
                                         onClick={() => { setDrawerOpen(false); handleEdit(viewingContract); }}
                                     >
                                         Edit
@@ -233,15 +261,15 @@ const ContractsContent: React.FC = () => {
                             )}
                             {canActivateCancel && drawerStatus === 1 && (
                                 <Popconfirm title="Activate this contract?" onConfirm={() => handleActivate(viewingContract)}>
-                                    <Button icon={<CheckCircleOutlined />} style={{ color: '#22c55e', borderColor: '#22c55e' }}>
+                                    <Button type="primary" icon={<CheckCircleOutlined />}>
                                         Activate
                                     </Button>
                                 </Popconfirm>
                             )}
-                            {(drawerStatus === 2 || drawerStatus === 3) && (
+                            {(drawerStatus === 2 || drawerStatus === 3) && (viewingContract.renewalsCount ?? 0) === 0 && (
                                 <Button
+                                    type="primary"
                                     icon={<RedoOutlined />}
-                                    style={{ color: '#a78bfa', borderColor: '#a78bfa' }}
                                     onClick={() => { setDrawerOpen(false); handleOpenRenewal(viewingContract); }}
                                 >
                                     Renew
@@ -302,6 +330,18 @@ const ContractsContent: React.FC = () => {
                                 </Descriptions.Item>
                             )}
                         </Descriptions>
+
+                        {viewingContract.renewalsCount > 0 && (
+                            <div className={styles.renewalsSection}>
+                                <div className={styles.renewalsSectionTitle}>Renewal History</div>
+                                <ContractRenewalsTable
+                                    renewals={contractRenewals ?? []}
+                                    loading={isPending}
+                                    canComplete={canActivateCancel}
+                                    onComplete={handleCompleteRenewal}
+                                />
+                            </div>
+                        )}
                     </>
                 )}
             </Drawer>
