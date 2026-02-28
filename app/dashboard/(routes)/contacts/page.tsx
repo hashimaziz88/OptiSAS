@@ -1,12 +1,13 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Button, Input, Typography, message, Drawer, Descriptions, Tag, Space, Popconfirm } from 'antd';
+import { Button, Input, Select, Typography, message, Drawer, Descriptions, Tag, Space, Popconfirm } from 'antd';
 import { PlusOutlined, SearchOutlined, ReloadOutlined, StarFilled, StarOutlined, EditOutlined, MinusCircleOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { useContactActions, useContactState } from '@/providers/contactProvider';
 import { IContactDto, ICreateContactDto, IUpdateContactDto } from '@/providers/contactProvider/context';
 import { useClientActions, useClientState } from '@/providers/clientProvider';
 import { CONTACTS_PAGE_SIZE } from '@/constants/contacts';
+import { ACTIVE_STATUS_OPTIONS } from '@/constants/clients';
 import { buildContactsParams } from '@/utils/dashboard/contacts';
 import ContactsTable from '@/components/dashboard/contacts/ContactsTable';
 import ContactFormModal from '@/components/dashboard/contacts/ContactFormModal';
@@ -31,12 +32,17 @@ const ContactsContent: React.FC = () => {
     const [pageSize, setPageSize] = useState(CONTACTS_PAGE_SIZE);
     const [searchTerm, setSearchTerm] = useState('');
     const [clientFilter, setClientFilter] = useState<string | undefined>(undefined);
+    const [isActive, setIsActive] = useState<boolean | undefined>(true);
 
     const [modalOpen, setModalOpen] = useState(false);
     const [editingContact, setEditingContact] = useState<IContactDto | null>(null);
     const [viewingContact, setViewingContact] = useState<IContactDto | null>(null);
 
     const clients = clientPagedResult?.items ?? [];
+
+    const contactTableData = isActive !== undefined
+        ? (pagedResult?.items ?? []).filter((c) => c.isActive === isActive)
+        : (pagedResult?.items ?? []);
 
     const fetchContacts = (p = page, ps = pageSize) => {
         getContacts(buildContactsParams(p, ps, { searchTerm, clientId: clientFilter }));
@@ -134,6 +140,15 @@ const ContactsContent: React.FC = () => {
                     value={clientFilter}
                     onChange={(value) => { setClientFilter(value); setPage(1); }}
                 />
+                <Select
+                    className={styles.filterSelect}
+                    placeholder="All Statuses"
+                    allowClear
+                    options={ACTIVE_STATUS_OPTIONS}
+                    value={isActive}
+                    onChange={(value) => { setIsActive(value); setPage(1); }}
+                    size="large"
+                />
                 <Button
                     icon={<ReloadOutlined />}
                     size="large"
@@ -145,7 +160,7 @@ const ContactsContent: React.FC = () => {
             </div>
 
             <ContactsTable
-                data={pagedResult?.items ?? []}
+                data={contactTableData}
                 total={pagedResult?.totalCount ?? 0}
                 page={page}
                 pageSize={pageSize}

@@ -6,6 +6,7 @@ import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
+    LogarithmicScale,
     PointElement,
     LineElement,
     Title,
@@ -14,12 +15,11 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { IRevenueSummaryDto } from '@/providers/dashboardProvider/context';
 import { formatCurrency } from '@/utils/dashboard/opportunities';
 import { RevenueTrendChartProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
+ChartJS.register(CategoryScale, LinearScale, LogarithmicScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
 
 const RevenueTrendChart: React.FC<RevenueTrendChartProps> = ({ revenue, loading }) => {
     const { styles } = useStyles();
@@ -27,11 +27,11 @@ const RevenueTrendChart: React.FC<RevenueTrendChartProps> = ({ revenue, loading 
     const trend = revenue?.monthlyTrend ?? [];
 
     const data = {
-        labels: trend.map((m) => m.month),
+        labels: trend.map((m) => m.monthName),
         datasets: [
             {
-                label: 'Revenue',
-                data: trend.map((m) => m.totalRevenue ?? m.revenue ?? m.amount ?? m.value ?? 0),
+                label: 'Actual',
+                data: trend.map((m) => m.actual ?? 0),
                 fill: true,
                 borderColor: '#34d399',
                 backgroundColor: 'rgba(52,211,153,0.12)',
@@ -41,6 +41,19 @@ const RevenueTrendChart: React.FC<RevenueTrendChartProps> = ({ revenue, loading 
                 pointHoverRadius: 6,
                 tension: 0.4,
             },
+            {
+                label: 'Projected',
+                data: trend.map((m) => m.projected ?? 0),
+                fill: false,
+                borderColor: '#60a5fa',
+                backgroundColor: 'rgba(96,165,250,0.1)',
+                borderDash: [5, 4],
+                pointBackgroundColor: '#60a5fa',
+                pointBorderColor: '#60a5fa',
+                pointRadius: 3,
+                pointHoverRadius: 5,
+                tension: 0.4,
+            },
         ],
     };
 
@@ -48,7 +61,14 @@ const RevenueTrendChart: React.FC<RevenueTrendChartProps> = ({ revenue, loading 
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-            legend: { display: false },
+            legend: {
+                display: true,
+                labels: {
+                    color: '#94a3b8',
+                    font: { size: 12 },
+                    boxWidth: 12,
+                },
+            },
             tooltip: {
                 backgroundColor: 'rgba(15,23,42,0.95)',
                 titleColor: '#e2e8f0',
@@ -56,14 +76,23 @@ const RevenueTrendChart: React.FC<RevenueTrendChartProps> = ({ revenue, loading 
                 borderColor: 'rgba(255,255,255,0.1)',
                 borderWidth: 1,
                 callbacks: {
-                    label: (ctx: { parsed: { y: number } }) =>
-                        ` ${formatCurrency(ctx.parsed.y)}`,
+                    label: (ctx: { dataset: { label?: string }; parsed: { y: number } }) =>
+                        ` ${ctx.dataset.label}: ${formatCurrency(ctx.parsed.y)}`,
                 },
             },
         },
         scales: {
             x: {
-                ticks: { color: '#94a3b8', font: { size: 11 } },
+                ticks: {
+                    color: '#94a3b8',
+                    font: { size: 11 },
+                    maxRotation: 45,
+                    callback: (_: unknown, index: number) => {
+                        const m = trend[index];
+                        if (!m) return '';
+                        return m.monthName.slice(0, 3);
+                    },
+                },
                 grid: { color: 'rgba(255,255,255,0.04)' },
                 border: { color: 'rgba(255,255,255,0.08)' },
             },

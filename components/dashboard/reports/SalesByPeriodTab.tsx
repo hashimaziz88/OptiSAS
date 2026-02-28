@@ -11,6 +11,7 @@ import { SALES_GROUP_BY_OPTIONS } from '@/constants/reports';
 import { useStyles } from './style/style';
 import { formatCurrency } from './utils';
 import { generateSalesByPeriodReportPdf } from './generatePdf';
+import AiInsightsCard from '@/components/aiInsightsCard';
 
 const { RangePicker } = DatePicker;
 
@@ -39,6 +40,18 @@ const SalesByPeriodTab: React.FC = () => {
     const avgWinRate = rows.length
         ? rows.reduce((sum, r) => sum + (r.winRate ?? 0), 0) / rows.length
         : 0;
+
+    const salesContext = {
+        periods: rows.length,
+        totalPipelineValue: totalPipeline,
+        totalWonRevenue,
+        totalWonDeals,
+        avgWinRate: parseFloat(avgWinRate.toFixed(1)),
+        groupBy: groupBy === 'month' ? 'Monthly' : 'Weekly',
+        dateRange: dateRange
+            ? `${dateRange[0]?.format('DD/MM/YYYY')} to ${dateRange[1]?.format('DD/MM/YYYY')}`
+            : 'All time',
+    };
 
     const columns: ColumnsType<ISalesByPeriodItemDto> = [
         {
@@ -233,6 +246,15 @@ const SalesByPeriodTab: React.FC = () => {
                     </div>
                 </Col>
             </Row>
+
+            <div style={{ marginBottom: 24 }}>
+                <AiInsightsCard
+                    data={salesContext}
+                    type="report"
+                    title="AI Sales Performance Analysis"
+                    disabled={!salesByPeriodReport || salesByPeriodReport.length === 0}
+                />
+            </div>
 
             {rows.length > 0 && (
                 <div className={styles.chartCard}>

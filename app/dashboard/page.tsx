@@ -16,6 +16,7 @@ import RevenueTrendChart from '@/components/dashboard/overview/RevenueTrendChart
 import ContractsExpiringTable from '@/components/dashboard/overview/ContractsExpiringTable';
 import TopPerformersTable from '@/components/dashboard/overview/TopPerformersTable';
 import { useStyles } from '@/components/dashboard/overview/style/style';
+import AiInsightsCard from '@/components/aiInsightsCard';
 
 const { Title } = Typography;
 
@@ -51,6 +52,21 @@ const DashboardContent: React.FC = () => {
     const performanceList: ISalesPerformanceDto[] = Array.isArray(salesPerformance) ? salesPerformance : [];
     const expiringList = toArray<IContractDto>(contractsExpiring as IContractDto[] | null);
     const pipelineStages = overview?.pipeline.stages ?? [];
+
+    const dashboardContext = {
+        pipelineValue: overview?.opportunities?.pipelineValue,
+        winRate: overview?.opportunities?.winRate,
+        totalOpportunities: overview?.opportunities?.totalCount,
+        wonDeals: overview?.opportunities?.wonCount,
+        upcomingActivities: overview?.activities?.upcomingCount,
+        overdueActivities: overview?.activities?.overdueCount,
+        activeContracts: overview?.contracts?.totalActiveCount,
+        contractValue: overview?.contracts?.totalContractValue,
+        expiringContracts: overview?.contracts?.expiringThisMonthCount,
+        revenueThisMonth: overview?.revenue?.thisMonth,
+        revenueThisQuarter: overview?.revenue?.thisQuarter,
+        revenueThisYear: overview?.revenue?.thisYear,
+    };
 
     return (
         <div style={{ paddingBottom: 32 }}>
@@ -91,6 +107,15 @@ const DashboardContent: React.FC = () => {
                     <RevenueTrendChart revenue={overview?.revenue} loading={isPending} />
                 </Col>
             </Row>
+
+            <Divider style={{ borderColor: 'rgba(255,255,255,0.06)', margin: '24px 0' }} />
+
+            {/* AI Business Insights */}
+            <AiInsightsCard
+                data={dashboardContext}
+                type="dashboard"
+                disabled={!overview}
+            />
 
             <Divider style={{ borderColor: 'rgba(255,255,255,0.06)', margin: '24px 0' }} />
 

@@ -71,6 +71,7 @@ const ContractsExpiringTable: React.FC<ContractsExpiringTableProps> = ({ contrac
                 rowKey="id"
                 pagination={false}
                 size="small"
+                scroll={{ x: 'max-content' }}
                 style={{ background: 'transparent' }}
             />
         </Card>

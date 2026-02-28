@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import {
@@ -32,11 +32,23 @@ const { Header, Sider, Content } = Layout;
 
 const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [collapsed, setCollapsed] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const { styles } = useStyles();
     const router = useRouter();
     const pathname = usePathname();
     const { logout } = useAuthActions();
     const { user } = useAuthState();
+
+    useEffect(() => {
+        const checkMobile = () => {
+            const mobile = window.innerWidth < 768;
+            setIsMobile(mobile);
+            if (mobile) setCollapsed(true);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     const handleLogout = async () => {
         await logout();
@@ -81,12 +93,14 @@ const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
             </Sider>
             <Layout style={{ background: 'transparent' }}>
                 <Header className={styles.header}>
-                    <Button
-                        type="text"
-                        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                        onClick={() => setCollapsed(!collapsed)}
-                        className={styles.triggerBtn}
-                    />
+                    {!isMobile && (
+                        <Button
+                            type="text"
+                            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                            onClick={() => setCollapsed(!collapsed)}
+                            className={styles.triggerBtn}
+                        />
+                    )}
                     <Button
                         type="text"
                         icon={<LogoutOutlined />}

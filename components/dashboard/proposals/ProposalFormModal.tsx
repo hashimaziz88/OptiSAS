@@ -5,7 +5,7 @@ import {
     Button, DatePicker, Form, Input, InputNumber, Modal,
     Select, Table, Typography, message,
 } from 'antd';
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { DeleteOutlined, PlusOutlined, ThunderboltOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
 import { ICreateProposalDto, ICreateProposalLineItemDto, IProposalDto, IUpdateProposalDto } from '@/providers/proposalProvider/context';
@@ -16,6 +16,19 @@ import { useStyles } from './style/style';
 
 const { Text } = Typography;
 const BASE_URL = process.env.NEXT_PUBLIC_API_LINK;
+
+interface OpportunityRaw {
+    id: string;
+    title: string;
+    clientId: string;
+    clientName: string;
+    stageName: string;
+    estimatedValue: number;
+    currency: string;
+    probability: number;
+    description: string;
+    expectedCloseDate: string;
+}
 
 const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
     open,
@@ -28,17 +41,21 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
     const [form] = Form.useForm();
 
     const [opportunities, setOpportunities] = useState<OpportunityWithClientOption[]>([]);
+    const [opportunitiesRaw, setOpportunitiesRaw] = useState<OpportunityRaw[]>([]);
     const [selectedClientName, setSelectedClientName] = useState<string>('');
     const [optionsLoading, setOptionsLoading] = useState(false);
     const [lineItems, setLineItems] = useState<DraftLineItem[]>([]);
     const [nextKey, setNextKey] = useState(1);
     const [lineForm] = Form.useForm();
+    const [aiDraftLoading, setAiDraftLoading] = useState(false);
+    const selectedOppId = Form.useWatch('opportunityId', form);
 
     useEffect(() => {
         if (!open) {
             form.resetFields();
             lineForm.resetFields();
             setLineItems([]);
+            setOpportunitiesRaw([]);
             return;
         }
 
@@ -58,8 +75,10 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
             setOptionsLoading(true);
             try {
                 const oppRes = await axiosInstance().get(`${BASE_URL}/api/Opportunities`, { params: { pageNumber: 1, pageSize: 200 } });
+                const items: OpportunityRaw[] = oppRes.data?.items ?? [];
+                setOpportunitiesRaw(items);
                 setOpportunities(
-                    (oppRes.data?.items ?? []).map((o: { id: string; title: string; clientId: string; clientName: string }) => ({
+                    items.map((o) => ({
                         value: o.id,
                         label: o.title,
                         clientId: o.clientId,
@@ -87,6 +106,43 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
 
     const removeLineItem = (key: number) => {
         setLineItems((prev) => prev.filter((li) => li._key !== key));
+    };
+
+    const handleDraftWithAI = async () => {
+        const opp = opportunitiesRaw.find((o) => o.id === selectedOppId);
+        if (!opp) return;
+
+        setAiDraftLoading(true);
+        try {
+            const res = await fetch('/api/ai-proposal-draft', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    opportunityTitle: opp.title,
+                    clientName: opp.clientName,
+                    stage: opp.stageName,
+                    estimatedValue: opp.estimatedValue,
+                    currency: opp.currency || 'ZAR',
+                    probability: opp.probability ?? 0,
+                    description: opp.description,
+                    expectedCloseDate: opp.expectedCloseDate,
+                }),
+            });
+
+            if (!res.ok) {
+                const err = await res.json() as { error?: string };
+                message.error(err.error ?? 'AI draft failed. Please try again.');
+                return;
+            }
+
+            const data = await res.json() as { title: string; description: string };
+            form.setFieldsValue({ title: data.title, description: data.description });
+            message.success('AI has drafted your proposal title and description.');
+        } catch {
+            message.error('Failed to connect to the AI service.');
+        } finally {
+            setAiDraftLoading(false);
+        }
     };
 
     const grandTotal = lineItems.reduce((sum, li) => sum + calcLineTotal(li), 0);
@@ -180,6 +236,26 @@ const ProposalFormModal: React.FC<ProposalFormModalProps> = ({
                                 </Form.Item>
                             )}
                         </>
+                    )}
+
+                    {!editing && (
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 8 }}>
+                            <Button
+                                type="default"
+                                size="small"
+                                icon={<ThunderboltOutlined />}
+                                loading={aiDraftLoading}
+                                disabled={!selectedOppId || aiDraftLoading}
+                                onClick={handleDraftWithAI}
+                                style={{
+                                    color: '#a78bfa',
+                                    borderColor: 'rgba(167, 139, 250, 0.4)',
+                                    background: 'rgba(167, 139, 250, 0.08)',
+                                }}
+                            >
+                                Draft with AI
+                            </Button>
+                        </div>
                     )}
 
                     <Form.Item

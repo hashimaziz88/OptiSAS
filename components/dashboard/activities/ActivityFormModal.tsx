@@ -17,7 +17,7 @@ const getRecordLabel = (type: number, record: Record<string, string>): string =>
     return record.title;
 };
 
-const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, loading, canAssign, onSubmit, onClose }) => {
+const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, loading, canAssign, prefill, onSubmit, onClose }) => {
     const { styles } = useStyles();
     const [form] = Form.useForm();
     const { user } = useAuthState();
@@ -71,6 +71,27 @@ const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, lo
                 form.setFieldsValue({ priority: 2, assignedToId: userId });
                 setRelatedToType(undefined);
                 setRelatedOptions([]);
+
+                if (prefill) {
+                    const preValues: Record<string, unknown> = {};
+                    if (prefill.type !== undefined) preValues.type = prefill.type;
+                    if (prefill.subject) preValues.subject = prefill.subject;
+                    if (prefill.description) preValues.description = prefill.description;
+                    if (prefill.priority !== undefined) preValues.priority = prefill.priority;
+
+                    if (prefill.relatedToType !== undefined) {
+                        preValues.relatedToType = prefill.relatedToType;
+                        setRelatedToType(prefill.relatedToType);
+
+                        if (prefill.relatedToId && prefill.relatedToLabel) {
+                            setRelatedOptions([{ value: prefill.relatedToId, label: prefill.relatedToLabel }]);
+                        }
+                        fetchRelatedRecords(prefill.relatedToType);
+                    }
+                    if (prefill.relatedToId) preValues.relatedToId = prefill.relatedToId;
+
+                    form.setFieldsValue(preValues);
+                }
             }
 
             if (canAssign && userOptions.length === 0) {
@@ -89,7 +110,7 @@ const ActivityFormModal: React.FC<ActivityFormModalProps> = ({ open, editing, lo
                     .finally(() => setUsersLoading(false));
             }
         }
-    }, [open, editing, form, userId, canAssign, userOptions.length]);
+    }, [open, editing, form, userId, canAssign, userOptions.length, prefill, fetchRelatedRecords]);
 
     const handleFinish = (values: Record<string, unknown>) => {
         const payload = {
