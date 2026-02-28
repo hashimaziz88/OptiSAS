@@ -17,7 +17,7 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({ title, subtitle }) => {
     return (
         <>
             <Link href="/" className={styles.logoContainer}>
-                <LogoImage height={80} width={160} />
+                <LogoImage height={56} width={112} />
             </Link>
             <div className={styles.headerSection}>
                 <Title level={2} className={styles.formHeading}>{title}</Title>

@@ -7,9 +7,9 @@ export const useStyles = createStyles(({ token }) => ({
     align-items: center;
     min-height: 100vh;
     background: radial-gradient(circle at 0% 0%, #3a3f47 0%, #1a1c22 100%);
-    padding: 24px;
+    padding: 16px;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
   `,
 
   backgroundGlow: css`
@@ -28,11 +28,11 @@ export const useStyles = createStyles(({ token }) => ({
     background: rgba(58, 63, 71, 0.8);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    padding: 48px 40px;
+    padding: 28px 28px 24px;
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
     width: 100%;
-    max-width: 440px;
+    max-width: 420px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     transition: all 0.3s ease-in-out;
     z-index: 10;
@@ -50,6 +50,7 @@ export const useStyles = createStyles(({ token }) => ({
     cursor: pointer;
     filter: drop-shadow(0 0 8px rgba(24, 144, 255, 0.3));
     transition: transform 0.2s ease;
+    margin-bottom: 10px;
 
     &:hover {
       transform: scale(1.05);
@@ -63,14 +64,14 @@ export const useStyles = createStyles(({ token }) => ({
 
   headerSection: css`
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
   `,
 
   formHeading: css`
     &.ant-typography {
       color: white;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
   `,
 
@@ -80,9 +81,18 @@ export const useStyles = createStyles(({ token }) => ({
   `,
 
   form: css`
+    .ant-form-item {
+      margin-bottom: 12px;
+    }
+
+    .ant-form-item-label {
+      padding-bottom: 2px;
+    }
+
     .ant-form-item-label > label {
       color: #cbd5e0;
       font-weight: 500;
+      font-size: 13px;
     }
 
     /* Standardizing Inputs without !important */
@@ -92,7 +102,7 @@ export const useStyles = createStyles(({ token }) => ({
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid #4e545f;
       color: white;
-      padding: 10px 14px;
+      padding: 7px 11px;
       border-radius: 8px;
       outline: none;
       box-shadow: none;
@@ -124,14 +134,14 @@ export const useStyles = createStyles(({ token }) => ({
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid #4e545f;
       border-radius: 8px;
-      height: 48px;
+      height: 40px;
       align-items: center;
       color: white;
     }
 
     .ant-select .ant-select-selection-item,
     .ant-select .ant-select-selection-placeholder {
-      line-height: 46px;
+      line-height: 38px;
       color: #cbd5e0;
     }
 
@@ -147,13 +157,19 @@ export const useStyles = createStyles(({ token }) => ({
 
     /* Primary Submit Button Styles */
     .ant-btn-primary {
-      height: 48px;
+      height: 40px;
       border-radius: 8px;
       font-weight: 600;
-      font-size: 16px;
-      box-shadow: 0 4px 12px rgba(24, 144, 255, 0.25);
+      font-size: 14px;
+      box-shadow: none;
       border: none;
       width: 100%;
+
+      &:hover,
+      &:focus,
+      &:active {
+        box-shadow: none;
+      }
     }
   `,
 
@@ -192,30 +208,32 @@ export const useStyles = createStyles(({ token }) => ({
 
   footerLinkSection: css`
     text-align: center;
-    margin-top: 32px;
+    margin-top: 16px;
     display: flex;
     justify-content: center;
     gap: 8px;
 
     a {
       font-weight: 600;
-      color: ${token.colorPrimary};
+      color: #60a5fa;
       transition: color 0.2s;
+      text-decoration: underline;
+      text-underline-offset: 2px;
 
       &:hover {
-        color: ${token.colorPrimaryActive};
+        color: #93c5fd;
       }
     }
   `,
 
   footerLinkText: css`
     &.ant-typography {
-      color: #8c8c8c;
+      color: #cbd5e0;
     }
   `,
 
   segmentedWrapper: css`
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 
     .ant-segmented {
       background: rgba(255, 255, 255, 0.05);
