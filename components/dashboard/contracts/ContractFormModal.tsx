@@ -35,7 +35,6 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
     const { user } = useAuthState();
     const [form] = Form.useForm();
 
-    const [clients, setClients] = useState<SelectOption[]>([]);
     const [opportunities, setOpportunities] = useState<OpportunityOption[]>([]);
     const [optionsLoading, setOptionsLoading] = useState(false);
     const [selectedClientName, setSelectedClientName] = useState('');
@@ -62,11 +61,7 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
             const fetchOptions = async () => {
                 setOptionsLoading(true);
                 try {
-                    const [clientRes, oppRes] = await Promise.all([
-                        axiosInstance().get(`${BASE_URL}/api/Clients`, { params: { pageNumber: 1, pageSize: 200 } }),
-                        axiosInstance().get(`${BASE_URL}/api/Opportunities`, { params: { pageNumber: 1, pageSize: 200 } }),
-                    ]);
-                    setClients((clientRes.data?.items ?? []).map((c: { id: string; name: string }) => ({ value: c.id, label: c.name })));
+                    const oppRes = await axiosInstance().get(`${BASE_URL}/api/Opportunities`, { params: { pageNumber: 1, pageSize: 200 } });
                     setOpportunities((oppRes.data?.items ?? []).map((o: { id: string; title: string; clientId: string; clientName: string }) => ({
                         value: o.id,
                         label: o.title,
@@ -139,7 +134,8 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
                         <>
                             <Form.Item
                                 name="opportunityId"
-                                label="Opportunity (optional — auto-fills client)"
+                                label="Opportunity"
+                                rules={[{ required: true, message: 'Select an opportunity' }]}
                             >
                                 <Select
                                     placeholder="Select linked opportunity"
@@ -156,22 +152,23 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
                                 />
                             </Form.Item>
 
-                            <Form.Item
-                                name="clientId"
-                                label="Client"
-                                rules={[{ required: true, message: 'Select a client' }]}
-                            >
-                                {selectedClientName ? (
-                                    <Input value={selectedClientName} size="large" disabled />
-                                ) : (
-                                    <Select
-                                        placeholder="Select client"
-                                        options={clients}
-                                        loading={optionsLoading}
-                                        showSearch
-                                        size="large"
-                                    />
-                                )}
+                            <Form.Item name="clientId" hidden rules={[{ required: true, message: 'Select a client' }]}>
+                                <Input />
+                            </Form.Item>
+                            <Form.Item label="Client">
+                                <Input
+                                    value={selectedClientName}
+                                    readOnly
+                                    placeholder="Auto-filled from opportunity"
+                                    size="large"
+                                    style={{
+                                        color: selectedClientName ? 'rgba(255,255,255,0.85)' : '#666',
+                                        backgroundColor: 'rgba(255,255,255,0.06)',
+                                        borderColor: 'rgba(255,255,255,0.12)',
+                                        cursor: 'not-allowed',
+                                        WebkitTextFillColor: selectedClientName ? 'rgba(255,255,255,0.85)' : '#666',
+                                    }}
+                                />
                             </Form.Item>
                         </>
                     )}
@@ -223,8 +220,8 @@ const ContractFormModal: React.FC<ContractFormModalProps> = ({
                         <Form.Item name="renewalNoticePeriod" label="Renewal Notice (days)">
                             <InputNumber placeholder="30" min={0} size="large" style={{ width: '100%' }} />
                         </Form.Item>
-                        <Form.Item name="autoRenew" valuePropName="checked" label="Auto Renew">
-                            <Checkbox>Enable auto-renewal</Checkbox>
+                        <Form.Item name="autoRenew" valuePropName="checked" >
+                            <Checkbox style={{ color: 'white' }}>Enable auto-renewal</Checkbox>
                         </Form.Item>
                     </div>
 
