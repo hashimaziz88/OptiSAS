@@ -345,7 +345,6 @@ const OpportunitiesContent: React.FC = () => {
                 title="Change Stage"
                 onCancel={() => setStageModalOpen(false)}
                 footer={null}
-                destroyOnHidden
                 classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
             >
                 <div className={styles.formBody}>
@@ -372,7 +371,6 @@ const OpportunitiesContent: React.FC = () => {
                 title="Reassign Opportunity"
                 onCancel={() => setAssignModalOpen(false)}
                 footer={null}
-                destroyOnHidden
                 classNames={{ body: styles.modalBody, container: styles.modalContainer, header: styles.modalHeader }}
             >
                 <div className={styles.formBody}>

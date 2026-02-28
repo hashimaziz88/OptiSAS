@@ -83,26 +83,6 @@ export const useStyles = createStyles(({ token }) => ({
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     overflow: hidden;
-
-    .ant-table {
-      background: transparent !important;
-    }
-
-    .ant-table-thead > tr > th {
-      background: rgba(255, 255, 255, 0.04) !important;
-      color: #94a3b8 !important;
-      font-size: 12px !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-    }
-
-    .ant-table-tbody > tr > td {
-      background: transparent !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-    }
-
-    .ant-table-tbody > tr:hover > td {
-      background: rgba(255, 255, 255, 0.04) !important;
-    }
   `,
   warningCard: css`
     background: rgba(255, 255, 255, 0.05);
@@ -113,26 +93,6 @@ export const useStyles = createStyles(({ token }) => ({
     .ant-card-head {
       background: rgba(251, 146, 60, 0.05) !important;
       border-bottom: 1px solid rgba(251, 146, 60, 0.2) !important;
-    }
-
-    .ant-table {
-      background: transparent !important;
-    }
-
-    .ant-table-thead > tr > th {
-      background: rgba(255, 255, 255, 0.04) !important;
-      color: #94a3b8 !important;
-      font-size: 12px !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-    }
-
-    .ant-table-tbody > tr > td {
-      background: transparent !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-    }
-
-    .ant-table-tbody > tr:hover > td {
-      background: rgba(255, 255, 255, 0.04) !important;
     }
   `,
   emptyText: css`

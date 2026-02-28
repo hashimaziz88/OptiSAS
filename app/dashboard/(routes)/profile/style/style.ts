@@ -56,7 +56,7 @@ export const useStyles = createStyles(({ token }) => ({
 
   userEmail: css`
     &.ant-typography {
-      color: #94a3b8;
+      color: ${token.colorTextTertiary};
       font-size: 14px;
       margin: 0;
     }
@@ -80,28 +80,21 @@ export const useStyles = createStyles(({ token }) => ({
   `,
 
   descriptionItem: css`
-    .ant-descriptions-item-label {
-      color: #94a3b8 !important;
-      background: transparent !important;
-      font-weight: 500;
-      min-width: 140px;
-    }
-    .ant-descriptions-item-content {
-      color: #e2e8f0 !important;
-      background: transparent !important;
-    }
     .ant-descriptions-row > td {
       padding-bottom: 16px;
+    }
+    .ant-descriptions-item-label {
+      min-width: 140px;
     }
   `,
 
   copyableValue: css`
     font-family: "Courier New", monospace;
     font-size: 13px;
-    color: #e2e8f0;
+    color: rgba(255, 255, 255, 0.88);
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
+    border-radius: ${token.borderRadius}px;
     padding: 6px 12px;
     display: inline-flex;
     align-items: center;
@@ -109,9 +102,9 @@ export const useStyles = createStyles(({ token }) => ({
     word-break: break-all;
 
     .ant-typography-copy {
-      color: #60a5fa;
+      color: ${token.colorLink};
       &:hover {
-        color: #93c5fd;
+        color: ${token.colorLinkHover};
       }
     }
   `,
@@ -137,16 +130,17 @@ export const useStyles = createStyles(({ token }) => ({
   roleTag: css`
     font-size: 12px;
     font-weight: 500;
-    border-radius: 8px;
+    border-radius: ${token.borderRadius}px;
     padding: 2px 10px;
   `,
+
   inviteCode: css`
     font-family: "Courier New", monospace;
     font-size: 13px;
     color: #fbbf24;
     background: rgba(251, 191, 36, 0.08);
     border: 1px solid rgba(251, 191, 36, 0.2);
-    border-radius: 8px;
+    border-radius: ${token.borderRadius}px;
     padding: 10px 14px;
     display: inline-flex;
     align-items: center;
@@ -157,7 +151,7 @@ export const useStyles = createStyles(({ token }) => ({
 
   inviteExpiry: css`
     &.ant-typography {
-      color: #64748b;
+      color: ${token.colorTextTertiary};
       font-size: 12px;
       margin-top: 10px;
       display: block;

@@ -107,25 +107,6 @@ export const useStyles = createStyles(({ token }) => ({
 
   filterSelect: css`
     min-width: 160px;
-
-    .ant-select-selector {
-      background: rgba(255, 255, 255, 0.05) !important;
-      border-color: rgba(255, 255, 255, 0.12) !important;
-      color: white !important;
-    }
-
-    .ant-select-arrow {
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    .ant-select-clear {
-      background: transparent;
-      color: rgba(255, 255, 255, 0.4);
-    }
-
-    .ant-select-selection-placeholder {
-      color: rgba(255, 255, 255, 0.3) !important;
-    }
   `,
 
   statsRow: css`
@@ -218,64 +199,7 @@ export const useStyles = createStyles(({ token }) => ({
     }
   `,
 
-  table: css`
-    .ant-table {
-      background: transparent;
-      color: white;
-    }
-
-    .ant-table-thead > tr > th {
-      background: rgba(255, 255, 255, 0.06) !important;
-      color: rgba(255, 255, 255, 0.65) !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .ant-table-tbody > tr > td {
-      background: transparent !important;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-      color: #e2e8f0;
-    }
-
-    .ant-table-tbody > tr:hover > td {
-      background: rgba(255, 255, 255, 0.04) !important;
-    }
-
-    .ant-table-column-sorter {
-      color: rgba(255, 255, 255, 0.3);
-    }
-
-    .ant-table-column-sorter-up.active,
-    .ant-table-column-sorter-down.active {
-      color: ${token.colorPrimary};
-    }
-
-    .ant-pagination-total-text {
-      color: rgba(255, 255, 255, 0.55);
-    }
-
-    .ant-pagination-item a {
-      color: rgba(255, 255, 255, 0.65);
-    }
-
-    .ant-pagination-item-active {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.2);
-      a {
-        color: white;
-      }
-    }
-
-    .ant-pagination-prev button,
-    .ant-pagination-next button {
-      color: rgba(255, 255, 255, 0.65);
-    }
-
-    .ant-empty-description {
-      color: rgba(255, 255, 255, 0.3);
-    }
-  `,
+  table: css``,
 
   chartCard: css`
     background: rgba(255, 255, 255, 0.03);

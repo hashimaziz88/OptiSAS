@@ -48,7 +48,7 @@ export const useStyles = createStyles(({ token }) => ({
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    filter: drop-shadow(0 0 8px rgba(24, 144, 255, 0.3));
+    filter: drop-shadow(0 0 8px ${token.colorPrimary}4d);
     transition: transform 0.2s ease;
     margin-bottom: 10px;
 
@@ -76,7 +76,7 @@ export const useStyles = createStyles(({ token }) => ({
   `,
 
   formSubtitle: css`
-    color: #8c8c8c;
+    color: ${token.colorTextTertiary};
     font-size: 14px;
   `,
 
@@ -90,20 +90,17 @@ export const useStyles = createStyles(({ token }) => ({
     }
 
     .ant-form-item-label > label {
-      color: #cbd5e0;
+      color: ${token.colorTextSecondary};
       font-weight: 500;
       font-size: 13px;
     }
 
-    /* Standardizing Inputs without !important */
+    /* Input structural overrides — colours handled by ConfigProvider */
     .ant-input-affix-wrapper,
     .ant-input,
     .ant-input-password {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid #4e545f;
-      color: white;
       padding: 7px 11px;
-      border-radius: 8px;
+      border-radius: ${token.borderRadius}px;
       outline: none;
       box-shadow: none;
 
@@ -112,64 +109,42 @@ export const useStyles = createStyles(({ token }) => ({
       &:focus {
         border-color: ${token.colorPrimary};
         background: rgba(255, 255, 255, 0.05);
-        box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
-      }
-
-      input {
-        background: transparent;
-        color: white;
-
-        &::placeholder {
-          color: #666;
-        }
+        box-shadow: 0 0 0 2px ${token.colorPrimary}1a;
       }
 
       .anticon {
-        color: #666;
+        color: ${token.colorTextQuaternary};
       }
     }
 
-    /* Select Input Styles */
+    /* Select structural overrides — colours handled by ConfigProvider */
     .ant-select .ant-select-selector {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid #4e545f;
-      border-radius: 8px;
-      height: 40px;
+      border-radius: ${token.borderRadius}px;
+      height: ${token.controlHeight}px;
       align-items: center;
-      color: white;
     }
 
     .ant-select .ant-select-selection-item,
     .ant-select .ant-select-selection-placeholder {
-      line-height: 38px;
-      color: #cbd5e0;
+      line-height: ${token.controlHeight - 2}px;
+      color: ${token.colorTextSecondary};
     }
 
     .ant-select:hover .ant-select-selector,
     .ant-select-focused .ant-select-selector {
       border-color: ${token.colorPrimary};
-      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+      box-shadow: 0 0 0 2px ${token.colorPrimary}1a;
     }
 
     .ant-select .ant-select-arrow {
-      color: #666;
+      color: ${token.colorTextQuaternary};
     }
 
-    /* Primary Submit Button Styles */
+    /* Button — shadows handled by ConfigProvider */
     .ant-btn-primary {
-      height: 40px;
-      border-radius: 8px;
       font-weight: 600;
       font-size: 14px;
-      box-shadow: none;
-      border: none;
       width: 100%;
-
-      &:hover,
-      &:focus,
-      &:active {
-        box-shadow: none;
-      }
     }
   `,
 
@@ -181,27 +156,26 @@ export const useStyles = createStyles(({ token }) => ({
 
     a {
       font-size: 14px;
-      color: ${token.colorPrimary};
+      color: ${token.colorLink};
       transition: opacity 0.2s;
 
       &:hover {
-        opacity: 0.8;
+        color: ${token.colorLinkHover};
       }
     }
   `,
 
   checkbox: css`
     &.ant-checkbox-wrapper {
-      color: #cbd5e0;
+      color: ${token.colorTextSecondary};
 
       .ant-checkbox + span {
-        color: #cbd5e0;
+        color: ${token.colorTextSecondary};
       }
     }
 
-    /* Link color inside checkbox (Terms) */
     a {
-      color: ${token.colorPrimary};
+      color: ${token.colorLink};
       margin-left: 4px;
     }
   `,
@@ -215,58 +189,50 @@ export const useStyles = createStyles(({ token }) => ({
 
     a {
       font-weight: 600;
-      color: #60a5fa;
+      color: ${token.colorLink};
       transition: color 0.2s;
       text-decoration: underline;
       text-underline-offset: 2px;
 
       &:hover {
-        color: #93c5fd;
+        color: ${token.colorLinkHover};
       }
     }
   `,
 
   footerLinkText: css`
     &.ant-typography {
-      color: #cbd5e0;
+      color: ${token.colorTextSecondary};
     }
   `,
 
   segmentedWrapper: css`
     margin-bottom: 12px;
 
+    /* Structural overrides only — colours handled by ConfigProvider Segmented */
     .ant-segmented {
-      background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
+      border-radius: ${token.borderRadius}px;
       padding: 3px;
       width: 100%;
 
       .ant-segmented-item {
-        color: #8c8c8c;
-        border-radius: 6px;
+        border-radius: ${token.borderRadius - 2}px;
         transition: color 0.2s;
-
-        &:hover {
-          color: white;
-        }
       }
 
       .ant-segmented-item-selected {
-        color: white;
-        background: ${token.colorPrimary};
-        border-radius: 6px;
+        border-radius: ${token.borderRadius - 2}px;
       }
 
       .ant-segmented-thumb {
-        background: ${token.colorPrimary};
-        border-radius: 6px;
+        border-radius: ${token.borderRadius - 2}px;
       }
     }
   `,
 
   scenarioHint: css`
-    color: #8c8c8c;
+    color: ${token.colorTextTertiary};
     font-size: 12px;
     margin: 8px 0 0;
     text-align: center;

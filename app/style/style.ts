@@ -37,7 +37,7 @@ export const useStyles = createStyles(({ token }) => ({
     display: flex;
     justify-content: center;
     align-items: center;
-    filter: drop-shadow(0 0 8px rgba(24, 144, 255, 0.3));
+    filter: drop-shadow(0 0 8px ${token.colorPrimary}4d);
     transition: transform 0.2s ease;
 
     &:hover {
@@ -65,7 +65,7 @@ export const useStyles = createStyles(({ token }) => ({
 
   heroSubtitle: css`
     &.ant-typography {
-      color: #cbd5e0;
+      color: ${token.colorTextSecondary};
       font-size: 18px;
       display: block;
       margin-bottom: 32px;
@@ -89,7 +89,7 @@ export const useStyles = createStyles(({ token }) => ({
       width: 140px;
       height: 48px;
       font-weight: 600;
-      border-radius: 8px;
+      border-radius: ${token.borderRadius}px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -100,7 +100,7 @@ export const useStyles = createStyles(({ token }) => ({
   registerButton: css`
     &.ant-btn {
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid #4e545f;
+      border: 1px solid ${token.colorBorder};
       color: white;
 
       &:hover {
