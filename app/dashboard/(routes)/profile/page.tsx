@@ -105,13 +105,6 @@ const ProfilePage: React.FC = () => {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                     <InfoRow
-                        label="User ID"
-                        value={user?.userId ?? '—'}
-                        copyable
-                        styles={styles}
-                    />
-                    <Divider className={styles.divider} />
-                    <InfoRow
                         label="Email Address"
                         value={user?.email ?? '—'}
                         copyable
@@ -120,20 +113,6 @@ const ProfilePage: React.FC = () => {
                 </div>
             </div>
 
-            {/* Tenant */}
-            <div className={styles.card}>
-                <Text strong className={styles.sectionLabel}>
-                    <TeamOutlined style={{ marginRight: 8, color: '#fb923c' }} />
-                    Organisation
-                </Text>
-
-                <InfoRow
-                    label="Tenant ID"
-                    value={user?.tenantId ?? '—'}
-                    copyable
-                    styles={styles}
-                />
-            </div>
 
             {/* Invite team members — Admin / SalesManager only */}
             {inviteCode && (
@@ -165,35 +144,7 @@ const ProfilePage: React.FC = () => {
             )}
 
             {/* Session */}
-            <div className={styles.card}>
-                <Text strong className={styles.sectionLabel}>
-                    <SafetyCertificateOutlined style={{ marginRight: 8, color: '#34d399' }} />
-                    Session
-                </Text>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                    <InfoRow
-                        label="Status"
-                        value={
-                            <span className={styles.sessionBadge}>
-                                <CheckCircleFilled />
-                                {isSessionValid ? 'Active' : 'Expired'}
-                            </span>
-                        }
-                        styles={styles}
-                    />
-                    {sessionExpiry && (
-                        <>
-                            <Divider className={styles.divider} />
-                            <InfoRow
-                                label="Expires At"
-                                value={sessionExpiry.format('DD MMM YYYY, HH:mm')}
-                                styles={styles}
-                            />
-                        </>
-                    )}
-                </div>
-            </div>
         </div>
     );
 };
