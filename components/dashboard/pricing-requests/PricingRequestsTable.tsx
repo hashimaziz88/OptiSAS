@@ -57,6 +57,7 @@ const PricingRequestsTable: React.FC<PricingRequestsTableProps> = ({
             title: 'Title',
             dataIndex: 'title',
             key: 'title',
+            width: 200,
             ellipsis: true,
             render: (title: string, record) => (
                 <>

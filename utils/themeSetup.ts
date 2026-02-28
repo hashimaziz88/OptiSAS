@@ -130,5 +130,10 @@ export const themeSetup = {
       colorText: "rgba(255, 255, 255, 0.85)",
       titleFontSize: 14,
     },
+    Popover: {
+      colorBgElevated: "#1e2128",
+      colorText: "rgba(255, 255, 255, 0.88)",
+      colorTextHeading: "rgba(255, 255, 255, 0.88)",
+    },
   },
 };

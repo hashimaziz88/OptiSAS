@@ -71,8 +71,8 @@ export interface IUpdateContractDto {
 }
 
 export interface ICreateContractRenewalDto {
-    proposedStartDate: string;
-    proposedEndDate: string;
+    proposedStartDate?: string;
+    proposedEndDate?: string;
     proposedValue: number;
     notes?: string;
 }

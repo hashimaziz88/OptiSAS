@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Button, DatePicker, Form, Input, InputNumber, Modal } from 'antd';
-import { IContractDto, ICreateContractRenewalDto } from '@/providers/contractProvider/context';
+import { Button, Form, Input, InputNumber, Modal } from 'antd';
+import { ICreateContractRenewalDto } from '@/providers/contractProvider/context';
 import { RenewalModalProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
 
@@ -21,8 +21,6 @@ const RenewalModal: React.FC<RenewalModalProps> = ({
             const values = await form.validateFields();
             if (!contract) return;
             const payload: ICreateContractRenewalDto = {
-                proposedStartDate: values.proposedStartDate.toISOString(),
-                proposedEndDate: values.proposedEndDate.toISOString(),
                 proposedValue: values.proposedValue,
                 notes: values.notes,
             };
@@ -54,23 +52,6 @@ const RenewalModal: React.FC<RenewalModalProps> = ({
         >
             <div className={styles.formBody}>
                 <Form form={form} layout="vertical" requiredMark={false}>
-                    <div className={styles.formRow}>
-                        <Form.Item
-                            name="proposedStartDate"
-                            label="Proposed Start Date"
-                            rules={[{ required: true, message: 'Required' }]}
-                        >
-                            <DatePicker className={styles.fullWidth} size="large" />
-                        </Form.Item>
-                        <Form.Item
-                            name="proposedEndDate"
-                            label="Proposed End Date"
-                            rules={[{ required: true, message: 'Required' }]}
-                        >
-                            <DatePicker className={styles.fullWidth} size="large" />
-                        </Form.Item>
-                    </div>
-
                     <Form.Item
                         name="proposedValue"
                         label="Proposed Value (ZAR)"

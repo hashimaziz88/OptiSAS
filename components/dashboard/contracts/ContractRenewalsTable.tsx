@@ -36,20 +36,7 @@ const ContractRenewalsTable: React.FC<ContractRenewalsTableProps> = ({
             width: 120,
             render: (v: string) => v ? new Date(v).toLocaleDateString('en-ZA') : '—',
         },
-        {
-            title: 'Opportunity',
-            dataIndex: 'renewalOpportunityTitle',
-            key: 'renewalOpportunityTitle',
-            ellipsis: true,
-            render: (v: string) => v || '—',
-        },
-        {
-            title: 'Notes',
-            dataIndex: 'notes',
-            key: 'notes',
-            ellipsis: true,
-            render: (v: string) => v || '—',
-        },
+
         {
             title: 'Created',
             dataIndex: 'createdAt',
