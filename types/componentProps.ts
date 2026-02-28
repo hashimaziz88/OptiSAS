@@ -66,11 +66,22 @@ export interface ActivitiesTableProps {
   canDelete?: boolean;
 }
 
+export interface ActivityPrefill {
+  type?: number;
+  subject?: string;
+  description?: string;
+  priority?: number;
+  relatedToType?: number;
+  relatedToId?: string;
+  relatedToLabel?: string;
+}
+
 export interface ActivityFormModalProps {
   open: boolean;
   editing?: IActivityDto | null;
   loading: boolean;
   canAssign?: boolean;
+  prefill?: ActivityPrefill;
   onSubmit: (values: ICreateActivityDto | IUpdateActivityDto) => void;
   onClose: () => void;
 }

@@ -4,8 +4,9 @@ import React, { useEffect, useState } from 'react';
 import {
     Button, Input, Select, Typography, message, Drawer,
     Descriptions, Tag, Timeline, Row, Col, Space, Popconfirm,
+    Card, Spin,
 } from 'antd';
-import { PlusOutlined, SearchOutlined, ReloadOutlined, SwapOutlined, UserSwitchOutlined, EditOutlined, MinusCircleOutlined } from '@ant-design/icons';
+import { PlusOutlined, SearchOutlined, ReloadOutlined, SwapOutlined, UserSwitchOutlined, EditOutlined, MinusCircleOutlined, BulbOutlined } from '@ant-design/icons';
 import { useOpportunityActions, useOpportunityState } from '@/providers/opportunityProvider';
 import { IOpportunityDto, ICreateOpportunityDto, IUpdateOpportunityDto } from '@/providers/opportunityProvider/context';
 import { useClientActions, useClientState } from '@/providers/clientProvider';
@@ -28,6 +29,11 @@ import ClientSelectFilter from '@/components/dashboard/shared/ClientSelectFilter
 import { DARK_DRAWER_STYLES } from '@/components/dashboard/shared/drawerStyles';
 import { useAuthState } from '@/providers/authProvider';
 import { isAdminOrManager } from '@/utils/roles';
+import ActivityFormModal from '@/components/dashboard/activities/ActivityFormModal';
+import { useActivityActions, useActivityState } from '@/providers/activityProvider';
+import { ICreateActivityDto, IUpdateActivityDto } from '@/providers/activityProvider/context';
+import { ACTIVITY_TYPE_LABELS, ACTIVITY_TYPE_COLORS, PRIORITY_LABELS, PRIORITY_COLORS } from '@/constants/activities';
+import { ActivityPrefill } from '@/types/componentProps';
 
 const { Title, Text } = Typography;
 
@@ -58,6 +64,22 @@ const OpportunitiesContent: React.FC = () => {
 
     const [assignModalOpen, setAssignModalOpen] = useState(false);
     const canAssign = isAdminOrManager(user?.roles);
+
+    const [activityModalOpen, setActivityModalOpen] = useState(false);
+    const [activityPrefill, setActivityPrefill] = useState<ActivityPrefill | undefined>(undefined);
+
+    interface AiSuggestion {
+        activityType: number;
+        subject: string;
+        description: string;
+        priority: number;
+        reasoning: string;
+    }
+    const [aiSuggestion, setAiSuggestion] = useState<AiSuggestion | null>(null);
+    const [aiSuggestionLoading, setAiSuggestionLoading] = useState(false);
+
+    const { createActivity } = useActivityActions();
+    const { isPending: activityPending } = useActivityState();
 
     const clients = clientPagedResult?.items ?? [];
 
@@ -139,6 +161,72 @@ const OpportunitiesContent: React.FC = () => {
         setAssignModalOpen(false);
         setViewingOpp(null);
         fetchOpportunities();
+    };
+
+    const handleDrawerClose = () => {
+        setViewingOpp(null);
+        setAiSuggestion(null);
+        setAiSuggestionLoading(false);
+    };
+
+    const handleGetAiSuggestion = async () => {
+        if (!viewingOpp) return;
+        setAiSuggestionLoading(true);
+        setAiSuggestion(null);
+        try {
+            const res = await fetch('/api/ai-activity-suggestion', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    opportunityTitle: viewingOpp.title,
+                    clientName: viewingOpp.clientName,
+                    stage: viewingOpp.stage,
+                    stageName: viewingOpp.stageName,
+                    estimatedValue: viewingOpp.estimatedValue,
+                    probability: viewingOpp.probability ?? 0,
+                    description: viewingOpp.description,
+                    expectedCloseDate: viewingOpp.expectedCloseDate,
+                    stageHistory: (stageHistory ?? []).map((h) => ({
+                        fromStageName: h.fromStageName,
+                        toStageName: h.toStageName,
+                        changedAt: h.changedAt,
+                        notes: h.notes,
+                    })),
+                }),
+            });
+            if (!res.ok) {
+                const err = await res.json() as { error?: string };
+                message.error(err.error ?? 'Failed to get AI suggestion.');
+                return;
+            }
+            const data = await res.json() as AiSuggestion;
+            setAiSuggestion(data);
+        } catch {
+            message.error('Failed to connect to the AI service.');
+        } finally {
+            setAiSuggestionLoading(false);
+        }
+    };
+
+    const handleCreateSuggestedActivity = () => {
+        if (!viewingOpp || !aiSuggestion) return;
+        setActivityPrefill({
+            type: aiSuggestion.activityType,
+            subject: aiSuggestion.subject,
+            description: aiSuggestion.description,
+            priority: aiSuggestion.priority,
+            relatedToType: 2,
+            relatedToId: viewingOpp.id,
+            relatedToLabel: viewingOpp.title,
+        });
+        setActivityModalOpen(true);
+    };
+
+    const handleActivitySubmit = async (values: ICreateActivityDto | IUpdateActivityDto) => {
+        await createActivity(values as ICreateActivityDto);
+        message.success('Activity logged successfully.');
+        setActivityModalOpen(false);
+        setActivityPrefill(undefined);
     };
 
 
@@ -238,7 +326,7 @@ const OpportunitiesContent: React.FC = () => {
             <Drawer
                 open={!!viewingOpp}
                 title={viewingOpp?.title ?? 'Opportunity Details'}
-                onClose={() => setViewingOpp(null)}
+                onClose={handleDrawerClose}
                 size="large"
                 styles={DARK_DRAWER_STYLES}
                 classNames={{ body: styles.drawerBody, header: styles.drawerHeader }}
@@ -329,6 +417,73 @@ const OpportunitiesContent: React.FC = () => {
                                 />
                             </>
                         )}
+
+                        <div className={styles.aiSectionTitle}>
+                            <BulbOutlined />
+                            AI Suggested Next Action
+                        </div>
+
+                        <Card size="small" className={styles.aiCard}>
+                            {!aiSuggestion && !aiSuggestionLoading && (
+                                <Button
+                                    type="default"
+                                    icon={<BulbOutlined />}
+                                    onClick={handleGetAiSuggestion}
+                                    style={{
+                                        color: '#a78bfa',
+                                        borderColor: 'rgba(167, 139, 250, 0.4)',
+                                        background: 'transparent',
+                                    }}
+                                >
+                                    Get Suggestion
+                                </Button>
+                            )}
+
+                            {aiSuggestionLoading && (
+                                <Space style={{ color: '#a0aec0' }}>
+                                    <Spin size="small" />
+                                    <Text style={{ color: '#a0aec0' }}>Analysing opportunity...</Text>
+                                </Space>
+                            )}
+
+                            {aiSuggestion && !aiSuggestionLoading && (
+                                <Space direction="vertical" style={{ width: '100%' }} size={10}>
+                                    <Space>
+                                        <Tag color={ACTIVITY_TYPE_COLORS[aiSuggestion.activityType]}>
+                                            {ACTIVITY_TYPE_LABELS[aiSuggestion.activityType]}
+                                        </Tag>
+                                        <Tag color={PRIORITY_COLORS[aiSuggestion.priority]}>
+                                            {PRIORITY_LABELS[aiSuggestion.priority]} Priority
+                                        </Tag>
+                                    </Space>
+                                    <Text strong style={{ color: '#e2e8f0', fontSize: 14 }}>
+                                        {aiSuggestion.subject}
+                                    </Text>
+                                    <Text style={{ color: '#94a3b8', fontSize: 13 }}>
+                                        {aiSuggestion.description}
+                                    </Text>
+                                    <Text className={styles.aiReasoningText}>
+                                        Why now: {aiSuggestion.reasoning}
+                                    </Text>
+                                    <Space style={{ marginTop: 4 }}>
+                                        <Button
+                                            type="primary"
+                                            size="small"
+                                            onClick={handleCreateSuggestedActivity}
+                                        >
+                                            Create This Activity
+                                        </Button>
+                                        <Button
+                                            size="small"
+                                            onClick={() => setAiSuggestion(null)}
+                                            style={{ color: '#8c8c8c' }}
+                                        >
+                                            Dismiss
+                                        </Button>
+                                    </Space>
+                                </Space>
+                            )}
+                        </Card>
                     </>
                 )}
             </Drawer>
@@ -347,6 +502,19 @@ const OpportunitiesContent: React.FC = () => {
                 currentOwnerId={viewingOpp?.ownerId}
                 onSubmit={handleAssignSubmit}
                 onClose={() => setAssignModalOpen(false)}
+            />
+
+            <ActivityFormModal
+                open={activityModalOpen}
+                editing={null}
+                loading={activityPending}
+                canAssign={canAssign}
+                prefill={activityPrefill}
+                onSubmit={handleActivitySubmit}
+                onClose={() => {
+                    setActivityModalOpen(false);
+                    setActivityPrefill(undefined);
+                }}
             />
         </>
     );

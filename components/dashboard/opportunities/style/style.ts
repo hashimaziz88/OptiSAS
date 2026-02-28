@@ -282,4 +282,32 @@ export const useStyles = createStyles(({ token }) => ({
   drawerTagRow: css`${SHARED_STYLES.drawerTagRow}`,
 
   descriptionsSection: css`${SHARED_STYLES.descriptionsSection}`,
+
+  aiSectionTitle: css`
+    color: #a78bfa;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 24px 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  `,
+
+  aiCard: css`
+    background: rgba(167, 139, 250, 0.06) !important;
+    border: 1px solid rgba(167, 139, 250, 0.2) !important;
+    border-radius: 10px !important;
+
+    .ant-card-body {
+      padding: 16px;
+    }
+  `,
+
+  aiReasoningText: css`
+    color: #64748b;
+    font-size: 12px;
+    font-style: italic;
+  `,
 }));

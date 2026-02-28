@@ -15,7 +15,6 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { IRevenueSummaryDto } from '@/providers/dashboardProvider/context';
 import { formatCurrency } from '@/utils/dashboard/opportunities';
 import { RevenueTrendChartProps } from '@/types/componentProps';
 import { useStyles } from './style/style';
