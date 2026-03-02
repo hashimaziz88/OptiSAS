@@ -8,7 +8,7 @@ export const OPPORTUNITY_STAGE_LABELS: Record<number, string> = {
 };
 
 export const OPPORTUNITY_STAGE_COLORS: Record<number, string> = {
-  1: "default",
+  1: "gold",
   2: "blue",
   3: "purple",
   4: "orange",
